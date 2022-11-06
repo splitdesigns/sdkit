@@ -15,6 +15,8 @@ import Foundation
 
 /// A JSON parser with dynamic lookup support.
 ///
+/// ``SDJSON`` is a lightweight JSONSerialization wrapper for digging through JSON objects with ease. ``SDJSON`` uses dynamic member lookup and subscripts, to replicate dot notation syntax used in other languages. Access, typecast, unwrap, and use. Returns `nil` if you make an error.
+/// 
 /// To parse a JSON string, pass it into a ``SDJSON`` initializer:
 ///
 ///     let combinations: String = "[ { \"luggage\": \"1234\" } ]"
@@ -38,39 +40,39 @@ import Foundation
     ///
     public var endIndex: Int { return ( array ?? [ ] ) .endIndex }
             
-    /// The JSON or `SDJSON` object to parse.
+    /// The JSON or ``SDJSON`` object to parse.
     ///
     private let value: Any?
     
-    /// An array of `SDJSON` objects.
+    /// An array of ``SDJSON`` objects.
     ///
     private var array: [ SDJSON ]? { return ( value as? [ Any ] )? .map { return SDJSON ( value: $0 ) } }
     
-    /// A Dictionary of `SDJSON` objects.
+    /// A Dictionary of ``SDJSON`` objects.
     ///
     private var dictionary: [ String: SDJSON ]? { return ( value as? [ String: Any ] )? .mapValues { return SDJSON ( value: $0 ) } }
         
-    /// Creates a `SDJSON` object from a string.
+    /// Creates a ``SDJSON`` object from a string.
     ///
     public init ( _ input: String ) { value = try? JSONSerialization.jsonObject ( with: Data ( input.utf8 ) ) }
     
-    /// Creates a `SDJSON` object from a `SDJSON` object value.
+    /// Creates a ``SDJSON`` object from a ``SDJSON`` object value.
     ///
     private init ( value: Any? ) { self.value = value }
         
-    /// Subscript support for `SDJSON` arrays.
+    /// Subscript support for ``SDJSON`` arrays.
     ///
     public subscript ( index: Int ) -> SDJSON { return array? [ index ] ?? SDJSON ( value: nil ) }
     
-    /// Subscript support for `SDJSON` dictionaries.
+    /// Subscript support for ``SDJSON`` dictionaries.
     ///
     public subscript ( key: String ) -> SDJSON { return dictionary? [ key ] ?? SDJSON ( value: nil ) }
     
-    /// Dynamic member lookup support for `SDJSON` dictionaries.
+    /// Dynamic member lookup support for ``SDJSON`` dictionaries.
     ///
     public subscript ( dynamicMember key: String ) -> SDJSON { return dictionary? [ key ] ?? SDJSON ( value: nil ) }
     
-    /// Returns the value of the `SDJSON` object.
+    /// Returns the value of the ``SDJSON`` object.
     ///
     public func parse ( ) -> Any? { return value }
 
