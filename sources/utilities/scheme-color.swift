@@ -42,9 +42,9 @@ public struct SDSchemeColor {
     
     /// A color that automatically adapts to the device's color scheme.
     ///
-    public var auto: Color { .init ( uiColor: UIColor { $0.userInterfaceStyle == .light ? UIColor ( light ) : UIColor ( dark ) } ) }
+	public var auto: Color { .init ( uiColor: UIColor { $0.userInterfaceStyle == .light ? UIColor ( self.light ) : UIColor ( self.dark ) } ) }
     
-    /// A public initializer for the ``SDSchemeColor`` struct.
+    /// Creates a ``SDSchemeColor`` from a light and dark color.
     ///
     public init ( light: Color, dark: Color ) {
         

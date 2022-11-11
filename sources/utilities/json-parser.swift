@@ -15,7 +15,7 @@ import Foundation
 
 /// A JSON parser with dynamic lookup support.
 ///
-/// ``SDJSON`` is a lightweight JSONSerialization wrapper for digging through JSON objects with ease. ``SDJSON`` uses dynamic member lookup and subscripts, to replicate dot notation syntax used in other languages. Access, typecast, unwrap, and use. Returns `nil` if you make an error.
+/// A lightweight JSONSerialization wrapper for digging through JSON objects. ``SDJSON`` uses dynamic member lookup and subscripts to replicate dot notation syntax used in other languages. Access, typecast, unwrap, and use. Returns `nil` if you make an error.
 /// 
 /// To parse a JSON string, pass it into a ``SDJSON`` initializer:
 ///
@@ -34,11 +34,11 @@ import Foundation
         
     /// A start index for `RandomAccessCollection` conformance.
     ///
-    public var startIndex: Int { return ( array ?? [ ] ) .startIndex }
+	public var startIndex: Int { return ( self.array ?? [ ] ) .startIndex }
     
     /// An end index for `RandomAccessCollection` conformance.
     ///
-    public var endIndex: Int { return ( array ?? [ ] ) .endIndex }
+	public var endIndex: Int { return ( self.array ?? [ ] ) .endIndex }
             
     /// The JSON or ``SDJSON`` object to parse.
     ///
@@ -46,35 +46,45 @@ import Foundation
     
     /// An array of ``SDJSON`` objects.
     ///
-    private var array: [ SDJSON ]? { return ( value as? [ Any ] )? .map { return SDJSON ( value: $0 ) } }
+	private var array: [ SDJSON ]? { return ( self.value as? [ Any ] )? .map { return SDJSON ( value: $0 ) } }
     
     /// A Dictionary of ``SDJSON`` objects.
     ///
-    private var dictionary: [ String: SDJSON ]? { return ( value as? [ String: Any ] )? .mapValues { return SDJSON ( value: $0 ) } }
+	private var dictionary: [ String: SDJSON ]? { return ( self.value as? [ String: Any ] )? .mapValues { return SDJSON ( value: $0 ) } }
         
     /// Creates a ``SDJSON`` object from a string.
     ///
-    public init ( _ input: String ) { value = try? JSONSerialization.jsonObject ( with: Data ( input.utf8 ) ) }
+	/// - Parameter source: The string to derive a JSON object from.
+	///
+	public init ( _ source: String ) { self.value = try? JSONSerialization.jsonObject ( with: Data ( source.utf8 ) ) }
     
     /// Creates a ``SDJSON`` object from a ``SDJSON`` object value.
+	///
+	/// - Parameter value: The internal value to initialize with.
     ///
     private init ( value: Any? ) { self.value = value }
         
     /// Subscript support for ``SDJSON`` arrays.
+	///
+	/// - Parameter index: The index of the array.
     ///
-    public subscript ( index: Int ) -> SDJSON { return array? [ index ] ?? SDJSON ( value: nil ) }
+	public subscript ( index: Int ) -> SDJSON { return self.array? [ index ] ?? SDJSON ( value: nil ) }
     
     /// Subscript support for ``SDJSON`` dictionaries.
+	///
+	/// - Parameter key: The key for accessing the dictionary.
     ///
-    public subscript ( key: String ) -> SDJSON { return dictionary? [ key ] ?? SDJSON ( value: nil ) }
+	public subscript ( key: String ) -> SDJSON { return self.dictionary? [ key ] ?? SDJSON ( value: nil ) }
     
     /// Dynamic member lookup support for ``SDJSON`` dictionaries.
+	///
+	/// - Parameter dynamicMember: Accesses a dictionary with DynamicMember support.
     ///
-    public subscript ( dynamicMember key: String ) -> SDJSON { return dictionary? [ key ] ?? SDJSON ( value: nil ) }
+	public subscript ( dynamicMember key: String ) -> SDJSON { return self.dictionary? [ key ] ?? SDJSON ( value: nil ) }
     
     /// Returns the value of the ``SDJSON`` object.
     ///
-    public func parse ( ) -> Any? { return value }
+	public func parse ( ) -> Any? { return self.value }
 
 }
 

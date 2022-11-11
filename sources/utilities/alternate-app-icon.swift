@@ -15,9 +15,7 @@ import SwiftUI
 
 /// Sets an alternate app icon. Will not trigger an alert.
 ///
-/// You must have the app icon assets stored in your bundle, and identified in your info.plist file. They cannot be in an asset catalog.
-///
-/// For more info, refer to [ this article. ]( https://www.hackingwithswift.com/example-code/uikit/how-to-change-your-app-icon-dynamically-with-setalternateiconname )
+/// You must have the app icon assets stored in your bundle, and identified in your info.plist file. They cannot be in an asset catalog. For more info, refer to [ this article. ]( https://www.hackingwithswift.com/example-code/uikit/how-to-change-your-app-icon-dynamically-with-setalternateiconname )
 ///
 /// You can set an alternate app icon dynamically to match the color scheme when the app enters the foreground. Add the view modifier to one of your views:
 ///
@@ -30,6 +28,8 @@ import SwiftUI
 /// Alternatively, you can leverage ``SDAlternateAppIcon``'s static ``SDAlternateAppIcon/set(icon:)`` method to set an icon manually:
 ///
 ///     SDAlternateAppIcon.set ( icon: "your-icon-identifier" )
+///
+///	Setting the alternate icon name to `nil` will revert the icon to it's primary image.
 ///
 /// - Warning: Uses a private API.
 ///
@@ -53,35 +53,39 @@ public struct SDAlternateAppIcon: ViewModifier {
     private let override: Bool
     
     /// Triggers an icon update when the app enters the foreground.
+	///
+	/// - Parameter content: The content being modified.
     ///
-    public func body ( content: Content ) -> some View { content.task ( id: scenePhase ) { if scenePhase == .active {
+	public func body ( content: Content ) -> some View { content.task ( id: self.scenePhase ) { if self.scenePhase == .active {
                             
         //  Determine whether an alternate icon should be present
         
-        let identifier: String? = override ? identifier : colorScheme != .dark ? nil : identifier
+		let identifier: String? = self.override ? self.identifier : self.colorScheme != .dark ? nil : self.identifier
         
         //  Set the alternate icon identifier and log the result
         
-        SDAlternateAppIcon.set ( icon: identifier )
-        print ( "UIApplication.shared.alternateIconName set to \( String ( describing: identifier ) )" )
+		SDAlternateAppIcon.set ( icon: identifier )
+		print ( "UIApplication.shared.alternateIconName set to \( String ( describing: identifier ) )" )
         
         return
                     
     } } }
     
     /// Calls an Objective-C method that sets an alternate icon appearance.
+	///
+	/// - Parameter icon: The icon identifier to set.
     ///
-    static public func set ( icon: String? ) -> Void { if UIApplication.shared.supportsAlternateIcons {
+    public static func set ( icon: String? ) -> Void { if UIApplication.shared.supportsAlternateIcons {
                     
             //  Obfuscation
             
             let setAlternateApplicationIconKey = { [ "completionHandler:", "_setAlternateIconName:" ] .reversed ( ) .joined ( ) } ( )
             
-            //  Get method
+            //  Get the method
 
             let setAlternateApplicationIcon = unsafeBitCast ( UIApplication.shared.method ( for: NSSelectorFromString ( setAlternateApplicationIconKey ) ), to: ( @convention ( c ) ( NSObject, Selector, NSString?, @escaping ( NSError ) -> ( ) ) -> ( ) ) .self )
             
-            // Call method
+            // Call the method
             
             setAlternateApplicationIcon ( UIApplication.shared, NSSelectorFromString ( setAlternateApplicationIconKey ), icon as NSString?, { _ in } )
             
@@ -89,8 +93,11 @@ public struct SDAlternateAppIcon: ViewModifier {
             
     } }
     
-    /// A public initializer for the ``SDAlternateAppIcon`` struct.
+    /// Creates a ``SDAlternateAppIcon`` from an identifier and an override.
     ///
+	/// - Parameter named: The identifier to set.
+	/// - Parameter override: Locks the dynamism of the icon to the specified identifier.
+	///
     fileprivate init ( named identifier: String, override: Bool ) {
         
         self.identifier = identifier
@@ -110,7 +117,10 @@ public extension View {
     
     /// Sets an alternate app icon to match the color scheme when the app enters the foreground. Will not trigger an alert.
     ///
-    func dynamicAppIcon ( named: String, override: Bool = false ) -> some View { modifier ( SDAlternateAppIcon ( named: named, override: override ) ) }
+	/// - Parameter named: The identifier to set.
+	/// - Parameter override: Locks the dynamism of the icon to the specified identifier.
+	///
+    func dynamicAppIcon ( named identifier: String, override: Bool = false ) -> some View { modifier ( SDAlternateAppIcon ( named: identifier, override: override ) ) }
 
 }
 

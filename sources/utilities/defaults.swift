@@ -11,44 +11,16 @@ import SwiftUI
 //
 //
 
-//  MARK: - Extensions
-
-@available ( iOS 16.0, * )
-public extension EnvironmentValues {
-    
-    /// The default configuration set by ``SDDefaults``.
-    ///
-    var defaults: SDDefaults {
-        
-        get { return self [ SDDefaultsKey.self ] }
-        set { return self [ SDDefaultsKey.self ] = newValue }
-        
-    }
-    
-}
-
-@available ( iOS 16.0, * )
-public extension View {
-    
-    /// Override the defaults set by ``SDDefaults`` with your own configuration.
-    ///
-    func setDefaults ( _ defaults: SDDefaults ) -> some View { return environment ( \.defaults, defaults ) }
-    
-}
-
-//
-//
-
 //  MARK: - Structures
 
-/// An `EnvironmentKey` struct containing a default value for the ``SDDefaults`` environment key.
+/// An `EnvironmentKey` containing a default value for the `defaults` key.
 ///
 @available ( iOS 16.0, * )
 private struct SDDefaultsKey: EnvironmentKey {
     
     /// A default value for the ``SDDefaults`` environment key.
     ///
-    internal static let defaultValue: SDDefaults = .init ( )
+	fileprivate static let defaultValue: SDDefaults = .init ( )
     
 }
 
@@ -58,21 +30,19 @@ private struct SDDefaultsKey: EnvironmentKey {
 ///
 ///     @Environment ( \.defaults ) private var defaults
 ///
-/// To override the default configuration, create a new instance, and make your changes. Doing so inside a closure often works well.
+/// To override the default configuration, create a closure with the modified properties. You can create a trailing closure directly on the view modifier if you prefer.
 ///
-///     let configuration: SDDefaults = {
+///     let configuration: ( inout SDDefaults ) -> Void = {
 ///
-///         let defaults: SDDefaults = .init ( )
 ///         defaults.colors.primary = .blue
-///         return defaults
 ///
-///     } ( )
+///     }
 ///
-/// Inject the new object into the environment with the `setDefaults` modifier. This should be set on ``SDInterface`` or another top-level view.
+/// Inject the changes into the environment with the `setDefaults` modifier. This should be set on ``SDInterface`` or another top-level view.
 ///
-///     .setDefaults ( configuration )
+///     .setDefaults { configuration ( $0 ) }
 ///
-/// You can append computed properties directly to the struct with extensions:
+/// You can append computed properties directly to a struct with extensions:
 ///
 ///     extension SDDefaults.Colors {
 ///
@@ -91,6 +61,8 @@ private struct SDDefaultsKey: EnvironmentKey {
 ///         ///
 ///         public var custom: Custom { .init ( ) }
 ///
+///         /// A collection of custom colors.
+///         ///
 ///         struct Custom {
 ///
 ///             /// A monochromatic color with a luminance value of half of one.
@@ -103,36 +75,107 @@ private struct SDDefaultsKey: EnvironmentKey {
 ///     
 @available ( iOS 16.0, * )
 public struct SDDefaults {
+	
+	/// Responsible for setting up coordination for our app.
+	///
+	public var coordination: Self.Coordination = .init ( )
         
-    /// A collection of app metadata items, instantiated from the `Metadata` struct.
-    ///
-    public var metadata: Metadata = .init ( )
-    
     /// A collection of app metadata items.
     ///
-    public struct Metadata {
-        
-        /// An identifier that defines the name of the app.
-        ///
-        public var identifier: String = Bundle.main.displayName ?? Bundle.main.name ?? "Unknown"
-        
-        /// The name of the app developer.
-        ///
-        public var developer: String = "Unknown"
-
-    }
+	public var metadata: Self.Metadata = .init ( )
     
-    /// A collection of colors, instantiated from the `Colors` struct.
+    /// A collection of colors.
     ///
-    public var colors: Colors = .init ( )
+	public var colors: Self.Colors = .init ( )
+	
+	/// A collection of animation curves.
+	///
+	public var animations: Self.Animations = .init ( )
+    
+    /// A collection of fonts.
+    ///
+	public var fonts: Self.Fonts = .init ( )
+	
+	/// Creates a ``SDDefaults``.
+	///
+	public init ( ) { }
+    
+}
+
+//
+//
+
+//  MARK: - Extensions
+
+@available ( iOS 16.0, * )
+public extension EnvironmentValues {
+	
+	/// The default configuration set by ``SDDefaults``.
+	///
+	var defaults: SDDefaults {
+		
+		get { return self [ SDDefaultsKey.self ] }
+		set { return self [ SDDefaultsKey.self ] = newValue }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension View {
+	
+	/// Override the defaults set by ``SDDefaults`` with your own configuration.
+	///
+	/// - Parameter configuration: The configuration to overwrite the defaults with.
+	///
+	func setDefaults ( _ configuration: SDDefaults ) -> some View { return environment ( \.defaults, configuration ) }
+	
+}
+
+@available ( iOS 16.0, * )
+extension SDDefaults {
+	
+	/// Responsible for setting up coordination for our app.
+	///
+	public struct Coordination {
+		
+		/// The flow used to initialize the application's state.
+		///
+		public var flow: SDFlow = .init ( "https://apple.com" )
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+extension SDDefaults {
+	
+	/// A collection of app metadata items.
+	///
+	public struct Metadata {
+		
+		/// An identifier that defines the name of the app.
+		///
+		public var identifier: String = Bundle.main.displayName ?? Bundle.main.name ?? "Unknown"
+		
+		/// The name of the app developer.
+		///
+		public var developer: String = "Unknown"
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+extension SDDefaults {
     
     /// A collection of colors.
     ///
     public class Colors {
-            
+        
         /// The color to use for primary content.
         ///
-        public var primary: SDSchemeColor = .init ( light: .primary, dark: .primary )
+		public var primary: SDSchemeColor = .init ( light: .primary, dark: .primary )
         
         /// The color to use for secondary content.
         ///
@@ -145,28 +188,48 @@ public struct SDDefaults {
         /// The color to use for the background.
         ///
         public var background: SDSchemeColor = .init ( light: .white, dark: .black )
-            
+        
     }
     
-    /// A collection of fonts, instantiated from the `Fonts` struct.
-    ///
-    public var fonts: Fonts = .init ( )
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// A collection of animation curves.
+	///
+	struct Animations {
+		
+		/// The animation to use for primary transitions.
+		///
+		public var primary: Animation = .linear
+		
+		/// The animation to use for secondary transitions.
+		///
+		public var secondary: Animation = .easeOut
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+extension SDDefaults {
     
     /// A collection of fonts.
     ///
     public struct Fonts {
         
-        /// A collection of sans-serif fonts, instantiated from the `SansSerif` struct.
+        /// A collection of sans-serif fonts, instantiated from `SansSerif`.
         ///
-        public var sansSerif: SansSerif = .init ( )
+		public var sansSerif: Self.SansSerif = .init ( )
         
         /// A collection of sans-serif fonts.
         ///
         public struct SansSerif {
             
-            /// A collection of title-scale sans-serif fonts, instantiated from the `Title` struct.
+            /// A collection of title-scale sans-serif fonts, instantiated from `Title`.
             ///
-            public var title: Title = .init ( )
+			public var title: Self.Title = .init ( )
             
             /// A collection of title-scale sans-serif fonts.
             ///
@@ -186,9 +249,9 @@ public struct SDDefaults {
                 
             }
             
-            /// A collection of heading-scale sans-serif fonts, instantiated from the `Heading` struct.
+            /// A collection of heading-scale sans-serif fonts, instantiated from `Heading`.
             ///
-            public var heading: Heading = .init ( )
+			public var heading: Self.Heading = .init ( )
             
             /// A collection of heading-scale sans-serif fonts.
             ///
@@ -208,9 +271,9 @@ public struct SDDefaults {
                 
             }
             
-            /// A collection of body-scale sans-serif fonts, instantiated from the `Body` struct.
+            /// A collection of body-scale sans-serif fonts, instantiated from `Body`.
             ///
-            public var body: Body = .init ( )
+			public var body: Self.Body = .init ( )
             
             /// A collection of body-scale sans-serif fonts.
             ///
@@ -232,17 +295,17 @@ public struct SDDefaults {
             
         }
         
-        /// A collection of monospaced fonts, instantiated from the `Monospaced` struct.
+        /// A collection of monospaced fonts, instantiated from `Monospaced`.
         ///
-        public var monospaced: Monospaced = .init ( )
+		public var monospaced: Self.Monospaced = .init ( )
         
         /// A collection of monospaced fonts.
         ///
         public struct Monospaced {
             
-            /// A collection of title-scale monospaced fonts, instantiated from the `Title` struct.
+            /// A collection of title-scale monospaced fonts, instantiated from `Title`.
             ///
-            public var title: Title = .init ( )
+			public var title: Self.Title = .init ( )
             
             /// A collection of title-scale monospaced fonts.
             ///
@@ -262,9 +325,9 @@ public struct SDDefaults {
                 
             }
             
-            /// A collection of heading-scale monospaced fonts, instantiated from the `Heading` struct.
+            /// A collection of heading-scale monospaced fonts, instantiated from `Heading`.
             ///
-            public var heading: Heading = .init ( )
+			public var heading: Self.Heading = .init ( )
             
             /// A collection of heading-scale monospaced fonts.
             ///
@@ -284,9 +347,9 @@ public struct SDDefaults {
                 
             }
             
-            /// A collection of body-scale monospaced fonts, instantiated from the `Body` struct.
+            /// A collection of body-scale monospaced fonts, instantiated from `Body`.
             ///
-            public var body: Body = .init ( )
+			public var body: Self.Body = .init ( )
             
             /// A collection of body-scale monospaced fonts.
             ///
@@ -305,16 +368,15 @@ public struct SDDefaults {
                 public var bold: Font = .system ( size: 16.0, weight: .bold, design: .monospaced )
                 
             }
-
+            
         }
-
+        
     }
-    
-    /// A public initializer for the ``SDDefaults`` struct.
-    ///
-    public init ( ) { }
-    
+	    
 }
+
+@available ( iOS 16.0, * )
+extension SDDefaults { }
 
 //
 //

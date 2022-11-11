@@ -30,11 +30,15 @@ public struct SDXStack < Content: View > : View {
     ///
     private let content: ( ) -> Content
 
-    /// The main view of the ``SDXStack`` struct.
+    /// Creates an `HStack` with the spacing defaulted to zero.
     ///
-    public var body: some View { return HStack ( alignment: alignment, spacing: spacing ) { content ( ) } }
+	public var body: some View { return HStack ( alignment: self.alignment, spacing: self.spacing ) { self.content ( ) } }
     
-    /// A public initializer for the ``SDXStack`` struct.
+    /// Creates a ``SDXStack`` from some sensible defaults.
+	///
+	/// - Parameter alignment: Sets the alignment of the stack.
+	/// - Parameter spacing: Sets the spacing of the stack.
+	/// - Parameter content: Contains the content of the stack.
     ///
     public init ( alignment: VerticalAlignment = .center, spacing: CGFloat = .init ( ), @ViewBuilder content: @escaping ( ) -> Content ) {
         
@@ -63,12 +67,16 @@ public struct SDYStack < Content: View > : View {
     ///
     private let content: ( ) -> Content
     
-    /// The main view of the ``SDYStack`` struct.
+    /// Creates an `VStack` with the spacing defaulted to zero.
     ///
-    public var body: some View { return VStack ( alignment: alignment, spacing: spacing ) { content ( ) } }
+	public var body: some View { return VStack ( alignment: self.alignment, spacing: self.spacing ) { self.content ( ) } }
     
-    /// A public initializer for the ``SDYStack`` struct.
-    ///
+    /// Creates a ``SDYStack`` from some sensible defaults.
+	///
+	/// - Parameter alignment: Sets the alignment of the stack.
+	/// - Parameter spacing: Sets the spacing of the stack.
+	/// - Parameter content: Contains the content of the stack.
+	///
     public init ( alignment: HorizontalAlignment = .center, spacing: CGFloat = .init ( ), @ViewBuilder content: @escaping ( ) -> Content ) {
         
         self.alignment = alignment
@@ -96,11 +104,15 @@ public struct SDSStack < Content: View > : View {
     ///
     private let content: ( ) -> Content
     
-    /// The main view of the ``SDSStack`` struct.
+    /// Creates a `ScrollView` with an embedded ``SDXStack`` and ``SDYStack``.
     ///
-    public var body: some View { return ScrollView ( axis, showsIndicators: showsIndicators ) { if axis == .horizontal { SDXStack { content ( ) } } else { SDYStack { content ( ) } } } }
+	public var body: some View { return ScrollView ( self.axis, showsIndicators: self.showsIndicators ) { if self.axis == .horizontal { SDXStack { self.content ( ) } } else { SDYStack { self.content ( ) } } } }
     
-    /// A public initializer for the ``SDSStack`` struct.
+    /// Creates a ``SDSStack`` from some sensible defaults.
+	///
+	/// - Parameter axis: Sets the orientation of the stack.
+	/// - Parameter showsIndicators: Sets the indicator visibility for the stack.
+	/// - Parameter content: Contains the content of the stack.
     ///
     public init ( axis: Axis.Set = .vertical, showsIndicators: Bool = false, @ViewBuilder content: @escaping ( ) -> Content ) {
         
@@ -123,9 +135,11 @@ public struct SDNothing: View {
     
     /// The main view of the ``SDNothing`` struct.
     ///
-    public var body: some View { return Spacer ( minLength: except ) }
+	public var body: some View { return Spacer ( minLength: self.except ) }
     
-    /// A public initializer for the ``SDNothing`` struct.
+    /// Creates a ``SDNothing`` from some sensible defaults.
+	///
+	/// - Parameter except: The spacing exception.
     ///
     public init ( except: CGFloat = .init ( ) ) { self.except = except }
     
