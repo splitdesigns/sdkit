@@ -128,16 +128,23 @@ public extension View {
 	///
 	/// - Parameter configuration: The configuration to overwrite the defaults with.
 	///
-	func setDefaults ( _ configuration: SDDefaults ) -> some View { return environment ( \.defaults, configuration ) }
+	func setDefaults ( _ configuration: SDDefaults ) -> some View {
+		
+		//	Set static defaults and environment value to updated object
+		
+		SDSystem.defaults = configuration
+		return environment ( \.defaults, configuration )
+		
+	}
 	
 }
 
 @available ( iOS 16.0, * )
-extension SDDefaults {
+public extension SDDefaults {
 	
 	/// Responsible for setting up coordination for our app.
 	///
-	public struct Coordination {
+	struct Coordination {
 		
 		/// The flow used to initialize the application's state.
 		///
@@ -148,11 +155,11 @@ extension SDDefaults {
 }
 
 @available ( iOS 16.0, * )
-extension SDDefaults {
+public extension SDDefaults {
 	
 	/// A collection of app metadata items.
 	///
-	public struct Metadata {
+	struct Metadata {
 		
 		/// An identifier that defines the name of the app.
 		///
@@ -167,11 +174,11 @@ extension SDDefaults {
 }
 
 @available ( iOS 16.0, * )
-extension SDDefaults {
+public extension SDDefaults {
     
     /// A collection of colors.
     ///
-    public class Colors {
+	struct Colors {
         
         /// The color to use for primary content.
         ///
@@ -213,11 +220,19 @@ public extension SDDefaults {
 }
 
 @available ( iOS 16.0, * )
-extension SDDefaults {
+public extension SDDefaults {
     
     /// A collection of fonts.
     ///
-    public struct Fonts {
+	struct Fonts {
+		
+		/// The font to use for primary text.
+		///
+		public var primary: Font = SansSerif.Body ( ) .medium
+		
+		/// The font to use for secondary text.
+		///
+		public var secondary: Font = Monospaced.Body ( ) .medium
         
         /// A collection of sans-serif fonts, instantiated from `SansSerif`.
         ///

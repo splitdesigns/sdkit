@@ -108,7 +108,7 @@ public struct SDInterface < Content: View > : View {
         
 		return ZStack { self.content ( self.defaults, self.identifiers, self.parameters ) }
             .frame ( maxWidth: .infinity, maxHeight: .infinity )
-			.font ( self.font ?? defaults.fonts.sansSerif.body.medium )
+			.font ( self.font ?? defaults.fonts.primary )
 			.foregroundColor ( self.foregroundColor ?? defaults.colors.primary.auto )
 			.tint ( self.tint ?? defaults.colors.accent.auto )
 			.background ( self.background ?? defaults.colors.background.auto )

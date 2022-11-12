@@ -16,7 +16,13 @@ import SwiftUI
 /// Manages state for the app.
 /// 
 @available ( iOS 16.0, * )
-public class SDSystem { }
+public class SDSystem {
+	
+	/// A static instance of ``SDKit`` for use outside of the view environment.
+	///
+	public static var defaults: SDDefaults = .init ( )
+	
+}
 
 //	MARK: - Extensions
 
@@ -29,15 +35,11 @@ public extension SDSystem {
 		
 		/// The current view hierarchy.
 		///
-		@Published public var flow: SDFlow
+		@SDPublishedWithAnimation public var flow: SDFlow
 		
 		/// Creates a `Coordinator`.
 		///
-		public init ( flow: SDFlow ) {
-			
-			self.flow = flow
-			
-		}
+		public init ( flow: SDPublishedWithAnimation < SDFlow > ) { self._flow = flow }
 		
 	}
 	

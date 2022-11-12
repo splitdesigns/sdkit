@@ -21,3 +21,6 @@ public extension String {
     var representsInt: Bool { return CharacterSet ( charactersIn: self ) .isSubset ( of: CharacterSet ( charactersIn: "0123456789" ) ) }
 	
 }
+
+//
+//

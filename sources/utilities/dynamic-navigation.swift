@@ -134,7 +134,11 @@ public struct SDFlow {
 	///
 	///	- Parameter location: A URL to set as the location.
 	///
-	public init ( location: URL ) { self.location = location }
+	public init ( location: URL ) {
+		
+		self.location = location
+		
+	}
 	
 }
 
