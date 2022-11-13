@@ -96,6 +96,10 @@ public struct SDDefaults {
     ///
 	public var fonts: Self.Fonts = .init ( )
 	
+	/// A collection of values for configuring backdrop filters.
+	///
+	public var filters: Self.Filters = .init ( )
+	
 	/// Creates a ``SDDefaults``.
 	///
 	public init ( ) { }
@@ -391,7 +395,54 @@ public extension SDDefaults {
 }
 
 @available ( iOS 16.0, * )
-extension SDDefaults { }
+public extension SDDefaults {
+	
+	/// A collection of values for configuring backdrop filters.
+	///
+	class Filters {
+		
+		/// A value that determines the brightness of the filter.
+		///
+		public var brightness: CGFloat = 0.0
+		
+		/// A value that determines the filter's grayscale amount.
+		///
+		public var grayscale: CGFloat = 0.0
+		
+		/// A value that determines the saturation of the filter.
+		///
+		public var saturation: CGFloat = 1.0
+		
+		/// A value that determines the contrast of the filter.
+		///
+		public var contrast: CGFloat = 1.0
+		
+		/// A value that determines whether or not to invert the filter.
+		///
+		public var invert: Bool = false
+		
+		/// A value that determines the blur radius of the filter.
+		///
+		public var radius: CGFloat = 1.0
+		
+		/// A value that determines whether the filter blur should be opaque.
+		///
+		public var opaque: Bool = true
+		
+		/// A value that determines the tint of the filter.
+		///
+		public var tint: Color = .clear
+		
+		/// A value that determines the opacity of the filter.
+		///
+		public var opacity: CGFloat = 1.0
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults { }
 
 //
 //
