@@ -28,7 +28,7 @@ private struct SDDefaultsKey: EnvironmentKey {
 ///
 /// To use the defaults outside of `SDKit` components, grab the ``SDDefaults`` object from the environment with the `defaults` key.
 ///
-///     @Environment ( \.defaults ) private var defaults
+///     @Environment ( \ .defaults ) private var defaults
 ///
 /// To override the default configuration, create a closure with the modified properties. You can create a trailing closure directly on the view modifier if you prefer.
 ///
@@ -137,7 +137,7 @@ public extension View {
 		//	Set static defaults and environment value to updated object
 		
 		SDSystem.defaults = configuration
-		return environment ( \.defaults, configuration )
+		return environment ( \ .defaults, configuration )
 		
 	}
 	

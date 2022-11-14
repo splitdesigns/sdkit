@@ -22,7 +22,7 @@ public struct SDBackdropFilter: View {
 	
 	/// Access to the ``SDDefaults`` struct.
 	///
-	@Environment ( \.defaults ) private var defaults
+	@Environment ( \ .defaults ) private var defaults
 	
 	/// The brightness of the filter.
 	///
@@ -65,14 +65,14 @@ public struct SDBackdropFilter: View {
 	public var body: some View {
 		
 		SDBackdrop ( )
-			.brightness ( brightness ?? defaults.filters.brightness )
-			.grayscale ( grayscale ?? defaults.filters.grayscale )
-			.saturation ( saturation ?? defaults.filters.saturation )
-			.contrast ( contrast ?? defaults.filters.contrast )
-			.if ( invert ?? defaults.filters.invert ) { $0.colorInvert ( ) }
-			.blur ( radius: radius ?? defaults.filters.radius, opaque: opaque ?? defaults.filters.opaque )
-			.overlay ( tint ?? defaults.filters.tint )
-			.opacity ( opacity ?? defaults.filters.opacity )
+			.brightness ( self.brightness ?? self.defaults.filters.brightness )
+			.grayscale ( self.grayscale ?? self.defaults.filters.grayscale )
+			.saturation ( self.saturation ?? self.defaults.filters.saturation )
+			.contrast ( self.contrast ?? self.defaults.filters.contrast )
+			.if ( self.invert ?? self.defaults.filters.invert ) { $0.colorInvert ( ) }
+			.blur ( radius: self.radius ?? self.defaults.filters.radius, opaque: self.opaque ?? self.defaults.filters.opaque )
+			.overlay ( self.tint ?? self.defaults.filters.tint )
+			.opacity ( self.opacity ?? self.defaults.filters.opacity )
 			.clipped ( antialiased: true )
 		
 	}

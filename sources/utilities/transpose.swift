@@ -18,37 +18,45 @@ import Foundation
 @available ( iOS 16.0, * )
 public struct SDTranspose {
 	
+	/// Defines the animation states.
+	///
+	public enum SDAnimationStatus: String, CaseIterable { case initial, partial, complete }
+	
 	/// The value to animate to. Set this property with an animation.
 	///
-	public var target: CGFloat = 0.0 { didSet { cache = oldValue } }
+	public var target: CGFloat = .init ( ) { didSet { self.cache = oldValue } }
 	
 	/// A literal interpolation of the current value. Set this property in the setter of an `animatableData` instance.
 	///
-	public var literal: CGFloat = 0.0
+	public var literal: CGFloat = .init ( )
 	
 	/// The previous animation target. Set this as the starting value of the animation. Consecutive target changes will set this automatically.
 	///
-	public var cache: CGFloat = 0.0
+	public var cache: CGFloat = .init ( )
+	
+	/// Indicates the state of the animation.
+	///
+	public var status: SDAnimationStatus { return literal == target ? .complete : literal == cache ? .initial : .partial }
 	
 	/// The difference between the current target and cache.
 	///
-	public var difference: CGFloat { abs ( cache - target ) }
+	public var difference: CGFloat { return abs ( self.cache - self.target ) }
 	
 	/// The amount of progress from the cache value.
 	///
-	public var progress: CGFloat { difference - remaining }
+	public var progress: CGFloat { return self.difference - self.remaining }
 	
 	/// The amount remaining before reaching the target.
 	///
-	public var remaining: CGFloat { abs ( literal - target ) }
+	public var remaining: CGFloat { return abs ( self.literal - self.target ) }
 	
 	/// A reversed interpolation of the current animation state, between zero and one.
 	///
-	public var reversed: CGFloat { remaining / difference }
+	public var reversed: CGFloat { return self.remaining / self.difference }
 	
 	/// An interpolation of the current animation state, between zero and one.
 	///
-	public var normalized: CGFloat { 1.0 - reversed }
+	public var normalized: CGFloat { return 1.0 - self.reversed }
 	
 	/// Interpolates between a start and an end value. If the value is out of bounds, the function's `progress` and `remaining` return values will be `nil`.
 	///

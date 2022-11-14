@@ -20,7 +20,7 @@ public struct SDFocus: ViewModifier, Animatable {
 	
 	/// Access to the ``SDDefaults`` struct.
 	///
-	@Environment ( \.defaults ) private var defaults
+	@Environment ( \ .defaults ) private var defaults
 	
 	/// The blur radius.
 	///
@@ -40,7 +40,7 @@ public struct SDFocus: ViewModifier, Animatable {
 	
 	/// Provides literal animation data.
 	///
-	public var animatableData: CGFloat { get { animation.target } set { animation.literal = newValue } }
+	public var animatableData: CGFloat { get { self.animation.target } set { self.animation.literal = newValue } }
 	
 	/// Manages animation state.
 	///
@@ -48,7 +48,7 @@ public struct SDFocus: ViewModifier, Animatable {
 	
 	/// Interpolates a set of values to use for the transition.
 	///
-	private var delayedAnimation: ( active: Bool, difference: CGFloat, progress: CGFloat?, remaining: CGFloat? ) { animation.interpolate ( animation.normalized.replace ( with: animation.reversed, if: animation.cache > animation.target ), from: 0.5, to: 1.0 ) }
+	private var delayedAnimation: ( active: Bool, difference: CGFloat, progress: CGFloat?, remaining: CGFloat? ) { self.animation.interpolate ( self.animation.normalized.replace ( with: self.animation.reversed, if: self.animation.cache > self.animation.target ), from: 0.5, to: 1.0 ) }
 	
 	/// Applies modifiers to the content.
 	///
@@ -57,15 +57,15 @@ public struct SDFocus: ViewModifier, Animatable {
 	public func body ( content: Content ) -> some View {
 		
 		content
-			.opacity ( delayedAnimation.active ? 1.0 : 0.0 )
+			.opacity ( self.delayedAnimation.active ? 1.0 : 0.0 )
 			.overlay {
 				
-				SDBackdropFilter ( saturation: 1.0 - ( delayedAnimation.remaining ?? 0.0 ) * ( 1.0 - ( saturation ?? defaults.filters.saturation ) ), radius: ( delayedAnimation.remaining ?? 0.0 ) * ( radius ?? defaults.filters.radius ), opaque: true, tint: ( tint ?? defaults.filters.tint ) .opacity ( delayedAnimation.remaining ?? 0.0 ) )
+				SDBackdropFilter ( saturation: 1.0 - ( self.delayedAnimation.remaining ?? 0.0 ) * ( 1.0 - ( self.saturation ?? self.defaults.filters.saturation ) ), radius: ( self.delayedAnimation.remaining ?? 0.0 ) * ( self.radius ?? self.defaults.filters.radius ), opaque: true, tint: ( self.tint ?? self.defaults.filters.tint ) .opacity ( self.delayedAnimation.remaining ?? 0.0 ) )
 					.mask ( content )
 					.allowsHitTesting ( false )
 				
 			}
-			.scaleEffect ( 1.0 - ( delayedAnimation.remaining ?? 1.0 ) * ( 1.0 - ( scale ?? 0.875 ) ) )
+			.scaleEffect ( 1.0 - ( self.delayedAnimation.remaining ?? 1.0 ) * ( 1.0 - ( self.scale ?? 0.875 ) ) )
 			.transaction { $0.animation = nil }
 		
 	}

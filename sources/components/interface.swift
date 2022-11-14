@@ -60,7 +60,7 @@ public struct SDInterface < Content: View > : View {
 	
 	/// Access to the `SDDefaults` configuration.
 	///
-	@Environment ( \.defaults ) private var defaults
+	@Environment ( \ .defaults ) private var defaults
     
 	/// The flow to parse.
 	///
@@ -68,11 +68,11 @@ public struct SDInterface < Content: View > : View {
 	
 	/// The path components from the flow.
 	///
-	private var identifiers: [ String ] { return flow?.identifiers ?? systemCoordinator.flow.identifiers }
+	private var identifiers: [ String ] { return self.flow?.identifiers ?? self.systemCoordinator.flow.identifiers }
 	
 	/// The query strings from the flow.
 	///
-	private var parameters: [ String: String ] { return flow?.parameters ?? systemCoordinator.flow.parameters }
+	private var parameters: [ String: String ] { return self.flow?.parameters ?? self.systemCoordinator.flow.parameters }
     
 	/// The font to apply.
 	///
@@ -109,9 +109,9 @@ public struct SDInterface < Content: View > : View {
 		return ZStack { self.content ( self.defaults, self.identifiers, self.parameters ) }
             .frame ( maxWidth: .infinity, maxHeight: .infinity )
 			.font ( self.font ?? defaults.fonts.primary )
-			.foregroundColor ( self.foregroundColor ?? defaults.colors.primary.auto )
-			.tint ( self.tint ?? defaults.colors.accent.auto )
-			.background ( self.background ?? defaults.colors.background.auto )
+			.foregroundColor ( self.foregroundColor ?? self.defaults.colors.primary.auto )
+			.tint ( self.tint ?? self.defaults.colors.accent.auto )
+			.background ( self.background ?? self.defaults.colors.background.auto )
 			.persistentSystemOverlays ( self.persistentSystemOverlays )
 			.multilineTextAlignment ( self.multilineTextAlignment )
 			.onAppear { print ( "Launched: \( self.defaults.metadata.identifier ) by \( self.defaults.metadata.developer )" ) }

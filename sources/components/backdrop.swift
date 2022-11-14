@@ -26,7 +26,7 @@ public class SDUIBackdrop: UIView {
 	
 	/// Gets the `CABackdropLayer` class.
 	///
-	override public class var layerClass: AnyClass { NSClassFromString ( caBackdropLayerKey ) ?? CALayer.self }
+	override public class var layerClass: AnyClass { NSClassFromString ( self.caBackdropLayerKey ) ?? CALayer.self }
 	
 }
 

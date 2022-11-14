@@ -38,11 +38,11 @@ public struct SDAlternateAppIcon: ViewModifier {
     
     /// Access to the device's color scheme.
     ///
-    @Environment ( \.colorScheme ) private var colorScheme
+    @Environment ( \ .colorScheme ) private var colorScheme
     
     /// Access to the device's application state.
     ///
-    @Environment ( \.scenePhase ) private var scenePhase
+    @Environment ( \ .scenePhase ) private var scenePhase
     
     /// The identifier for the alternate icon specified in the info.plist file.
     ///
@@ -64,7 +64,7 @@ public struct SDAlternateAppIcon: ViewModifier {
         
         //  Set the alternate icon identifier and log the result
         
-		SDAlternateAppIcon.set ( icon: identifier )
+		Self.set ( icon: identifier )
 		print ( "UIApplication.shared.alternateIconName set to \( String ( describing: identifier ) )" )
         
         return

@@ -36,7 +36,7 @@ public struct SDFlow {
 	
 	/// Ways to navigate a ``SDFlow``.
 	///
-	public enum MoveDirection {
+	public enum SDMoveDirection {
 		
 		/// Move in to the specified location.
 		///
@@ -60,7 +60,7 @@ public struct SDFlow {
 	///
 	/// - Parameter direction: The direction to move within the hierarchy.
 	///
-	public mutating func move ( _ direction: MoveDirection ) -> Void {
+	public mutating func move ( _ direction: SDMoveDirection ) -> Void {
 		
 		switch direction {
 				
@@ -178,25 +178,6 @@ public extension View {
 	/// - Parameter run: The closure to run when a link is received.
 	///
 	func onUniversalLink ( run closure: @escaping ( URL ) -> Void ) -> some View { return modifier ( SDUniversalLink ( run: closure ) ) }
-	
-}
-
-@available ( iOS 16.0, * )
-public extension Array where Element == String {
-	
-	/// Determines whether the identifier matches the collection's element at the specified depth.
-	///
-	/// - Parameter identifier: The identifier to compare against.
-	/// - Parameter at: The index to match.
-	///
-	func matches ( _ identifier: String?, at depth: Int ) -> Bool { return self.indices.contains ( depth ) ? self [ depth ] == identifier : identifier == nil ? true : false }
-	
-	/// Uses the provided closure to determine whether the element at the specified depth is a match.
-	///
-	/// - Parameter condition: The closure to compare with.
-	/// - Parameter at: The index to match.
-	///
-	func matches ( _ condition: ( String ) -> Bool, at depth: Int ) -> Bool { return condition ( self [ depth ] ) }
 	
 }
 
