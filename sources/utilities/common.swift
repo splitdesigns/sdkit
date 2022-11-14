@@ -22,5 +22,24 @@ public extension String {
 	
 }
 
+@available ( iOS 16.0, * )
+public extension CGFloat {
+	
+	/// Replaces the current value if a condition is met.
+	///
+	/// - Parameter with: The replacement value.
+	/// - Parameter if: The condition to evaluate.
+	///
+	func replace ( with replacement: CGFloat, if condition: @autoclosure ( ) -> Bool ) -> CGFloat { return condition ( ) ? replacement : self }
+	
+	/// Replaces the current value if a condition is met.
+	///
+	/// - Parameter with: The replacement value.
+	/// - Parameter if: The condition to evaluate.
+	///
+	func replace ( with replacement: CGFloat?, if condition: @autoclosure ( ) -> Bool ) -> CGFloat? { return condition ( ) ? replacement : self }
+	
+}
+
 //
 //

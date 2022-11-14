@@ -16,7 +16,7 @@ import SwiftUI
 /// Manages state for the app.
 /// 
 @available ( iOS 16.0, * )
-public class SDSystem {
+public final class SDSystem {
 	
 	/// A static instance of ``SDKit`` for use outside of the view environment.
 	///
@@ -44,3 +44,6 @@ public extension SDSystem {
 	}
 	
 }
+
+//
+//
