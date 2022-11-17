@@ -60,5 +60,34 @@ public extension CGFloat {
 	
 }
 
+@available ( iOS 16.0, * )
+public extension FloatingPoint {
+	
+	/// Wraps the value within the specified range.
+	///
+	/// - Parameter in: The range to wrap the value in.
+	///
+	func wrapped ( in range: Range < Self > ) -> Self {
+		
+		//	Get the spread of the range
+		
+		let difference: Self = range.upperBound - range.lowerBound
+		
+		//	Normalize the value to zero and apply a modulo
+		
+		let base: Self = ( self - range.lowerBound ) .truncatingRemainder ( dividingBy: difference )
+		
+		//	Calculate an offset for the output
+		
+		let offset: Self = base < 0 ? difference : 0
+		
+		//	Denormalize the base value and apply the offset
+		
+		return base + range.lowerBound + offset
+		
+	}
+	
+}
+
 //
 //

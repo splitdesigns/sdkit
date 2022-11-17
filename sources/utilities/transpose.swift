@@ -24,7 +24,7 @@ public struct SDTranspose {
 	
 	/// The value to animate to. Set this property with an animation.
 	///
-	public var target: CGFloat = .init ( ) { didSet { self.cache = oldValue } }
+	public var target: CGFloat = 0.0 { didSet { self.cache = oldValue } }
 	
 	/// A literal interpolation of the current value. Set this property in the setter of an `animatableData` instance.
 	///
@@ -32,7 +32,7 @@ public struct SDTranspose {
 	
 	/// The previous animation target. Set this as the starting value of the animation. Consecutive target changes will set this automatically.
 	///
-	public var cache: CGFloat = .init ( )
+	public var cache: CGFloat = 0.0
 	
 	/// Indicates the state of the animation.
 	///
