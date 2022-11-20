@@ -18,7 +18,7 @@ import SwiftUI
 /// - Warning: Uses a private API.
 ///
 @available ( iOS 16.0, * )
-public class SDUIBackdrop: UIView {
+final public class SDUIBackdrop: UIView {
 	
 	/// The selector to call from Objective-C.
 	///
@@ -42,7 +42,7 @@ public class SDUIBackdrop: UIView {
 @available ( iOS 16.0, * )
 public struct SDBackdrop: UIViewRepresentable {
 	
-	/// Makes a UI view.
+	/// Creates the view object and configures its initial state
 	///
 	public func makeUIView ( context: Context ) -> SDUIBackdrop { SDUIBackdrop ( ) }
 	

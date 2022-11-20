@@ -13,7 +13,7 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// Interpolates an animation, passing the transposed reference as a parameter.
+/// Interpolates an animation, passing the animation object as a parameter.
 ///
 @available ( iOS 16.0, * )
 public struct SDAnimation < Content: View > : View {
@@ -40,18 +40,16 @@ public struct SDAnimation < Content: View > : View {
 	
 	/// Sets the animation values, and starts the animation with interpolation.
 	///
-	/// - Parameter content: The content to modify.
-	///
 	public var body: some View {
 		
-		content ( animation )
+		self.content ( animation )
 			.onAppear {
 				
-				if let start = start { animation.cache = start }
-				if let end = end, let bezier = bezier { withAnimation ( bezier ) { animation.target = end } }
+				if let start = self.start { self.animation.cache = start }
+				if let end = self.end, let bezier = self.bezier { withAnimation ( bezier ) { self.animation.target = end } }
 				
 			}
-			.interpolateAnimation ( for: animation.target ) { animation.literal = $0 }
+			.interpolateAnimation ( for: self.animation.target ) { self.animation.literal = $0 }
 		
 	}
 	

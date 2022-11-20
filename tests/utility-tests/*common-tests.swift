@@ -14,12 +14,12 @@ import XCTest
 
 //  MARK: - Classes
 
-/// DESCRIPTION
+/// Test class description.
 ///
 @available ( iOS 16.0, * )
 final private class CommonTests: XCTestCase {
 	
-	/// DESCRIPTION
+	/// Test description.
 	///
 	private func testExample ( ) throws -> Void {
 		

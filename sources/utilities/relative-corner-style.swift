@@ -22,7 +22,7 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 	
 	/// The operation to use when calculating relative values.
 	///
-	public enum SDOperation: String { case subtract, divide }
+	public enum Operation: String { case subtract, divide }
 	
 	/// The width or height value of the subject view.
 	///
@@ -34,11 +34,11 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 	
 	/// The axis used for calculating relative values.
 	///
-	private let axis: Axis.Set
+	private let axis: Axis
 	
 	/// The operation to use when calculating relative values.
 	///
-	private let operation: SDOperation
+	private let operation: Operation
 	
 	/// Precedes calculated corner radius values that are smaller in size.
 	///
@@ -131,8 +131,8 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 		
 		subject: CGFloat? = nil,
 		relative: CGFloat? = nil,
-		axis: Axis.Set = .horizontal,
-		operation: SDOperation = .subtract,
+		axis: Axis = .horizontal,
+		operation: Operation = .subtract,
 		minRadius: CGFloat = 0.0,
 		relativeRadius: CGFloat? = nil,
 		cornerStyle: RoundedCornerStyle = .continuous,
@@ -194,8 +194,8 @@ public extension View {
 		
 		subject: CGFloat? = nil,
 		relative: CGFloat? = nil,
-		axis: Axis.Set = .horizontal,
-		operation: SDRelativeCornerStyle < Style > .SDOperation = .subtract,
+		axis: Axis = .horizontal,
+		operation: SDRelativeCornerStyle < Style > .Operation = .subtract,
 		minRadius: CGFloat = 0.0,
 		relativeRadius: CGFloat? = nil,
 		cornerStyle: RoundedCornerStyle = .continuous,

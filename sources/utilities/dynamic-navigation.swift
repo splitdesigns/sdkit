@@ -36,7 +36,7 @@ public struct SDFlow {
 	
 	/// Ways to navigate a ``SDFlow``.
 	///
-	public enum SDMoveDirection {
+	public enum MoveDirection {
 		
 		/// Move in to the specified location.
 		///
@@ -60,7 +60,7 @@ public struct SDFlow {
 	///
 	/// - Parameter direction: The direction to move within the hierarchy.
 	///
-	public mutating func move ( _ direction: SDMoveDirection ) -> Void {
+	public mutating func move ( _ direction: MoveDirection ) -> Void {
 		
 		switch direction {
 				
@@ -134,11 +134,7 @@ public struct SDFlow {
 	///
 	///	- Parameter location: A URL to set as the location.
 	///
-	public init ( location: URL ) {
-		
-		self.location = location
-		
-	}
+	public init ( location: URL ) { self.location = location }
 	
 }
 

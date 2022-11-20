@@ -21,7 +21,7 @@ import SwiftUI
 ///
 ///     SDInterface { defaults, identifiers, parameters in }
 ///
-/// Routes for view coordination can be created with if / else blocks.
+/// Routes for view coordination can be created with if / else or a switch block.
 ///
 ///     if identifiers.matches ( nil, at: 0 ) {
 ///

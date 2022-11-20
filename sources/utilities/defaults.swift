@@ -199,6 +199,34 @@ public extension SDDefaults {
         /// The color to use for the background.
         ///
         public var background: SDSchemeColor = .init ( light: .white, dark: .black )
+		
+		/// A monochromatic color with a luminance value of zero.
+		///
+		public var minimum: SDSchemeColor = .init ( light: Color ( red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0 ), dark: Color ( red: 255.0 / 255.0, green: 255.0 / 255.0, blue: 255.0 / 255.0 ) )
+		
+		/// A monochromatic color with a luminance value slightly above zero.
+		///
+		public var main: SDSchemeColor = .init ( light: Color ( red: 34.0 / 255.0, green: 34.0 / 255.0, blue: 34.0 / 255.0 ), dark: Color ( red: 221.0 / 255.0, green: 221.0 / 255.0, blue: 221.0 / 255.0 ) )
+		
+		/// A monochromatic color with a luminance value slightly below half of one.
+		///
+		public var lower: SDSchemeColor = .init ( light: Color ( red: 68.0 / 255.0, green: 68.0 / 255.0, blue: 68.0 / 255.0 ), dark: Color ( red: 187.0 / 255.0, green: 187.0 / 255.0, blue: 187.0 / 255.0 ) )
+		
+		/// A monochromatic color with a luminance value of half of one.
+		///
+		public var neutral: SDSchemeColor = .init ( light: Color ( red: 128.0 / 255.0, green: 128.0 / 255.0, blue: 128.0 / 255.0 ), dark: Color ( red: 128.0 / 255.0, green: 128.0 / 255.0, blue: 128.0 / 255.0 ) )
+		
+		/// A monochromatic color with a luminance value slightly above half of one.
+		///
+		public var upper: SDSchemeColor = .init ( light: Color ( red: 187.0 / 255.0, green: 187.0 / 255.0, blue: 187.0 / 255.0 ), dark: Color ( red: 68.0 / 255.0, green: 68.0 / 255.0, blue: 68.0 / 255.0 ) )
+		
+		/// A monochromatic color with a luminance value slightly below one.
+		///
+		public var alternate: SDSchemeColor = .init ( light: Color ( red: 221.0 / 255.0, green: 221.0 / 255.0, blue: 221.0 / 255.0 ), dark: Color ( red: 34.0 / 255.0, green: 34.0 / 255.0, blue: 34.0 / 255.0 ) )
+		
+		/// A monochromatic color with a luminance value of one.
+		///
+		public var maximum: SDSchemeColor = .init ( light: Color ( red: 255.0 / 255.0, green: 255.0 / 255.0, blue: 255.0 / 255.0 ), dark: Color ( red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0 ) )
         
     }
     
@@ -217,7 +245,59 @@ public extension SDDefaults {
 		
 		/// The animation to use for secondary transitions.
 		///
-		public var secondary: Animation = .easeOut
+		public var secondary: Animation = .easeInOut
+		
+		/// A collection of expo-out animation curves, instantiated from `ExpoOut`.
+		///
+		public var expoOut: Self.ExpoOut = .init ( )
+		
+		/// A collection of expo-out animation curves.
+		///
+		public struct ExpoOut {
+			
+			/// An expo-out bezier curve with a duration of 0.25 seconds.
+			///
+			public var quarter: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 0.25 )
+			
+			/// An expo-out bezier curve with a duration of 0.5 seconds.
+			///
+			public var half: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 0.5 )
+			
+			/// An expo-out bezier curve with a duration of 1 second.
+			///
+			public var one: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 1.0 )
+			
+			/// An expo-out bezier curve with a duration of 2 seconds.
+			///
+			public var two: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 2.0 )
+			
+		}
+		
+		/// A collection of expo-in-out animation curves, instantiated from `ExpoInOut`.
+		///
+		public var expoInOut: Self.ExpoInOut = .init ( )
+		
+		/// A collection of expo-in-out animation curves.
+		///
+		public struct ExpoInOut {
+			
+			/// An expo-in-out bezier curve with a duration of 0.25 seconds.
+			///
+			public var quarter: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 0.25 )
+			
+			/// An expo-in-out bezier curve with a duration of 0.5 seconds.
+			///
+			public var half: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 0.5 )
+			
+			/// An expo-in-out bezier curve with a duration of 1 second.
+			///
+			public var one: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 1.0 )
+			
+			/// An expo-in-out bezier curve with a duration of 2 seconds.
+			///
+			public var two: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 2.0 )
+			
+		}
 		
 	}
 	
@@ -232,11 +312,11 @@ public extension SDDefaults {
 		
 		/// The font to use for primary text.
 		///
-		public var primary: Font = SansSerif.Body ( ) .medium
+		public var primary: Font = Self.SansSerif.Body ( ) .medium
 		
 		/// The font to use for secondary text.
 		///
-		public var secondary: Font = Monospaced.Body ( ) .medium
+		public var secondary: Font = Self.Monospaced.Body ( ) .medium
         
         /// A collection of sans-serif fonts, instantiated from `SansSerif`.
         ///
@@ -423,7 +503,7 @@ public extension SDDefaults {
 		
 		/// A value that determines the blur radius of the filter.
 		///
-		public var radius: CGFloat = 1.0
+		public var radius: CGFloat = 0.0
 		
 		/// A value that determines whether the filter blur should be opaque.
 		///

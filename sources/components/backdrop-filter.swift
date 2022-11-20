@@ -77,7 +77,7 @@ public struct SDBackdropFilter: View {
 		
 	}
 	
-	/// Creates a ``SSBackdropFilter`` from a set of filter values.
+	/// Creates a ``SDBackdropFilter`` from a set of filter values.
 	///
 	/// - Parameter brightness: The brightness of the filter.
 	/// - Parameter grayscale: The grayscale value of the filter.

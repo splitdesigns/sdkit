@@ -67,6 +67,32 @@ public extension FloatingPoint {
 	///
 	/// - Parameter in: The range to wrap the value in.
 	///
+	mutating func wrap ( in range: Range < Self > ) -> Void {
+		
+		//	Get the spread of the range
+		
+		let difference: Self = range.upperBound - range.lowerBound
+		
+		//	Normalize the value to zero and apply a modulo
+		
+		let base: Self = ( self - range.lowerBound ) .truncatingRemainder ( dividingBy: difference )
+		
+		//	Calculate an offset for the output
+		
+		let offset: Self = base < 0 ? difference : 0
+		
+		//	Denormalize the base value and apply the offset
+		
+		self = base + range.lowerBound + offset
+		
+		return
+		
+	}
+	
+	/// Wraps the value within the specified range.
+	///
+	/// - Parameter in: The range to wrap the value in.
+	///
 	func wrapped ( in range: Range < Self > ) -> Self {
 		
 		//	Get the spread of the range
@@ -86,6 +112,46 @@ public extension FloatingPoint {
 		return base + range.lowerBound + offset
 		
 	}
+	
+	/// Interpolates a value between a lower bound and an upper bound.
+	///
+	/// - Parameter in: The range to interpolate within.
+	///
+	func lerp ( in range: ClosedRange < Self > ) -> Self { return range.lowerBound + self * ( range.upperBound - range.lowerBound ) }
+	
+}
+
+@available ( iOS 16.0, * )
+public extension Int {
+	
+	/// Determines if the subject integer is a boundary element index of the specified matrix.
+	///
+	/// - Parameter width: The width of the matrix.
+	/// - Parameter height: The height of the matrix.
+	///
+	func isMatrixBoundaryElement ( width: Int, height: Int ) -> Bool { return !( 1 ..< width - 1 ) .contains ( self % width ) || !( width + 1 ..< width * height - width - 1 ) .contains ( self ) }
+	
+}
+
+@available ( iOS 16.0, * )
+public extension Comparable {
+	
+	/// Adjusts a value to fall within a specified range.
+	///
+	/// - Parameter in: The range to clamp within.
+	///
+	func clamped ( in range: ClosedRange < Self > ) -> Self { return min ( max ( self, range.lowerBound ), range.upperBound ) }
+	
+}
+
+@available ( iOS 16.0, * )
+public extension Strideable where Stride: SignedInteger {
+	
+	/// Adjusts a value to fall within a specified range.
+	///
+	/// - Parameter in: The range to clamp within.
+	///
+	func clamped ( in range: CountableClosedRange < Self > ) -> Self { return min ( max ( self, range.lowerBound ), range.upperBound ) }
 	
 }
 

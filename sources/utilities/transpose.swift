@@ -20,7 +20,7 @@ public struct SDTranspose {
 	
 	/// Defines the animation states.
 	///
-	public enum SDAnimationStatus: String, CaseIterable { case initial, partial, complete }
+	public enum AnimationStatus: String, CaseIterable { case initial, partial, complete }
 	
 	/// The value to animate to. Set this property with an animation.
 	///
@@ -36,7 +36,7 @@ public struct SDTranspose {
 	
 	/// Indicates the state of the animation.
 	///
-	public var status: SDAnimationStatus { return literal == target ? .complete : literal == cache ? .initial : .partial }
+	public var status: Self.AnimationStatus { return literal == target ? .complete : literal == cache ? .initial : .partial }
 	
 	/// The difference between the current target and cache.
 	///

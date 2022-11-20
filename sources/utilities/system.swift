@@ -29,7 +29,7 @@ public final class SDSystem {
 @available ( iOS 16.0, * )
 public extension SDSystem {
 	
-	/// Responsible for managing coordination for your app.
+	/// Responsible for coordinating your app.
 	///
 	class Coordinator: ObservableObject {
 		

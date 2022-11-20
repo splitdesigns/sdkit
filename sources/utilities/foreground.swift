@@ -32,7 +32,7 @@ public struct SDForeground < OverlayContent: View > : ViewModifier {
 	///
 	/// - Parameter content: The content to set as the foreground.
 	///
-	public init ( content: @escaping () -> OverlayContent ) { self.overlayContent = content }
+	public init ( content: @escaping @autoclosure ( ) -> OverlayContent ) { self.overlayContent = content }
 	
 }
 
@@ -48,7 +48,7 @@ public extension View {
 	///
 	/// - Parameter content: The content to set as the foreground.
 	///
-	func foreground < OverlayContent: View > ( @ViewBuilder _ content: @escaping ( ) -> OverlayContent ) -> some View { modifier ( SDForeground < OverlayContent > ( content: content ) ) }
+	func foreground < OverlayContent: View > ( _ content: @escaping @autoclosure ( ) -> OverlayContent ) -> some View { modifier ( SDForeground < OverlayContent > ( content: content ( ) ) ) }
 	
 }
 

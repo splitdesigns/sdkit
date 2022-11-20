@@ -20,7 +20,7 @@ public struct SDMarquee < Content: View > : View {
 	
 	/// The view dimension to reference as a complete phase cycle.
 	///
-	public enum SDPhaseReference: String { case width, height }
+	public enum PhaseReference: String { case width, height }
 	
 	/// The angle of the marquee movement.
 	///
@@ -32,7 +32,7 @@ public struct SDMarquee < Content: View > : View {
 	
 	/// The dimension to reference as a complete phase cycle.
 	///
-	private let reference: SDPhaseReference
+	private let reference: Self.PhaseReference
 	
 	/// The content to tile.
 	///
@@ -44,11 +44,11 @@ public struct SDMarquee < Content: View > : View {
 	
 	/// The amount to displace the content horizontally.
 	///
-	private var displacementX: CGFloat { return ( phase * cos ( angle * .pi / 180.0 ) * ( reference == .width ? bounds.width : bounds.height ) ) .truncatingRemainder ( dividingBy: bounds.width ) }
+	private var displacementX: CGFloat { return ( self.phase * cos ( self.angle * .pi / 180.0 ) * ( self.reference == .width ? self.bounds.width : self.bounds.height ) ) .truncatingRemainder ( dividingBy: self.bounds.width ) }
 	
 	/// The amount to displace the content vertically.
 	///
-	private var displacementY: CGFloat { return ( phase * sin ( angle * .pi / 180.0 ) * ( reference == .width ? bounds.width : bounds.height ) ) .truncatingRemainder ( dividingBy: bounds.height ) }
+	private var displacementY: CGFloat { return ( self.phase * sin ( self.angle * .pi / 180.0 ) * ( self.reference == .width ? self.bounds.width : self.bounds.height ) ) .truncatingRemainder ( dividingBy: self.bounds.height ) }
 	
 	/// Offsets for each of the marquee segments.
 	///
@@ -60,20 +60,20 @@ public struct SDMarquee < Content: View > : View {
 		
 		ZStack {
 			
-			//	View optimization through relocating geometry reader
+			//	Optimized by relocating the geometry reader
 			
-			content ( )
+			self.content ( )
 				.exportBounds ( to: $bounds )
 				.hidden ( )
 			
-			ForEach ( 0 ..< segments.count, id: \ .self ) { index in
+			ForEach ( 0 ..< self.segments.count, id: \ .self ) { index in
 				
 				//	View optimization through hiding non-visible views
 				
-				if displacementX + segments [ index ] [ 0 ] * bounds.width <= bounds.width || displacementX + segments [ index ] [ 0 ] * bounds.width >= -bounds.width && displacementY + segments [ index ] [ 1 ] * bounds.height <= bounds.height || displacementY + segments [ index ] [ 1 ] * bounds.height >= -bounds.height {
+				if self.displacementX + self.segments [ index ] [ 0 ] * self.bounds.width <= self.bounds.width || self.displacementX + self.segments [ index ] [ 0 ] * self.bounds.width >= -self.bounds.width && self.displacementY + self.segments [ index ] [ 1 ] * self.bounds.height <= self.bounds.height || self.displacementY + self.segments [ index ] [ 1 ] * self.bounds.height >= -self.bounds.height {
 					
-					content ( )
-						.offset ( x: displacementX.wrapped ( in: 0.0 ..< bounds.width ) + segments [ index ] [ 0 ] * bounds.width, y: displacementY.wrapped ( in: 0.0 ..< bounds.height ) + segments [ index ] [ 1 ] * bounds.height )
+					self.content ( )
+						.offset ( x: self.displacementX.wrapped ( in: 0.0 ..< bounds.width ) + self.segments [ index ] [ 0 ] * self.bounds.width, y: self.displacementY.wrapped ( in: 0.0 ..< self.bounds.height ) + self.segments [ index ] [ 1 ] * self.bounds.height )
 					
 				}
 				
@@ -91,7 +91,7 @@ public struct SDMarquee < Content: View > : View {
 	/// - Parameter reference: The view dimension to reference as a complete phase cycle.
 	/// - Parameter content: The content to tile.
 	///
-	public init ( angle: CGFloat = 0.0, phase: CGFloat = 0.0, reference: SDPhaseReference = .width, @ViewBuilder content: @escaping () -> Content ) {
+	public init ( angle: CGFloat = 0.0, phase: CGFloat = 0.0, reference: Self.PhaseReference = .width, @ViewBuilder content: @escaping () -> Content ) {
 		
 		self.angle = angle
 		self.phase = phase

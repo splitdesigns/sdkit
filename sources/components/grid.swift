@@ -38,11 +38,11 @@ public struct SDGrid < Content: View > : View {
 	///
 	public var body: some View {
 		
-		SDYStack ( spacing: spacing.vertical ) { ForEach ( 0 ..< rows, id: \ .self ) { row in
+		SDYStack ( spacing: self.spacing.vertical ) { ForEach ( 0 ..< self.rows, id: \ .self ) { row in
 			
-			SDXStack ( spacing: spacing.horizontal ) { ForEach ( 0 ..< columns, id: \ .self ) { column in
+			SDXStack ( spacing: self.spacing.horizontal ) { ForEach ( 0 ..< self.columns, id: \ .self ) { column in
 				
-				content ( row, column )
+				self.content ( row, column )
 				
 			} }
 			

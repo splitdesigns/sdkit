@@ -94,7 +94,7 @@ public struct SDSStack < Content: View > : View {
 
     /// The scroll view’s scrollable axis. The default axis is the vertical axis.
     ///
-    private let axis: Axis.Set
+	private let axis: Axis.Set
     
     /// A Boolean value that indicates whether the scroll view displays the scrollable component of the content offset, in a way suitable for the platform. The default value for this parameter is false.
     ///
@@ -114,7 +114,7 @@ public struct SDSStack < Content: View > : View {
 	/// - Parameter showsIndicators: Sets the indicator visibility for the stack.
 	/// - Parameter content: Contains the content of the stack.
     ///
-    public init ( axis: Axis.Set = .vertical, showsIndicators: Bool = false, @ViewBuilder content: @escaping ( ) -> Content ) {
+	public init ( axis: Axis.Set = .vertical, showsIndicators: Bool = false, @ViewBuilder content: @escaping ( ) -> Content ) {
         
         self.axis = axis
         self.showsIndicators = showsIndicators

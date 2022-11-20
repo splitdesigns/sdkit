@@ -20,11 +20,11 @@ import SwiftUI
 	
 	/// The wrapped value for the property wrapper.
 	///
-	@available ( *, unavailable, message: "`@PublishedWithAnimation` can only be defined on properties of classes." )
+	@available ( *, unavailable, message: "`@SDPublishedWithAnimation` can only be defined on properties of classes." )
 	public var wrappedValue: Value {
 		
-		get { fatalError ( "WrappedValue is unavailable for `@PublishedWithAnimation`." ) }
-		set { fatalError ( "WrappedValue is unavailable for `@PublishedWithAnimation`." ) }
+		get { fatalError ( "WrappedValue is unavailable for `@SDPublishedWithAnimation`." ) }
+		set { fatalError ( "WrappedValue is unavailable for `@SDPublishedWithAnimation`." ) }
 		
 	}
 	
@@ -60,7 +60,7 @@ import SwiftUI
 		}
 	}
 	
-	/// Creates a ``PublishedWithAnimation`` wrapping the property.
+	/// Creates a ``SDPublishedWithAnimation`` wrapping the property.
 	///
 	/// - Parameter wrappedValue: The value to store.
 	/// - Parameter animation: The timing curve to animate the value with.

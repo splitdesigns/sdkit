@@ -53,8 +53,6 @@ public struct SDAlternateAppIcon: ViewModifier {
     private let override: Bool
     
     /// Triggers an icon update when the app enters the foreground.
-	///
-	/// - Parameter content: The content being modified.
     ///
 	public func body ( content: Content ) -> some View { content.task ( id: self.scenePhase ) { if self.scenePhase == .active {
                             
@@ -65,7 +63,7 @@ public struct SDAlternateAppIcon: ViewModifier {
         //  Set the alternate icon identifier and log the result
         
 		Self.set ( icon: identifier )
-		print ( "UIApplication.shared.alternateIconName set to \( String ( describing: identifier ) )" )
+		print ( "UIApplication.shared.alternateIconName set to `\( String ( identifier ?? "nil" ) )`" )
         
         return
                     
@@ -119,6 +117,8 @@ public extension View {
     ///
 	/// - Parameter named: The identifier to set.
 	/// - Parameter override: Locks the dynamism of the icon to the specified identifier.
+	///
+	/// - Warning: Uses a private API.
 	///
     func dynamicAppIcon ( named identifier: String, override: Bool = false ) -> some View { modifier ( SDAlternateAppIcon ( named: identifier, override: override ) ) }
 
