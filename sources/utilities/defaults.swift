@@ -100,6 +100,10 @@ public struct SDDefaults {
 	///
 	public var filters: Self.Filters = .init ( )
 	
+	/// A collection of border properties.
+	///
+	public var borders: Self.Borders = .init ( )
+	
 	/// Creates a ``SDDefaults``.
 	///
 	public init ( ) { }
@@ -152,7 +156,11 @@ public extension SDDefaults {
 		
 		/// The flow used to initialize the application's state.
 		///
-		public var flow: SDFlow = .init ( "https://apple.com" )
+		public var flow: SDFlow = .init ( "https://splitdesigns.com" )
+		
+		/// Creates a ``Coordination`` instance.
+		///
+		fileprivate init ( ) { }
 		
 	}
 	
@@ -172,6 +180,10 @@ public extension SDDefaults {
 		/// The name of the app developer.
 		///
 		public var developer: String = "Unknown"
+		
+		/// Creates a ``Metadata`` instance.
+		///
+		fileprivate init ( ) { }
 		
 	}
 	
@@ -227,6 +239,10 @@ public extension SDDefaults {
 		/// A monochromatic color with a luminance value of one.
 		///
 		public var maximum: SDSchemeColor = .init ( light: Color ( red: 255.0 / 255.0, green: 255.0 / 255.0, blue: 255.0 / 255.0 ), dark: Color ( red: 0.0 / 255.0, green: 0.0 / 255.0, blue: 0.0 / 255.0 ) )
+		
+		/// Creates a ``Colors`` instance.
+		///
+		fileprivate init ( ) { }
         
     }
     
@@ -258,6 +274,10 @@ public extension SDDefaults {
 		/// - Parameter duration: The length of the animation.
 		///
 		public func expoInOut ( duration: CGFloat = 1.0 ) -> Animation { return .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: duration ) }
+		
+		/// Creates a ``Animations`` instance.
+		///
+		fileprivate init ( ) { }
 		
 	}
 	
@@ -335,6 +355,10 @@ public extension SDDefaults {
 			}
 			
 		}
+		
+		/// Creates a ``Fonts`` instance.
+		///
+		fileprivate init ( ) { }
         
     }
 	    
@@ -345,7 +369,7 @@ public extension SDDefaults {
 	
 	/// A collection of values for configuring backdrop filters.
 	///
-	class Filters {
+	struct Filters {
 		
 		/// A value that determines the brightness of the filter.
 		///
@@ -382,6 +406,33 @@ public extension SDDefaults {
 		/// A value that determines the tint of the filter.
 		///
 		public var tint: Color = .clear
+		
+		/// Creates a ``Filters`` instance.
+		///
+		fileprivate init ( ) { }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// A collection of border properties.
+	///
+	struct Borders {
+		
+		/// A color to use for borders.
+		///
+		public var color: Color = SDDefaults.Colors ( ) .neutral.auto.opacity ( 0.5 )
+		
+		/// A stroke style to use for borders.
+		///
+		public var style: StrokeStyle = .init ( lineWidth: 1.0 )
+		
+		/// Creates a ``Borders`` instance.
+		///
+		fileprivate init ( ) { }
 		
 	}
 	
