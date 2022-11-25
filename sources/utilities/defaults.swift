@@ -104,6 +104,10 @@ public struct SDDefaults {
 	///
 	public var borders: Self.Borders = .init ( )
 	
+	/// A collection of shadow properties.
+	///
+	public var shadows: Self.Shadows = .init ( )
+	
 	/// Creates a ``SDDefaults``.
 	///
 	public init ( ) { }
@@ -424,13 +428,36 @@ public extension SDDefaults {
 		
 		/// A color to use for borders.
 		///
-		public var color: Color = SDDefaults.Colors ( ) .neutral.auto.opacity ( 0.5 )
+		public var color: Color = SDDefaults.Colors ( ) .accent.auto.opacity ( 0.5 )
 		
 		/// A stroke style to use for borders.
 		///
 		public var style: StrokeStyle = .init ( lineWidth: 1.0 )
 		
 		/// Creates a ``Borders`` instance.
+		///
+		fileprivate init ( ) { }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// A collection of shadow properties.
+	///
+	struct Shadows {
+		
+		/// A color to use for shados.
+		///
+		public var color: Color = SDDefaults.Colors ( ) .minimum.auto.opacity ( 0.5 )
+		
+		/// A radius to use for borders.
+		///
+		public var radius: CGFloat = 64.0
+		
+		/// Creates a ``Shadows`` instance.
 		///
 		fileprivate init ( ) { }
 		

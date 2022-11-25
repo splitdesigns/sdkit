@@ -18,7 +18,11 @@ import SwiftUI
 /// - Warning: Uses a private API.
 ///
 @available ( iOS 16.0, * )
-public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
+public struct SDRelativeCornerStyle: ViewModifier {
+	
+	/// Access to the ``SDDefaults`` struct.
+	///
+	@Environment ( \ .defaults ) private var defaults
 	
 	/// The operation to use when calculating relative values.
 	///
@@ -58,11 +62,11 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 	
 	/// The style to apply to the border.
 	///
-	private let border: Style
+	private let border: Color?
 	
 	/// The stroke style of the border.
 	///
-	private let borderStyle: StrokeStyle
+	private let borderStyle: StrokeStyle?
 	
 	/// A container for the bounds of the view.
 	///
@@ -112,7 +116,7 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 			.overlay {
 				
 				RoundedRectangle ( cornerRadius: self.radius, style: self.cornerStyle )
-					.strokeBorder ( self.border, style: self.borderStyle, antialiased: true )
+					.strokeBorder ( self.border ?? self.defaults.borders.color, style: self.borderStyle ?? self.defaults.borders.style, antialiased: true )
 					.foregroundColor ( .clear )
 				
 			}
@@ -143,8 +147,8 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 		maxRadius: CGFloat = .infinity,
 		relativeRadius: CGFloat? = nil,
 		cornerStyle: RoundedCornerStyle = .continuous,
-		border: Style = .clear,
-		borderStyle: StrokeStyle = .init ( lineWidth: 0.0 )
+		border: Color? = nil,
+		borderStyle: StrokeStyle? = nil
 		
 	) {
 		
@@ -200,18 +204,18 @@ public extension View {
 	///
 	/// - Warning: Uses a private API.
 	///
-	func relativeCornerStyle < Style: ShapeStyle > (
+	func relativeCornerStyle (
 		
 		subject: CGFloat? = nil,
 		relative: CGFloat? = nil,
 		axis: Axis = .horizontal,
-		operation: SDRelativeCornerStyle < Style > .Operation = .subtract,
+		operation: SDRelativeCornerStyle.Operation = .subtract,
 		minRadius: CGFloat = 0.0,
 		maxRadius: CGFloat = .infinity,
 		relativeRadius: CGFloat? = nil,
 		cornerStyle: RoundedCornerStyle = .continuous,
-		border: Style = .clear,
-		borderStyle: StrokeStyle = .init ( lineWidth: 0.0 )
+		border: Color? = nil,
+		borderStyle: StrokeStyle? = nil
 		
 	) -> some View {
 		
