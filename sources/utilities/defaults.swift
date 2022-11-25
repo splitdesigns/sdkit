@@ -247,25 +247,17 @@ public extension SDDefaults {
 		///
 		public var secondary: Animation = .easeInOut
 		
-		/// An expo-out animation curve with a duration of one second.
-		///
-		public var expoOut: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 1.0 )
-		
 		/// An expo-out animation curve with a custom duration.
 		///
 		/// - Parameter duration: The length of the animation.
 		///
-		public func expoOut ( duration: CGFloat ) -> Animation { return .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: duration ) }
-		
-		/// An expo-in-out animation curve with a duration of one second.
-		///
-		public var expoInOut: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 1.0 )
+		public func expoOut ( duration: CGFloat = 1.0 ) -> Animation { return .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: duration ) }
 		
 		/// An expo-in-out animation curve with a custom duration.
 		///
 		/// - Parameter duration: The length of the animation.
 		///
-		public func expoInOut ( duration: CGFloat ) -> Animation { return .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: duration ) }
+		public func expoInOut ( duration: CGFloat = 1.0 ) -> Animation { return .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: duration ) }
 		
 	}
 	
@@ -280,163 +272,69 @@ public extension SDDefaults {
 		
 		/// The font to use for primary text.
 		///
-		public var primary: Font = Self.SansSerif.Body ( ) .medium
+		public var primary: Font = .system ( .body, design: .default )
 		
 		/// The font to use for secondary text.
 		///
-		public var secondary: Font = Self.Monospaced.Body ( ) .medium
-        
-        /// A collection of sans-serif fonts, instantiated from `SansSerif`.
-        ///
-		public var sansSerif: Self.SansSerif = .init ( )
-        
-        /// A collection of sans-serif fonts.
-        ///
-        public struct SansSerif {
-            
-            /// A collection of title-scale sans-serif fonts, instantiated from `Title`.
-            ///
-			public var title: Self.Title = .init ( )
-            
-            /// A collection of title-scale sans-serif fonts.
-            ///
-            public struct Title {
-                
-                /// A light, title-scale sans-serif font.
-                ///
-                public var light: Font = .system ( size: 48.0, weight: .light, design: .default )
-                
-                /// A medium, title-scale sans-serif font.
-                ///
-                public var medium: Font = .system ( size: 48.0, weight: .medium, design: .default )
-                
-                /// A bold, title-scale sans-serif font.
-                ///
-                public var bold: Font = .system ( size: 48.0, weight: .bold, design: .default )
-                
-            }
-            
-            /// A collection of heading-scale sans-serif fonts, instantiated from `Heading`.
-            ///
-			public var heading: Self.Heading = .init ( )
-            
-            /// A collection of heading-scale sans-serif fonts.
-            ///
-            public struct Heading {
-                
-                /// A light, heading-scale sans-serif font.
-                ///
-                public var light: Font = .system ( size: 24.0, weight: .light, design: .default )
-                
-                /// A medium, heading-scale sans-serif font.
-                ///
-                public var medium: Font = .system ( size: 24.0, weight: .medium, design: .default )
-                
-                /// A bold, heading-scale sans-serif font.
-                ///
-                public var bold: Font = .system ( size: 24.0, weight: .bold, design: .default )
-                
-            }
-            
-            /// A collection of body-scale sans-serif fonts, instantiated from `Body`.
-            ///
-			public var body: Self.Body = .init ( )
-            
-            /// A collection of body-scale sans-serif fonts.
-            ///
-            public struct Body {
-                
-                /// A light, body-scale sans-serif font.
-                ///
-                public var light: Font = .system ( size: 16.0, weight: .light, design: .default )
-                
-                /// A medium, body-scale sans-serif font.
-                ///
-                public var medium: Font = .system ( size: 16.0, weight: .medium, design: .default )
-                
-                /// A bold, body-scale sans-serif font.
-                ///
-                public var bold: Font = .system ( size: 16.0, weight: .bold, design: .default )
-                
-            }
-            
-        }
-        
-        /// A collection of monospaced fonts, instantiated from `Monospaced`.
-        ///
-		public var monospaced: Self.Monospaced = .init ( )
-        
-        /// A collection of monospaced fonts.
-        ///
-        public struct Monospaced {
-            
-            /// A collection of title-scale monospaced fonts, instantiated from `Title`.
-            ///
-			public var title: Self.Title = .init ( )
-            
-            /// A collection of title-scale monospaced fonts.
-            ///
-            public struct Title {
-                
-                /// A light, title-scale monospaced font.
-                ///
-                public var light: Font = .system ( size: 48.0, weight: .light, design: .monospaced )
-                
-                /// A medium, title-scale monospaced font.
-                ///
-                public var medium: Font = .system ( size: 48.0, weight: .medium, design: .monospaced )
-                
-                /// A bold, title-scale monospaced font.
-                ///
-                public var bold: Font = .system ( size: 48.0, weight: .bold, design: .monospaced )
-                
-            }
-            
-            /// A collection of heading-scale monospaced fonts, instantiated from `Heading`.
-            ///
-			public var heading: Self.Heading = .init ( )
-            
-            /// A collection of heading-scale monospaced fonts.
-            ///
-            public struct Heading {
-                
-                /// A light, heading-scale monospaced font.
-                ///
-                public var light: Font = .system ( size: 24.0, weight: .light, design: .monospaced )
-                
-                /// A medium, heading-scale monospaced font.
-                ///
-                public var medium: Font = .system ( size: 24.0, weight: .medium, design: .monospaced )
-                
-                /// A bold, heading-scale monospaced font.
-                ///
-                public var bold: Font = .system ( size: 24.0, weight: .bold, design: .monospaced )
-                
-            }
-            
-            /// A collection of body-scale monospaced fonts, instantiated from `Body`.
-            ///
-			public var body: Self.Body = .init ( )
-            
-            /// A collection of body-scale monospaced fonts.
-            ///
-            public struct Body {
-                
-                /// A light, body-scale monospaced font.
-                ///
-                public var light: Font = .system ( size: 16.0, weight: .light, design: .monospaced )
-                
-                /// A medium, body-scale monospaced font.
-                ///
-                public var medium: Font = .system ( size: 16.0, weight: .medium, design: .monospaced )
-                
-                /// A bold, body-scale monospaced font.
-                ///
-                public var bold: Font = .system ( size: 16.0, weight: .bold, design: .monospaced )
-                
-            }
-            
-        }
+		public var secondary: Font = .system ( .body, design: .monospaced )
+		
+		/// A custom sans-serif font.
+		///
+		/// - Parameters:
+		///   - weight: The weight of the font.
+		///   - size: The size of the font.
+		///   - relativeStyle: The relative text style for dynamic type scaling.
+		///
+		public func sansSerif ( _ weight: Font.Weight = .regular, size: CGFloat = 16.0, relativeStyle: Font.TextStyle = .body ) -> Font {
+			
+			//	Switch over font weights
+			
+			switch weight {
+					
+				//  Return a custom font configuration
+					
+				case .ultraLight: return .custom ( "Karla-ExtraLight", size: size, relativeTo: relativeStyle )
+				case .light: return .custom ( "Karla-Light", size: size, relativeTo: relativeStyle )
+				case .regular: return .custom ( "Karla-Regular", size: size, relativeTo: relativeStyle )
+				case .medium: return .custom ( "Karla-Medium", size: size, relativeTo: relativeStyle )
+				case .semibold: return .custom ( "Karla-SemiBold", size: size, relativeTo: relativeStyle )
+				case .bold: return .custom ( "Karla-Bold", size: size, relativeTo: relativeStyle )
+				case .heavy: return .custom ( "Karla-Heavy", size: size, relativeTo: relativeStyle )
+					
+				default: return .custom ( "Karla-Regular", size: size, relativeTo: relativeStyle )
+					
+			}
+			
+		}
+				
+		/// A custom monospaced font.
+		///
+		/// - Parameters:
+		///   - weight: The weight of the font.
+		///   - size: The size of the font.
+		///   - relativeStyle: The relative text style for dynamic type scaling.
+		///
+		public func monospaced ( _ weight: Font.Weight = .regular, size: CGFloat = 16.0, relativeStyle: Font.TextStyle = .body ) -> Font {
+			
+			//	Switch over font weights
+			
+			switch weight {
+					
+				//  Return a custom font configuration
+					
+				case .thin: return .custom ( "IBMPlexMono-Thin", size: size, relativeTo: relativeStyle )
+				case .ultraLight: return .custom ( "IBMPlexMono-ExtraLight", size: size, relativeTo: relativeStyle )
+				case .light: return .custom ( "IBMPlexMono-Light", size: size, relativeTo: relativeStyle )
+				case .regular: return .custom ( "IBMPlexMono-Regular", size: size, relativeTo: relativeStyle )
+				case .medium: return .custom ( "IBMPlexMono-Medium", size: size, relativeTo: relativeStyle )
+				case .semibold: return .custom ( "IBMPlexMono-SemiBold", size: size, relativeTo: relativeStyle )
+				case .bold: return .custom ( "IBMPlexMono-Bold", size: size, relativeTo: relativeStyle )
+					
+				default: return .custom ( "IBMPlexMono-Regular", size: size, relativeTo: relativeStyle )
+					
+			}
+			
+		}
         
     }
 	    
