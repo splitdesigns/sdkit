@@ -68,21 +68,6 @@ public struct SDVariableFilter: View {
 	///
 	private let unitPoints: [ UnitPoint ] = [ .top, .trailing, .bottom, .leading ]
 	
-	/// Creates a ``SDVariableFilter`` from a progression direction, resolution, and a filter configuration.
-	///
-	/// - Parameters:
-	///   - progression: The direction to progress the filter.
-	///   - resolution: A percentage representing the number of times to sample the content.
-	///   - filter: The filter configuration to use.
-	///
-	public init ( progression: Self.Direction = .bottom, resolution: CGFloat? = nil, filter: SDBackdropFilter = .init ( ) ) {
-		
-		self.progression = progression
-		self.resolution = resolution
-		self.filter = filter
-		
-	}
-	
 	/// Aligns the content, and creates a stack of variable-sized, overlapping filters to produce the effect of increasing intensity.
 	///
 	public var body: some View {
@@ -144,6 +129,21 @@ public struct SDVariableFilter: View {
 	/// - Parameter at: The position of the layer.
 	///
 	private func size ( at position: Int ) -> CGFloat { return .init ( position + 1 ) / .init ( self.layers ) * self.length }
+	
+	/// Creates a ``SDVariableFilter`` from a progression direction, resolution, and a filter configuration.
+	///
+	/// - Parameters:
+	///   - progression: The direction to progress the filter.
+	///   - resolution: A percentage representing the number of times to sample the content.
+	///   - filter: The filter configuration to use.
+	///
+	public init ( progression: Self.Direction = .bottom, resolution: CGFloat? = nil, filter: SDBackdropFilter = .init ( ) ) {
+		
+		self.progression = progression
+		self.resolution = resolution
+		self.filter = filter
+		
+	}
 	
 }
 

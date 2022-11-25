@@ -16,7 +16,7 @@ import Foundation
 /// A helper class for managing animations.
 ///
 @available ( iOS 16.0, * )
-public struct SDTranspose {
+public struct SDTranspose: Hashable, Equatable {
 	
 	/// Defines the animation states.
 	///

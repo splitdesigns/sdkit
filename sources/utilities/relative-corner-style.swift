@@ -44,6 +44,10 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 	///
 	private let minRadius: CGFloat
 	
+	/// Precedes calculated corner radius values that are larger in size.
+	///
+	private let maxRadius: CGFloat
+	
 	/// The radius to compute relative values from.
 	///
 	private let relativeRadius: CGFloat?
@@ -91,8 +95,8 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 		
 		switch operation {
 				
-			case .subtract: return max ( self.minRadius, ( self.relativeRadius ?? self.systemRadius ) - ( computedRelative - computedSubject ) / 2.0 )
-			case .divide: return max ( self.minRadius, ( computedSubject / computedRelative ) * ( self.relativeRadius ?? self.systemRadius ) )
+			case .subtract: return min ( self.maxRadius, max ( self.minRadius, ( self.relativeRadius ?? self.systemRadius ) - ( computedRelative - computedSubject ) / 2.0 ) )
+			case .divide: return min ( self.maxRadius, max ( self.minRadius, ( computedSubject / computedRelative ) * ( self.relativeRadius ?? self.systemRadius ) ) )
 				
 		}
 		
@@ -123,7 +127,8 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 	///   - axis: The axis used for calculating relative values.
 	///   - operation: The operation to use when calculating relative values.
 	///   - minRadius: Precedes calculated corner radius values that are smaller in size.
-	///   - relativeRa  - dius: The radius to compute relative values from.
+	///   - maxRadius: Precedes calculated corner radius values that are larger in size.
+	///   - relativeRadius: The radius to compute relative values from.
 	///   - cornerStyle: Determines the shape of the view's corners.
 	///   - border: The style to apply to the border.
 	///   - borderStyle: The stroke style of the border.
@@ -135,10 +140,11 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 		axis: Axis = .horizontal,
 		operation: Operation = .subtract,
 		minRadius: CGFloat = 0.0,
+		maxRadius: CGFloat = .infinity,
 		relativeRadius: CGFloat? = nil,
 		cornerStyle: RoundedCornerStyle = .continuous,
 		border: Style = .clear,
-		borderStyle: StrokeStyle = StrokeStyle ( lineWidth: 0.0 )
+		borderStyle: StrokeStyle = .init ( lineWidth: 0.0 )
 		
 	) {
 		
@@ -147,6 +153,7 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 		self.axis = axis
 		self.operation = operation
 		self.minRadius = minRadius
+		self.maxRadius = maxRadius
 		self.relativeRadius = relativeRadius
 		self.cornerStyle = cornerStyle
 		self.border = border
@@ -185,6 +192,7 @@ public extension View {
 	///   - axis: The axis used for calculating relative values.
 	///   - operation: The operation to use when calculating relative values.
 	///   - minRadius: Precedes calculated corner radius values that are smaller in size.
+	///   - maxRadius: Precedes calculated corner radius values that are larger in size.
 	///   - relativeRadius: The radius to compute relative values from.
 	///   - cornerStyle: Determines the shape of the view's corners.
 	///   - border: The style to apply to the border.
@@ -199,10 +207,11 @@ public extension View {
 		axis: Axis = .horizontal,
 		operation: SDRelativeCornerStyle < Style > .Operation = .subtract,
 		minRadius: CGFloat = 0.0,
+		maxRadius: CGFloat = .infinity,
 		relativeRadius: CGFloat? = nil,
 		cornerStyle: RoundedCornerStyle = .continuous,
 		border: Style = .clear,
-		borderStyle: StrokeStyle = StrokeStyle ( lineWidth: 0.0 )
+		borderStyle: StrokeStyle = .init ( lineWidth: 0.0 )
 		
 	) -> some View {
 		
@@ -213,6 +222,7 @@ public extension View {
 			axis: axis,
 			operation: operation,
 			minRadius: minRadius,
+			maxRadius: maxRadius,
 			relativeRadius: relativeRadius,
 			cornerStyle: cornerStyle,
 			border: border,

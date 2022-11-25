@@ -20,7 +20,7 @@ import SwiftUI
 ///   - items: The number of items in each set.
 ///
 @available ( iOS 16.0, * )
-func exponentiate < Item: Any > ( _ source: [ Item ], items: Int ) -> [ [ Item ] ]? {
+public func exponentiate < Item: Any > ( _ source: [ Item ], items: Int ) -> [ [ Item ] ]? {
 	
 	//	Determine the number of sets from the number of items in source exponentiated by `items`
 	
