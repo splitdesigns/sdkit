@@ -60,9 +60,10 @@ public struct SDTranspose {
 	
 	/// Interpolates between a start and an end value. If the value is out of bounds, the function's `progress` and `remaining` return values will be `nil`.
 	///
-	/// - Parameter value: The value to interpolate.
-	/// - Parameter from: The start bound of the interpolation range.
-	/// - Parameter to: The end bound of the interpolation range.
+	/// - Parameters:
+	///   - value: The value to interpolate.
+	///   - from: The start bound of the interpolation range.
+	///   - to: The end bound of the interpolation range.
 	///
 	/// - Returns: `( active: Bool )` a tuple indicating whether the current value is within the interpolation range, `( difference: CGFloat )` the difference between the interpolation bounds, `( progress: CGFloat? )` the progress from the start bound to the end bound, `( remaining: CGFloat? )` the amount remaining before reaching the end bound.
 	///

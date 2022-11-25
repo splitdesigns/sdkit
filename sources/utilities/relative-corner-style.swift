@@ -117,15 +117,16 @@ public struct SDRelativeCornerStyle < Style: ShapeStyle > : ViewModifier {
 	
 	/// Creates a ``SDRelativeCornerStyle`` from a configuration.
 	///
-	/// - Parameter subject: The width or height value of the subject view.
-	/// - Parameter relative: The width or height value of the relative view.
-	/// - Parameter axis: The axis used for calculating relative values.
-	/// - Parameter operation: The operation to use when calculating relative values.
-	/// - Parameter minRadius: Precedes calculated corner radius values that are smaller in size.
-	/// - Parameter relativeRadius: The radius to compute relative values from.
-	/// - Parameter cornerStyle: Determines the shape of the view's corners.
-	/// - Parameter border: The style to apply to the border.
-	/// - Parameter borderStyle: The stroke style of the border.
+	/// - Parameters:
+	///   - subject: The width or height value of the subject view.
+	///   - relative: The width or height value of the relative view.
+	///   - axis: The axis used for calculating relative values.
+	///   - operation: The operation to use when calculating relative values.
+	///   - minRadius: Precedes calculated corner radius values that are smaller in size.
+	///   - relativeRa  - dius: The radius to compute relative values from.
+	///   - cornerStyle: Determines the shape of the view's corners.
+	///   - border: The style to apply to the border.
+	///   - borderStyle: The stroke style of the border.
 	///
 	public init (
 		
@@ -178,15 +179,16 @@ public extension View {
 	
 	/// Applies styling relative to the view's size and environment.
 	///
-	/// - Parameter subject: The width or height value of the subject view.
-	/// - Parameter relative: The width or height value of the relative view.
-	/// - Parameter axis: The axis used for calculating relative values.
-	/// - Parameter operation: The operation to use when calculating relative values.
-	/// - Parameter minRadius: Precedes calculated corner radius values that are smaller in size.
-	/// - Parameter relativeRadius: The radius to compute relative values from.
-	/// - Parameter cornerStyle: Determines the shape of the view's corners.
-	/// - Parameter border: The style to apply to the border.
-	/// - Parameter borderStyle: The stroke style of the border.
+	/// - Parameters:
+	///   - subject: The width or height value of the subject view.
+	///   - relative: The width or height value of the relative view.
+	///   - axis: The axis used for calculating relative values.
+	///   - operation: The operation to use when calculating relative values.
+	///   - minRadius: Precedes calculated corner radius values that are smaller in size.
+	///   - relativeRadius: The radius to compute relative values from.
+	///   - cornerStyle: Determines the shape of the view's corners.
+	///   - border: The style to apply to the border.
+	///   - borderStyle: The stroke style of the border.
 	///
 	/// - Warning: Uses a private API.
 	///
@@ -204,7 +206,7 @@ public extension View {
 		
 	) -> some View {
 		
-		modifier ( SDRelativeCornerStyle (
+		self.modifier ( SDRelativeCornerStyle (
 			
 			subject: subject,
 			relative: relative,

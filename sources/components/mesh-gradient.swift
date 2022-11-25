@@ -162,12 +162,13 @@ public struct SDMeshGradient: View {
 	
 	/// Creates and configures a matrix of control points.
 	///
-	/// - Parameter colors: The colors to create the gradient from.
-	/// - Parameter width: The width of the control point matrix.
-	/// - Parameter height: The height of the control point matrix.
-	/// - Parameter distortion: The orientation of the mesh distortion.
-	/// - Parameter amplitude: The intensity of the mesh distortion.
-	/// - Parameter phase: The position of the animation.
+	/// - Parameters:
+	///   - colors: The colors to create the gradient from.
+	///   - width: The width of the control point matrix.
+	///   - height: The height of the control point matrix.
+	///   - distortion: The orientation of the mesh distortion.
+	///   - amplitude: The intensity of the mesh distortion.
+	///   - phase: The position of the animation.
 	///
 	private func manipulate ( colors: [ Color ]?, width: Int, height: Int, distortion: Axis, amplitude: CGFloat, phase: CGFloat ) -> Self.Matrix < Self.ControlPoint > {
 		
@@ -255,9 +256,10 @@ public struct SDMeshGradient: View {
 	
 	///	Coordinates a set of materials from a collection of colors.
 	///
-	/// - Parameter colors: The colors to create the gradient from.
-	/// - Parameter width: The width of the control point matrix.
-	/// - Parameter height: The height of the control point matrix.
+	/// - Parameters:
+	///   - colors: The colors to create the gradient from.
+	///   - width: The width of the control point matrix.
+	///   - height: The height of the control point matrix.
 	///
 	private func materialize ( from colors: [ Color ]?, width: Int, height: Int ) -> Void {
 		
@@ -318,11 +320,12 @@ public struct SDMeshGradient: View {
 	
 	/// Creates a coefficient matrix for a mesh from the four neighboring control points of a patch.
 	///
-	/// - Parameter p00: The bottom left neighboring control point.
-	/// - Parameter p01: The top left neighboring control point.
-	/// - Parameter p10: The bottom right neighboring control point.
-	/// - Parameter p11: The top right neighboring control point.
-	/// - Parameter axis: A `KeyPath` that references the axis of the control point value.
+	/// - Parameters:
+	///   - p00: The bottom left neighboring control point.
+	///   - p01: The top left neighboring control point.
+	///   - p10: The bottom right neighboring control point.
+	///   - p11: The top right neighboring control point.
+	///   - axis: A `KeyPath` that references the axis of the control point value.
 	///
 	private func meshCoefficients ( _ p00: Self.ControlPoint, _ p01: Self.ControlPoint, _ p10: Self.ControlPoint, _ p11: Self.ControlPoint, axis: KeyPath < simd_float2, Float > ) -> simd_float4x4 {
 		
@@ -363,10 +366,11 @@ public struct SDMeshGradient: View {
 	
 	/// Derives a boundary condition value for a mesh.
 	///
-	/// - Parameter u: The coordinate of the tangent vector along the horizontal edge.
-	/// - Parameter v: The coordinate of the tangent vector along the horizontal edge.
-	/// - Parameter X: The boundary condition matrix for the horizontal axis.
-	/// - Parameter Y: The boundary condition matrix for the vertical axis.
+	/// - Parameters:
+	///   - u: The coordinate of the tangent vector along the horizontal edge.
+	///   - v: The coordinate of the tangent vector along the horizontal edge.
+	///   - X: The boundary condition matrix for the horizontal axis.
+	///   - Y: The boundary condition matrix for the vertical axis.
 	///
 	private func meshPoint ( u: Float, v: Float, X: simd_float4x4, Y: simd_float4x4 ) -> simd_float2 {
 		
@@ -390,11 +394,12 @@ public struct SDMeshGradient: View {
 	
 	/// Creates a coefficient matrix for a material from the four neighboring control points of a patch.
 	///
-	/// - Parameter p00: The bottom left neighboring control point.
-	/// - Parameter p01: The top left neighboring control point.
-	/// - Parameter p10: The bottom right neighboring control point.
-	/// - Parameter p11: The top right neighboring control point.
-	/// - Parameter channel: A `KeyPath` that references the color channel of a control point's material.
+	/// - Parameters:
+	///   - p00: The bottom left neighboring control point.
+	///   - p01: The top left neighboring control point.
+	///   - p10: The bottom right neighboring control point.
+	///   - p11: The top right neighboring control point.
+	///   - channel: A `KeyPath` that references the color channel of a control point's material.
 	///
 	private func materialCoefficients ( _ p00: Self.ControlPoint, _ p01: Self.ControlPoint, _ p10: Self.ControlPoint, _ p11: Self.ControlPoint, channel: KeyPath < simd_float3, Float > ) -> simd_float4x4 {
 		
@@ -423,11 +428,12 @@ public struct SDMeshGradient: View {
 	
 	/// Derives a boundary condition value for a material.
 	///
-	/// - Parameter u: The coordinate of the tangent vector along the horizontal edge.
-	/// - Parameter v: The coordinate of the tangent vector along the horizontal edge.
-	/// - Parameter R: The boundary condition matrix for the red color channel.
-	/// - Parameter G: The boundary condition matrix for the green color channel.
-	/// - Parameter B: The boundary condition matrix for the blue color channel.
+	/// - Parameters:
+	///   - u: The coordinate of the tangent vector along the horizontal edge.
+	///   - v: The coordinate of the tangent vector along the horizontal edge.
+	///   - R: The boundary condition matrix for the red color channel.
+	///   - G: The boundary condition matrix for the green color channel.
+	///   - B: The boundary condition matrix for the blue color channel.
 	///
 	private func materialPoint ( u: Float, v: Float, R: simd_float4x4, G: simd_float4x4, B: simd_float4x4 ) -> simd_float3 {
 		
@@ -452,8 +458,9 @@ public struct SDMeshGradient: View {
 	
 	/// Subdivides each patch in the grid arbitrarily to form a smooth surface.
 	///
-	/// - Parameter controlPoints: The control points to interpolate.
-	/// - Parameter subdivisions: The number of times to subdivide each patch.
+	/// - Parameters:
+	///   - controlPoints: The control points to interpolate.
+	///   - subdivisions: The number of times to subdivide each patch.
 	///
 	/// - Returns: A tuple containing the interpolated mesh and material.
 	///
@@ -554,9 +561,10 @@ public struct SDMeshGradient: View {
 	
 	/// Derives geometry sources for a mesh and a material.
 	///
-	/// - Parameter mesh: The mesh to consolidate.
-	/// - Parameter material: The material to consolidate.
-	/// - Parameter distortion: The distorted axis.
+	/// - Parameters:
+	///   - mesh: The mesh to consolidate.
+	///   - material: The material to consolidate.
+	///   - distortion: The distorted axis.
 	///
 	/// - Returns: A tuple containing the consolidated mesh and material.
 	///
@@ -643,14 +651,15 @@ public struct SDMeshGradient: View {
 	
 	/// Renders a gradient mesh and adds it to the scene.
 	///
-	/// - Parameter colors: The colors to create the gradient from.
-	/// - Parameter width: The width of the control point matrix.
-	/// - Parameter height: The height of the control point matrix.
-	/// - Parameter subdivisions: The number of times to subdivide each gradient patch.
-	/// - Parameter distortion: The orientation of the mesh distortion.
-	/// - Parameter amplitude: The intensity of the mesh distortion.
-	/// - Parameter phase: The position of the animation.
-	/// - Parameter fps: The target framerate of the animation.
+	/// - Parameters:
+	///   - colors: The colors to create the gradient from.
+	///   - width: The width of the control point matrix.
+	///   - height: The height of the control point matrix.
+	///   - subdivisions: The number of times to subdivide each gradient patch.
+	///   - distortion: The orientation of the mesh distortion.
+	///   - amplitude: The intensity of the mesh distortion.
+	///   - phase: The position of the animation.
+	///   - fps: The target framerate of the animation.
 	///
 	private func generate ( colors: [ Color ]?, width: Int, height: Int, subdivisions: Int, distortion: Axis, amplitude: CGFloat, phase: CGFloat, fps: CGFloat ) -> Void {
 		
@@ -699,14 +708,15 @@ public struct SDMeshGradient: View {
 	
 	/// Creates a ``SDMeshGradient`` from a configuration.
 	///
-	/// - Parameter colors: The colors to create the gradient from.
-	/// - Parameter width: The number of columns of control points to generate. Minimum of three columns.
-	/// - Parameter height: The number of rows of control points to generate. Minimum of three rows.
-	/// - Parameter subdivisions: The number of times to subdivide each gradient patch. Determines the resolution of the mesh.
-	/// - Parameter distortion: The orientation of the mesh distortion.
-	/// - Parameter amplitude: The intensity of the mesh distortion.
-	/// - Parameter phase: The position of the animation.
-	/// - Parameter fps: The target framerate of the animation.
+	/// - Parameters:
+	///   - colors: The colors to create the gradient from.
+	///   - width: The number of columns of control points to generate. Minimum of three columns.
+	///   - height: The number of rows of control points to generate. Minimum of three rows.
+	///   - subdivisions: The number of times to subdivide each gradient patch. Determines the resolution of the mesh.
+	///   - distortion: The orientation of the mesh distortion.
+	///   - amplitude: The intensity of the mesh distortion.
+	///   - phase: The position of the animation.
+	///   - fps: The target framerate of the animation.
 	///
 	public init ( colors: [ Color ]? = nil, width: Int = 4, height: Int = 4, subdivisions: Int = 16, distortion: Axis = .horizontal, amplitude: CGFloat = 0.5, phase: CGFloat = 0.0, fps: CGFloat = 30.0 ) {
 		
@@ -771,8 +781,9 @@ fileprivate extension SCNGeometry {
 	
 	/// Creates an `SCNGeometry` from a collection of meshes and a collection of materials.
 	///
-	/// - Parameter meshes: A collection of values, each representing the channels of an sRGB color.
-	/// - Parameter materials: A collection of vertex coordinates.
+	/// - Parameters:
+	///   - meshes: A collection of values, each representing the channels of an sRGB color.
+	///   - materials: A collection of vertex coordinates.
 	///
 	convenience init ( meshes: [ simd_float3 ], materials: [ simd_float3 ] ) {
 		

@@ -39,6 +39,8 @@ public extension SDSystem {
 		
 		/// Creates a `Coordinator`.
 		///
+		/// - Parameter flow: Initializes a flow.
+		///
 		public init ( flow: SDPublishedWithAnimation < SDFlow > ) { self._flow = flow }
 		
 	}

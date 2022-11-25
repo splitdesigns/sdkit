@@ -26,39 +26,39 @@ public struct SDBackdropFilter: View {
 	
 	/// The brightness of the filter.
 	///
-	public let brightness: CGFloat?
+	internal let brightness: CGFloat?
 	
 	/// The contrast of the filter.
 	///
-	public let contrast: CGFloat?
+	internal let contrast: CGFloat?
 	
 	/// The grayscale value of the filter.
 	///
-	public let grayscale: CGFloat?
+	internal let grayscale: CGFloat?
 	
 	/// Determines whether the content will be inverted.
 	///
-	public let invert: Bool?
+	internal let invert: Bool?
 	
 	/// The opacity of the filter.
 	///
-	public let opacity: CGFloat?
+	internal let opacity: CGFloat?
 	
 	/// Whether the filter blur should be opaque.
 	///
-	public let opaque: Bool?
+	internal let opaque: Bool?
 	
 	/// The blur radius of the filter.
 	///
-	public let radius: CGFloat?
+	internal let radius: CGFloat?
 	
 	/// The saturation of the filter.
 	///
-	public let saturation: CGFloat?
+	internal let saturation: CGFloat?
 	
 	/// The tint color of the filter.
 	///
-	public let tint: Color?
+	internal let tint: Color?
 	
 	/// Applies the filters to a ``SDBackdrop`` view.
 	///
@@ -79,15 +79,16 @@ public struct SDBackdropFilter: View {
 	
 	/// Creates a ``SDBackdropFilter`` from a set of filter values.
 	///
-	/// - Parameter brightness: The brightness of the filter.
-	/// - Parameter contrast: The contrast of the filter.
-	/// - Parameter grayscale: The grayscale value of the filter.
-	/// - Parameter invert: Determines whether the content should be inverted.
-	/// - Parameter opacity: The opacity of the filter.
-	/// - Parameter opaque: Whether the filter blur should be opaque.
-	/// - Parameter radius: The blur radius of the filter. 
-	/// - Parameter saturation: The saturation of the filter.
-	/// - Parameter tint: The tint color of the filter.
+	/// - Parameters:
+	///   - brightness: The brightness of the filter.
+	///   - contrast: The contrast of the filter.
+	///   - grayscale: The grayscale value of the filter.
+	///   - invert: Determines whether the content should be inverted.
+	///   - opacity: The opacity of the filter.
+	///   - opaque: Whether the filter blur should be opaque.
+	///   - radius: The blur radius of the filter.
+	///   - saturation: The saturation of the filter.
+	///   - tint: The tint color of the filter.
 	///
 	public init (
 		

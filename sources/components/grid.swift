@@ -52,10 +52,11 @@ public struct SDGrid < Content: View > : View {
 	
 	/// Creates a ``SDGrid`` from a rows, columns, and a spacing value and some content.
 	///
-	/// - Parameter rows: The number of rows in the grid.
-	/// - Parameter columns: The number of columns in the grid.
-	/// - Parameter spacing: The vertical and horizontal grid spacing to apply.
-	/// - Parameter content: The content to create a grid from.
+	/// - Parameters:
+	///   - rows: The number of rows in the grid.
+	///   - columns: The number of columns in the grid.
+	///   - spacing: The vertical and horizontal grid spacing to apply.
+	///   - content: The content to create a grid from.
 	///
 	public init ( rows: Int = 3, columns: Int = 3, spacing: ( horizontal: CGFloat, vertical: CGFloat ) = ( 0, 0 ), @ViewBuilder content: @escaping ( Int, Int ) -> Content ) {
 		

@@ -36,9 +36,10 @@ public struct SDXStack < Content: View > : View {
     
     /// Creates a ``SDXStack`` from some sensible defaults.
 	///
-	/// - Parameter alignment: Sets the alignment of the stack.
-	/// - Parameter spacing: Sets the spacing of the stack.
-	/// - Parameter content: Contains the content of the stack.
+	/// - Parameters:
+	///   - alignment: Sets the alignment of the stack.
+	///   - spacing: Sets the spacing of the stack.
+	///   - content: Contains the content of the stack.
     ///
     public init ( alignment: VerticalAlignment = .center, spacing: CGFloat = .init ( ), @ViewBuilder content: @escaping ( ) -> Content ) {
         
@@ -73,9 +74,10 @@ public struct SDYStack < Content: View > : View {
     
     /// Creates a ``SDYStack`` from some sensible defaults.
 	///
-	/// - Parameter alignment: Sets the alignment of the stack.
-	/// - Parameter spacing: Sets the spacing of the stack.
-	/// - Parameter content: Contains the content of the stack.
+	/// - Parameters:
+	///   - alignment: Sets the alignment of the stack.
+	///   - spacing: Sets the spacing of the stack.
+	///   - content: Contains the content of the stack.
 	///
     public init ( alignment: HorizontalAlignment = .center, spacing: CGFloat = .init ( ), @ViewBuilder content: @escaping ( ) -> Content ) {
         
@@ -110,9 +112,10 @@ public struct SDSStack < Content: View > : View {
     
     /// Creates a ``SDSStack`` from some sensible defaults.
 	///
-	/// - Parameter axis: Sets the orientation of the stack.
-	/// - Parameter showsIndicators: Sets the indicator visibility for the stack.
-	/// - Parameter content: Contains the content of the stack.
+	/// - Parameters:
+	///   - axis: Sets the orientation of the stack.
+	///   - showsIndicators: Sets the indicator visibility for the stack.
+	///   - content: Contains the content of the stack.
     ///
 	public init ( axis: Axis.Set = .vertical, showsIndicators: Bool = false, @ViewBuilder content: @escaping ( ) -> Content ) {
         

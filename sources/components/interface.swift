@@ -120,14 +120,15 @@ public struct SDInterface < Content: View > : View {
     
     /// Creates a ``SDInterface`` from a variety of defaults and application state.
 	/// 
-	/// - Parameter parse: The flow to parse.
-	/// - Parameter font: The font to apply.
-	/// - Parameter foregroundColor: The foreground color to use.
-	/// - Parameter tint: The tint to apply.
-	/// - Parameter background: The background color to use.
-	/// - Parameter persistentSystemOverlays: The persistent system overlay visibility setting to apply.
-	/// - Parameter multilineTextAlignment: A default multiline text alignment.
-	/// - Parameter content: The content to show in this view.
+	/// - Parameters:
+	///   - parse: The flow to parse.
+	///   - font: The font to apply.
+	///   - foregroundColor: The foreground color to use.
+	///   - tint: The tint to apply.
+	///   - background: The background color to use.
+	///   - persistentSystemOverlays: The persistent system overlay visibility setting to apply.
+	///   - multilineTextAlignment: A default multiline text alignment.
+	///   - content: The content to show in this view.
 	///
 	public init (
 		

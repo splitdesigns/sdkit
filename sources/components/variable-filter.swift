@@ -70,9 +70,10 @@ public struct SDVariableFilter: View {
 	
 	/// Creates a ``SDVariableFilter`` from a progression direction, resolution, and a filter configuration.
 	///
-	/// - Parameter progression: The direction to progress the filter.
-	/// - Parameter resolution: A percentage representing the number of times to sample the content.
-	/// - Parameter filter: The filter configuration to use.
+	/// - Parameters:
+	///   - progression: The direction to progress the filter.
+	///   - resolution: A percentage representing the number of times to sample the content.
+	///   - filter: The filter configuration to use.
 	///
 	public init ( progression: Self.Direction = .bottom, resolution: CGFloat? = nil, filter: SDBackdropFilter = .init ( ) ) {
 		
@@ -92,7 +93,7 @@ public struct SDVariableFilter: View {
 				
 				SDBackdropFilter (
 					
-					//  TODO: Fix layer intensity compounding calculations
+					//  TODO: Fix layer intensity compounding calculations ( most are guesswork )
 					
 					brightness: 1.0 / CGFloat ( self.layers ) * ( self.filter.brightness ?? self.defaults.filters.brightness ),
 					contrast: 1.0 - intensity ( at: layer, for: 1.0 - ( self.filter.contrast ?? self.defaults.filters.contrast ), multiplier: 3.0 ),
@@ -131,9 +132,10 @@ public struct SDVariableFilter: View {
 	
 	/// Calculates the filter intensity of a layer based on it's position.
 	///
-	/// - Parameter at: The position of the layer.
-	/// - Parameter for: The value to calculate the intensity for.
-	/// - Parameter multiplier: The intensity multiplier.
+	/// - Parameters:
+	///   - at: The position of the layer.
+	///   - for: The value to calculate the intensity for.
+	///   - multiplier: The intensity multiplier.
 	///
 	private func intensity ( at position: Int, for value: CGFloat, multiplier: CGFloat = 1.0 ) -> CGFloat { return multiplier / .init ( self.layers ) * value }
 	

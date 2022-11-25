@@ -241,63 +241,31 @@ public extension SDDefaults {
 		
 		/// The animation to use for primary transitions.
 		///
-		public var primary: Animation = .linear
+		public var primary: Animation = .easeOut
 		
 		/// The animation to use for secondary transitions.
 		///
 		public var secondary: Animation = .easeInOut
 		
-		/// A collection of expo-out animation curves, instantiated from `ExpoOut`.
+		/// An expo-out animation curve with a duration of one second.
 		///
-		public var expoOut: Self.ExpoOut = .init ( )
+		public var expoOut: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 1.0 )
 		
-		/// A collection of expo-out animation curves.
+		/// An expo-out animation curve with a custom duration.
 		///
-		public struct ExpoOut {
-			
-			/// An expo-out bezier curve with a duration of 0.25 seconds.
-			///
-			public var quarter: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 0.25 )
-			
-			/// An expo-out bezier curve with a duration of 0.5 seconds.
-			///
-			public var half: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 0.5 )
-			
-			/// An expo-out bezier curve with a duration of 1 second.
-			///
-			public var one: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 1.0 )
-			
-			/// An expo-out bezier curve with a duration of 2 seconds.
-			///
-			public var two: Animation = .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: 2.0 )
-			
-		}
+		/// - Parameter duration: The length of the animation.
+		///
+		public func expoOut ( duration: CGFloat ) -> Animation { return .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: duration ) }
 		
-		/// A collection of expo-in-out animation curves, instantiated from `ExpoInOut`.
+		/// An expo-in-out animation curve with a duration of one second.
 		///
-		public var expoInOut: Self.ExpoInOut = .init ( )
+		public var expoInOut: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 1.0 )
 		
-		/// A collection of expo-in-out animation curves.
+		/// An expo-in-out animation curve with a custom duration.
 		///
-		public struct ExpoInOut {
-			
-			/// An expo-in-out bezier curve with a duration of 0.25 seconds.
-			///
-			public var quarter: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 0.25 )
-			
-			/// An expo-in-out bezier curve with a duration of 0.5 seconds.
-			///
-			public var half: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 0.5 )
-			
-			/// An expo-in-out bezier curve with a duration of 1 second.
-			///
-			public var one: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 1.0 )
-			
-			/// An expo-in-out bezier curve with a duration of 2 seconds.
-			///
-			public var two: Animation = .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: 2.0 )
-			
-		}
+		/// - Parameter duration: The length of the animation.
+		///
+		public func expoInOut ( duration: CGFloat ) -> Animation { return .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: duration ) }
 		
 	}
 	
@@ -485,37 +453,37 @@ public extension SDDefaults {
 		///
 		public var brightness: CGFloat = 0.0
 		
-		/// A value that determines the filter's grayscale amount.
-		///
-		public var grayscale: CGFloat = 0.0
-		
-		/// A value that determines the saturation of the filter.
-		///
-		public var saturation: CGFloat = 1.0
-		
 		/// A value that determines the contrast of the filter.
 		///
 		public var contrast: CGFloat = 1.0
+		
+		/// A value that determines the filter's grayscale amount.
+		///
+		public var grayscale: CGFloat = 0.0
 		
 		/// A value that determines whether or not to invert the filter.
 		///
 		public var invert: Bool = false
 		
-		/// A value that determines the blur radius of the filter.
+		/// A value that determines the opacity of the filter.
 		///
-		public var radius: CGFloat = 0.0
+		public var opacity: CGFloat = 1.0
 		
 		/// A value that determines whether the filter blur should be opaque.
 		///
 		public var opaque: Bool = true
 		
+		/// A value that determines the blur radius of the filter.
+		///
+		public var radius: CGFloat = 0.0
+		
+		/// A value that determines the saturation of the filter.
+		///
+		public var saturation: CGFloat = 1.0
+		
 		/// A value that determines the tint of the filter.
 		///
 		public var tint: Color = .clear
-		
-		/// A value that determines the opacity of the filter.
-		///
-		public var opacity: CGFloat = 1.0
 		
 	}
 	

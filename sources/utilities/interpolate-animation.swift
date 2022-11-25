@@ -47,9 +47,10 @@ public struct SDInterpolateAnimation < Value: VectorArithmetic > : ViewModifier,
 	
 	/// Creates a ``SDInterpolateAnimation`` from a value, update closure, and completion closure.
 	///
-	/// - Parameter for: The value to interpolate.
-	/// - Parameter onUpdate: The closure to run when the animation updates.
-	/// - Parameter onCompletion: The closure to run when the animation is complete.
+	/// - Parameters:
+	///   - for: The value to interpolate.
+	///   - onUpdate: The closure to run when the animation updates.
+	///   - onCompletion: The closure to run when the animation is complete.
 	///
 	public init ( for value: Value, onUpdate: ( ( Value ) -> Void )? = nil, onCompletion: ( ( ) -> Void )? = nil ) {
 		
@@ -73,9 +74,10 @@ public extension View {
 	
 	/// Uses `AnimatableData` to interpolate a literal from a SwiftUI animation.
 	///
-	/// - Parameter for: The value to interpolate.
-	/// - Parameter onUpdate: The closure to run when the animation updates.
-	/// - Parameter onCompletion: The closure to run when the animation is complete.
+	/// - Parameters:
+	///   - for: The value to interpolate.
+	///   - onUpdate: The closure to run when the animation updates.
+	///   - onCompletion: The closure to run when the animation is complete.
 	///
 	func interpolateAnimation < Value: VectorArithmetic > ( for value: Value, onUpdate: ( ( Value ) -> Void )? = nil, onCompletion: ( ( ) -> Void )? = nil ) -> some View { self.modifier ( SDInterpolateAnimation ( for: value, onUpdate: onUpdate, onCompletion: onCompletion ) ) }
 	

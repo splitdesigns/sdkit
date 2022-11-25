@@ -86,10 +86,11 @@ public struct SDMarquee < Content: View > : View {
 	
 	/// Creates a ``SDMarquee`` from an angle, phase, phase reference, and some content.
 	///
-	/// - Parameter angle: The angle of the marquee movement.
-	/// - Parameter phase: The position of the marquee.
-	/// - Parameter reference: The view dimension to reference as a complete phase cycle.
-	/// - Parameter content: The content to tile.
+	/// - Parameters:
+	///   - angle: The angle of the marquee movement.
+	///   - phase: The position of the marquee.
+	///   - reference: The view dimension to reference as a complete phase cycle.
+	///   - content: The content to tile.
 	///
 	public init ( angle: CGFloat = 0.0, phase: CGFloat = 0.0, reference: Self.PhaseReference = .width, @ViewBuilder content: @escaping () -> Content ) {
 		

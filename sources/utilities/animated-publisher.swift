@@ -38,9 +38,10 @@ import SwiftUI
 	
 	/// Provides access to properties of the enclosing instance.
 	///
-	/// - Parameter _enclosingInstance: The enclosing container.
-	/// - Parameter wrapped: The `KeyPath` to the instance's wrapped value.
-	/// - Parameter storage: The `KeyPath` to the property wrapper's storage.
+	/// - Parameters:
+	///   - _enclosingInstance: The enclosing container.
+	///   - wrapped: The `KeyPath` to the instance's wrapped value.
+	///   - storage: The `KeyPath` to the property wrapper's storage.
 	///
 	public static subscript < Container: ObservableObject > (
 		
@@ -62,8 +63,9 @@ import SwiftUI
 	
 	/// Creates a ``SDPublishedWithAnimation`` wrapping the property.
 	///
-	/// - Parameter wrappedValue: The value to store.
-	/// - Parameter animation: The timing curve to animate the value with.
+	/// - Parameters:
+	///   - wrappedValue: The value to store.
+	///   - animation: The timing curve to animate the value with.
 	///
 	public init ( wrappedValue: Value, animation: Animation? = nil ) {
 		

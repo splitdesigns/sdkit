@@ -93,8 +93,9 @@ public struct SDAlternateAppIcon: ViewModifier {
     
     /// Creates a ``SDAlternateAppIcon`` from an identifier and an override.
     ///
-	/// - Parameter named: The identifier to set.
-	/// - Parameter override: Locks the dynamism of the icon to the specified identifier.
+	/// - Parameters:
+	///   - named: The identifier to set.
+	///   - override: Locks the dynamism of the icon to the specified identifier.
 	///
     fileprivate init ( named identifier: String, override: Bool ) {
         
@@ -115,12 +116,13 @@ public extension View {
     
     /// Sets an alternate app icon to match the color scheme when the app enters the foreground. Will not trigger an alert.
     ///
-	/// - Parameter named: The identifier to set.
-	/// - Parameter override: Locks the dynamism of the icon to the specified identifier.
+	/// - Parameters:
+	///   - named: The identifier to set.
+	///   - override: Locks the dynamism of the icon to the specified identifier.
 	///
 	/// - Warning: Uses a private API.
 	///
-    func dynamicAppIcon ( named identifier: String, override: Bool = false ) -> some View { modifier ( SDAlternateAppIcon ( named: identifier, override: override ) ) }
+	func dynamicAppIcon ( named identifier: String, override: Bool = false ) -> some View { self.modifier ( SDAlternateAppIcon ( named: identifier, override: override ) ) }
 
 }
 

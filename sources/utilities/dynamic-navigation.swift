@@ -83,8 +83,9 @@ public struct SDFlow {
 	
 	/// Sets the root location and the query items of the SDFlow.
 	///
-	/// - Parameter location: The URL representing the app's view hierarchy.
-	/// - Parameter parameters: A closure modifying the query item object passed in.
+	/// - Parameters:
+	///   - location: The URL representing the app's view hierarchy.
+	///   - parameters: A closure modifying the query item object passed in.
 	///
 	public mutating func set ( _ raw: String? = nil, location: URL? = nil, parameters: ( ( [ String: String ] ) -> [ String: String ] )? = nil ) -> Void {
 		
@@ -149,8 +150,6 @@ private struct SDUniversalLink: ViewModifier {
 	
 	/// Runs the closure when a link is received.
 	///
-	/// - Parameter content: The content being modified.
-	///
 	public func body ( content: Content ) -> some View { return content.onOpenURL { self.closure ( $0 ) } }
 	
 	/// Creates a ``SDUniversalLink`` from a closure.
@@ -173,7 +172,7 @@ public extension View {
 	///
 	/// - Parameter run: The closure to run when a link is received.
 	///
-	func onUniversalLink ( run closure: @escaping ( URL ) -> Void ) -> some View { return modifier ( SDUniversalLink ( run: closure ) ) }
+	func onUniversalLink ( run closure: @escaping ( URL ) -> Void ) -> some View { return self.modifier ( SDUniversalLink ( run: closure ) ) }
 	
 }
 

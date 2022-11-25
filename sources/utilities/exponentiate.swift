@@ -15,8 +15,9 @@ import SwiftUI
 
 /// Generates every possible combination for a sequence of values.
 ///
-/// - Parameter source: A sequence of values to exponentiate.
-/// - Parameter items: The number of items in each set.
+/// - Parameters:
+///   - source: A sequence of values to exponentiate.
+///   - items: The number of items in each set.
 ///
 @available ( iOS 16.0, * )
 func exponentiate < Item: Any > ( _ source: [ Item ], items: Int ) -> [ [ Item ] ]? {

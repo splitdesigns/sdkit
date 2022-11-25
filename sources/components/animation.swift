@@ -18,6 +18,10 @@ import SwiftUI
 @available ( iOS 16.0, * )
 public struct SDAnimation < Content: View > : View {
 	
+	/// Access to the ``SDDefaults`` struct.
+	///
+	@Environment ( \ .defaults ) private var defaults
+	
 	/// The start value of the animation.
 	///
 	private let start: CGFloat?
@@ -46,7 +50,7 @@ public struct SDAnimation < Content: View > : View {
 			.onAppear {
 				
 				if let start = self.start { self.animation.cache = start }
-				if let end = self.end, let bezier = self.bezier { withAnimation ( bezier ) { self.animation.target = end } }
+				withAnimation ( bezier ?? defaults.animations.primary.repeatForever ( autoreverses: false ) ) { self.animation.target = end ?? 1.0 }
 				
 			}
 			.interpolateAnimation ( for: self.animation.target ) { self.animation.literal = $0 }
@@ -55,10 +59,11 @@ public struct SDAnimation < Content: View > : View {
 	
 	/// Creates a ``SDAnimation`` from some animation values and content.
 	///
-	/// - Parameter from: The start value for the animation.
-	/// - Parameter to: The end value for the animation.
-	/// - Parameter with: The bezier curve for the animation.
-	/// - Parameter content: The content to display.
+	/// - Parameters:
+	///   - from: The start value for the animation.
+	///   - to: The end value for the animation.
+	///   - with: The bezier curve for the animation.
+	///   - content: The content to display.
 	///
 	public init ( from start: CGFloat? = nil, to end: CGFloat? = nil, with bezier: Animation? = nil, @ViewBuilder content: @escaping ( SDTranspose ) -> Content ) {
 		

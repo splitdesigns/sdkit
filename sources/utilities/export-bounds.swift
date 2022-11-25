@@ -28,8 +28,6 @@ public struct SDExportBounds: ViewModifier {
 	
 	/// Applies an overlay with a geometry reader to get the dimensions of the view.
 	///
-	/// - Parameter content: The content to modify.
-	///
 	public func body ( content: Content ) -> some View {
 		
 		content
@@ -45,8 +43,9 @@ public struct SDExportBounds: ViewModifier {
 	
 	/// Creates a ``SDExportBounds`` from a binding.
 	///
-	/// - Parameter from: The coordinate space to fetch bounds from.
-	/// - Parameter to: The bounds to export.
+	/// - Parameters:
+	///   - from: The coordinate space to fetch bounds from.
+	///   - to: The bounds to export.
 	///
 	public init ( from coordinateSpace: CoordinateSpace = .local, to bounds: Binding < CGRect > ) {
 		
@@ -67,10 +66,11 @@ public extension View {
 	
 	/// Exports the width and height of the view to a `CGSize` binding.
 	///
-	/// - Parameter from: The coordinate space to fetch bounds from.
-	/// - Parameter to: The bounds to export.
+	/// - Parameters:
+	///   - from: The coordinate space to fetch bounds from.
+	///   - to: The bounds to export.
 	///
-	func exportBounds ( from coordinateSpace: CoordinateSpace = .global, to bounds: Binding < CGRect > ) -> some View { modifier ( SDExportBounds ( from: coordinateSpace, to: bounds ) ) }
+	func exportBounds ( from coordinateSpace: CoordinateSpace = .global, to bounds: Binding < CGRect > ) -> some View { self.modifier ( SDExportBounds ( from: coordinateSpace, to: bounds ) ) }
 	
 }
 
