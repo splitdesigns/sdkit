@@ -428,7 +428,7 @@ public extension SDDefaults {
 		
 		/// A color to use for borders.
 		///
-		public var color: Color = SDDefaults.Colors ( ) .accent.auto.opacity ( 0.5 )
+		public var color: Color = SDDefaults.Colors ( ) .accent.auto.opacity ( 0.25 )
 		
 		/// A stroke style to use for borders.
 		///
