@@ -665,9 +665,7 @@ public struct SDMeshGradient: View {
 		
 		//	Get the current time
 		
-		let currentRender: CGFloat
-		
-		currentRender = CFAbsoluteTimeGetCurrent ( )
+		let currentRender: CGFloat = CFAbsoluteTimeGetCurrent ( )
 		
 		//	If the current render is within the last frame, return, otherwise update the last render
 		

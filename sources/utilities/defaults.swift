@@ -160,7 +160,7 @@ public extension SDDefaults {
 		
 		/// The flow used to initialize the application's state.
 		///
-		public var flow: SDFlow = .init ( "https://splitdesigns.com" )
+		public var flow: SDFlow = .init ( "https://splitdesigns.com/launch" )
 		
 		/// Creates a ``Coordination`` instance.
 		///

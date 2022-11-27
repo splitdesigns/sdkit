@@ -37,6 +37,10 @@ public extension SDSystem {
 		///
 		@SDPublishedWithAnimation public var flow: SDFlow
 		
+		/// Whether or not the application has launched.
+		/// 
+		@Published public var launched: Bool = .init ( )
+		
 		/// Creates a `Coordinator`.
 		///
 		/// - Parameter flow: Initializes a flow.
