@@ -432,7 +432,7 @@ public extension SDDefaults {
 		
 		/// A stroke style to use for borders.
 		///
-		public var style: StrokeStyle = .init ( lineWidth: 1.0 )
+		public var style: StrokeStyle = .init ( lineWidth: 0.0 )
 		
 		/// Creates a ``Borders`` instance.
 		///
@@ -449,9 +449,9 @@ public extension SDDefaults {
 	///
 	struct Shadows {
 		
-		/// A color to use for shados.
+		/// A color to use for shadows.
 		///
-		public var color: Color = SDDefaults.Colors ( ) .minimum.auto.opacity ( 0.5 )
+		public var color: Color = SDDefaults.Colors ( ) .accent.auto
 		
 		/// A radius to use for borders.
 		///
