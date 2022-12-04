@@ -13,46 +13,30 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// Seamlessly tiles content in the direction you specify.
+/// Seamlessly tiles content in the specified direction.
 ///
 @available ( iOS 16.0, * )
 public struct SDMarquee < Content: View > : View {
 	
-	/// The view dimension to reference as a complete phase cycle.
+	/// The direction of the marquee movement.
 	///
-	public enum PhaseReference: String { case width, height }
+	private let progression: UnitPoint
 	
-	/// The angle of the marquee movement.
+	/// The animation for the marquee movement.
 	///
-	private let angle: CGFloat
-	
-	/// The position of the marquee.
-	///
-	private let phase: CGFloat
-	
-	/// The dimension to reference as a complete phase cycle.
-	///
-	private let reference: Self.PhaseReference
+	private let animation: Animation?
 	
 	/// The content to tile.
 	///
 	private let content: ( ) -> Content
 	
-	/// The bounds of the content.
+	/// The position of the marquee movement.
 	///
-	@State private var bounds: CGRect = .init ( )
+	@State private var phase: CGFloat = .init ( )
 	
-	/// The amount to displace the content horizontally.
+	/// Offsets for each of the marquee tile segments.
 	///
-	private var displacementX: CGFloat { return ( self.phase * cos ( self.angle * .pi / 180.0 ) * ( self.reference == .width ? self.bounds.width : self.bounds.height ) ) .truncatingRemainder ( dividingBy: self.bounds.width ) }
-	
-	/// The amount to displace the content vertically.
-	///
-	private var displacementY: CGFloat { return ( self.phase * sin ( self.angle * .pi / 180.0 ) * ( self.reference == .width ? self.bounds.width : self.bounds.height ) ) .truncatingRemainder ( dividingBy: self.bounds.height ) }
-	
-	/// Offsets for each of the marquee segments.
-	///
-	private let segments: [ [ CGFloat ] ] = exponentiate ( [ -1, 0 ], items: 2 ) ?? .init ( )
+	private var segments: [ [ CGFloat ] ] { return Array < UnitPoint > ( arrayLiteral: .trailing, .leading ) .contains ( self.progression ) ? [ [ -1.0, 0.0 ], [ 0.0, 0.0 ] ] : Array < UnitPoint > ( arrayLiteral: .top, .bottom ) .contains ( self.progression ) ? [ [ 0.0, -1.0 ], [ 0.0, 0.0 ] ] : exponentiate ( [ -1.0, 0.0 ], items: 2 ) ?? .init ( ) }
 	
 	/// The view content of the marquee.
 	///
@@ -60,43 +44,39 @@ public struct SDMarquee < Content: View > : View {
 		
 		ZStack {
 			
-			//	Optimized by relocating the geometry reader
-			
-			self.content ( )
-				.exportBounds ( to: $bounds )
-				.hidden ( )
-			
-			ForEach ( 0 ..< self.segments.count, id: \ .self ) { index in
+			GeometryReader { proxy in
 				
-				//	View optimization through hiding non-visible views
-				
-				if self.displacementX + self.segments [ index ] [ 0 ] * self.bounds.width <= self.bounds.width || self.displacementX + self.segments [ index ] [ 0 ] * self.bounds.width >= -self.bounds.width && self.displacementY + self.segments [ index ] [ 1 ] * self.bounds.height <= self.bounds.height || self.displacementY + self.segments [ index ] [ 1 ] * self.bounds.height >= -self.bounds.height {
+				ForEach ( 0 ..< self.segments.count, id: \ .self ) { index in
 					
 					self.content ( )
-						.offset ( x: self.displacementX.wrapped ( in: 0.0 ..< bounds.width ) + self.segments [ index ] [ 0 ] * self.bounds.width, y: self.displacementY.wrapped ( in: 0.0 ..< self.bounds.height ) + self.segments [ index ] [ 1 ] * self.bounds.height )
+						.offset (
+							
+							x: ( self.phase + self.segments [ index ] [ 0 ] ) * proxy.size.width * progression.x.lerp ( in: -1.0 ... 1.0 ),
+							y: ( self.phase + self.segments [ index ] [ 1 ] ) * proxy.size.height * progression.y.lerp ( in: -1.0 ... 1.0 )
+							
+						)
 					
 				}
+				.clipped ( )
 				
 			}
-			.clipped ( )
 			
 		}
+		.onAppear { withAnimation ( self.animation ?? .linear ( duration: 4.0 ) .repeatForever ( autoreverses: false ) ) { self.phase = 1.0 } }
 		
 	}
 	
-	/// Creates a ``SDMarquee`` from an angle, phase, phase reference, and some content.
+	/// Creates a ``SDMarquee`` from a movement direction, animation, and some content.
 	///
 	/// - Parameters:
-	///   - angle: The angle of the marquee movement.
-	///   - phase: The position of the marquee.
-	///   - reference: The view dimension to reference as a complete phase cycle.
+	///   - progression: The direction of the marquee movement.
+	///   - animation: The animation for the marquee movement.
 	///   - content: The content to tile.
 	///
-	public init ( angle: CGFloat = 0.0, phase: CGFloat = 0.0, reference: Self.PhaseReference = .width, @ViewBuilder content: @escaping () -> Content ) {
+	public init ( progression: UnitPoint = .trailing, animation: Animation? = nil, @ViewBuilder content: @escaping () -> Content ) {
 		
-		self.angle = angle
-		self.phase = phase
-		self.reference = reference
+		self.progression = progression
+		self.animation = animation
 		self.content = content
 		
 	}

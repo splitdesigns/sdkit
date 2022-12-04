@@ -30,11 +30,14 @@ public struct SDExportBounds: ViewModifier {
 	///
 	public func body ( content: Content ) -> some View {
 		
-		GeometryReader { proxy in
-			
-			content.task ( id: proxy.frame ( in: self.coordinateSpace ) ) { self.bounds = proxy.frame ( in: self.coordinateSpace ) }
-			
-		}
+		content
+			.overlay ( GeometryReader { proxy in
+				
+				SDNothing ( )
+					.frame ( maxWidth: .infinity, maxHeight: .infinity )
+					.task ( id: proxy.frame ( in: self.coordinateSpace ) ) { self.bounds = proxy.frame ( in: self.coordinateSpace ) }
+				
+			} )
 		
 	}
 	
