@@ -16,7 +16,7 @@ import SwiftUI
 /// Uses `AnimatableData` to interpolate a literal from a SwiftUI animation.
 ///
 @available ( iOS 16.0, * )
-public struct SDInterpolateAnimation < Value: VectorArithmetic > : ViewModifier, Animatable {
+private struct SDInterpolateAnimation < Value: VectorArithmetic > : ViewModifier, Animatable {
 	
 	/// The value to interpolate.
 	///

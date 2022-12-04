@@ -38,27 +38,35 @@ public struct SDShimmer: ViewModifier {
 	///
 	private let freeform: Bool
 	
-	/// The animation for the shimmer effect.
+	/// The position of the shimmer effect.
 	///
-	private let animation: Animation?
+	private var phase: CGFloat?
+	
+	/// The animation curve for the effect.
+	///
+	private var timingCurve: Animation?
 	
 	/// Whether or not to apply the shine as a mask.
 	///
 	private var mask: Bool { return ( self.color ?? self.defaults.colors.background.auto ) == .clear }
 	
-	/// Overlays or masks an animated gradient on some content.
+	/// Overlays or masks an animatable gradient on some content.
 	///
 	public func body ( content: Content ) -> some View {
 		
-		SDAnimation ( to: 2.0, with: self.animation ?? defaults.animations.expoInOut ( duration: 4.0 ) .repeatForever ( autoreverses: false ) ) { animation in
+		SDInterpolatedAnimation(from: 0.0, to: 1.0, with: self.timingCurve ?? self.defaults.animations.expoInOut ( duration: 4.0 ) .repeatForever ( autoreverses: false ) ) { animation in
 			
-			if !mask { content.overlay { self.shine ( content, phase: animation.literal ) } } else { content.mask { self.shine ( content, phase: animation.literal ) } }
+			if !mask { content.overlay { self.shine ( content, phase: ( self.phase ?? animation.literal ) * 2.0 ) } } else { content.mask { self.shine ( content, phase: ( self.phase ?? animation.literal ) * 2.0 ) } }
 			
 		}
 		
 	}
 	
-	/// An animated gradient that represents a reflection.
+	/// An animatable gradient that simulates a reflection.
+	///
+	/// - Parameters:
+	///   - content: The content shape to mask to.
+	///   - phase: The position of the shimmer effect.
 	///
 	private func shine ( _ content: Content, phase: CGFloat ) -> some View {
 		
@@ -83,7 +91,8 @@ public struct SDShimmer: ViewModifier {
 	///   - start: The start position of the shimmer.
 	///   - end: The end position of the shimmer.
 	///   - freeform: Disables the default behavior of framing the shimmer effect to an aspect ratio of one. Useful for relative unit point positioning.
-	///   - animation: The animation for the shimmer effect.
+	///   - phase: The position of the shimmer effect.
+	///   - animation: The animation curve for the effect.
 	///
 	public init (
 		
@@ -91,7 +100,8 @@ public struct SDShimmer: ViewModifier {
 		start: UnitPoint = .topLeading,
 		end: UnitPoint = .bottomTrailing,
 		freeform: Bool = false,
-		animation: Animation? = nil
+		phase: CGFloat? = nil,
+		animation timingCurve: Animation? = nil
 		
 	) {
 		
@@ -99,7 +109,8 @@ public struct SDShimmer: ViewModifier {
 		self.start = start
 		self.end = end
 		self.freeform = freeform
-		self.animation = animation
+		self.phase = phase
+		self.timingCurve = timingCurve
 		
 	}
 	
@@ -120,7 +131,8 @@ public extension View {
 	///   - start: The start position of the shimmer.
 	///   - end: The end position of the shimmer.
 	///   - freeform: Disables the default behavior of framing the shimmer effect to an aspect ratio of one. Useful for relative unit point positioning.
-	///   - animation: The animation for the shimmer effect.
+	///   - phase: The position of the shimmer effect.
+	///   - animation: The animation curve for the effect.
 	///
 	func shimmer (
 		
@@ -128,7 +140,8 @@ public extension View {
 		start: UnitPoint = .topLeading,
 		end: UnitPoint = .bottomTrailing,
 		freeform: Bool = false,
-		animation: Animation? = nil
+		phase: CGFloat? = nil,
+		animation timingCurve: Animation? = nil
 		
 	) -> some View { self.modifier ( SDShimmer (
 		
@@ -136,7 +149,8 @@ public extension View {
 		start: start,
 		end: end,
 		freeform: freeform,
-		animation: animation
+		phase: phase,
+		animation: timingCurve
 		
 	) ) }
 	

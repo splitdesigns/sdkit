@@ -13,22 +13,18 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// Interpolates an animation, passing the animation object as a parameter.
+/// A container that passes in a SwiftUI animation.
 ///
 @available ( iOS 16.0, * )
-public struct SDAnimation < Content: View > : View {
+public struct SDAnimation < Content: View, Value: Equatable > : View {
 	
-	/// Access to the ``SDDefaults`` struct.
+	/// Access to the defaults object.
 	///
 	@Environment ( \ .defaults ) private var defaults
 	
-	/// The start value of the animation.
-	///
-	private let start: CGFloat?
-	
 	/// The end value of the animation.
 	///
-	private let end: CGFloat?
+	private let target: Value
 	
 	/// The bezier curve of the animation.
 	///
@@ -36,24 +32,17 @@ public struct SDAnimation < Content: View > : View {
 	
 	/// The view content.
 	///
-	private let content: ( SDTranspose ) -> Content
+	private let content: ( Value ) -> Content
 	
 	/// Manages the animation state.
 	///
-	@State private var animation: SDTranspose = .init ( )
+	@State private var animation: Value
 	
-	/// Sets the animation values, and starts the animation with interpolation.
+	/// Starts the animation.
 	///
 	public var body: some View {
 		
-		self.content ( animation )
-			.onAppear {
-				
-				if let start = self.start { self.animation.cache = start }
-				withAnimation ( bezier ?? defaults.animations.primary.repeatForever ( autoreverses: false ) ) { self.animation.target = end ?? 1.0 }
-				
-			}
-			.interpolateAnimation ( for: self.animation.target ) { self.animation.literal = $0 }
+		self.content ( animation ) .onAppear { withAnimation ( bezier ?? defaults.animations.primary.repeatForever ( autoreverses: false ) ) { self.animation = target } }
 		
 	}
 	
@@ -65,12 +54,12 @@ public struct SDAnimation < Content: View > : View {
 	///   - with: The bezier curve for the animation.
 	///   - content: The content to display.
 	///
-	public init ( from start: CGFloat? = nil, to end: CGFloat? = nil, with bezier: Animation? = nil, @ViewBuilder content: @escaping ( SDTranspose ) -> Content ) {
+	public init ( from start: Value, to end: Value, with bezier: Animation? = nil, @ViewBuilder content: @escaping ( Value ) -> Content ) {
 		
-		self.start = start
-		self.end = end
+		self.target = end
 		self.bezier = bezier
 		self.content = content
+		self._animation = .init ( wrappedValue: start )
 		
 	}
 	
