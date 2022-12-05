@@ -28,6 +28,10 @@ public struct SDBackdropFilter: View {
 	///
 	internal let brightness: CGFloat?
 	
+	/// Whether or not to clip the filter.
+	///
+	internal let clip: Bool?
+	
 	/// The contrast of the filter.
 	///
 	internal let contrast: CGFloat?
@@ -73,7 +77,7 @@ public struct SDBackdropFilter: View {
 			.opacity ( self.opacity ?? self.defaults.filters.opacity )
 			.overlay ( self.tint ?? self.defaults.filters.tint )
 			.if ( self.invert ?? self.defaults.filters.invert ) { $0.colorInvert ( ) }
-			.clipped ( antialiased: true )
+			.if ( self.clip ?? self.defaults.filters.clip ) { $0.clipped ( antialiased: true ) }
 		
 	}
 	
@@ -81,6 +85,7 @@ public struct SDBackdropFilter: View {
 	///
 	/// - Parameters:
 	///   - brightness: The brightness of the filter.
+	///   - clip: Whether or not to clip the filter.
 	///   - contrast: The contrast of the filter.
 	///   - grayscale: The grayscale value of the filter.
 	///   - invert: Determines whether the content should be inverted.
@@ -93,6 +98,7 @@ public struct SDBackdropFilter: View {
 	public init (
 		
 		brightness: CGFloat? = nil,
+		clip: Bool? = nil,
 		contrast: CGFloat? = nil,
 		grayscale: CGFloat? = nil,
 		invert: Bool? = nil,
@@ -105,6 +111,7 @@ public struct SDBackdropFilter: View {
 	) {
 		
 		self.contrast = contrast
+		self.clip = clip
 		self.brightness = brightness
 		self.grayscale = grayscale
 		self.invert = invert

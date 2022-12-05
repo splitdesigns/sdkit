@@ -379,6 +379,10 @@ public extension SDDefaults {
 		///
 		public var brightness: CGFloat = 0.0
 		
+		/// A value that determines whether the filter should be clipped.
+		///
+		public var clip: Bool = true
+		
 		/// A value that determines the contrast of the filter.
 		///
 		public var contrast: CGFloat = 1.0

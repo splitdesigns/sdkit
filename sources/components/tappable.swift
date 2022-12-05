@@ -1,6 +1,6 @@
 
 //
-//  SDKit: Button
+//  SDKit: Tappable
 //  Developed by SPLIT Designs
 //
 
@@ -16,7 +16,7 @@ import SwiftUI
 /// A button containing some text.
 ///
 @available ( iOS 16.0, * )
-public struct SDButton < Content: View > : View {
+public struct SDTappable < Content: View > : View {
 	
 	/// Access to the `SDDefaults` configuration.
 	///
@@ -34,7 +34,7 @@ public struct SDButton < Content: View > : View {
 	///
 	public var body: some View {
 		
-		SDPressInteraction ( animation: defaults.animations.expoOut ( duration: 0.5 ) ) { response in
+		SDTouchInteraction { response in
 			
 			content ( )
 				.font ( defaults.fonts.monospaced ( ) )
@@ -43,13 +43,15 @@ public struct SDButton < Content: View > : View {
 				.background ( SDBackdropFilter ( tint: response.isPressed ? defaults.colors.accent.auto.opacity ( 0.5 ) : nil ) )
 				.relativeCornerStyle ( subject: 0.0, relative: 64.0 )
 				.shadow ( color: defaults.shadows.color, radius: defaults.shadows.radius )
+				.animation ( defaults.animations.expoOut ( duration: 0.5 ), value: response.isPressed )
+				.animation ( defaults.animations.expoOut ( duration: 0.5 ), value: response.isContained )
 				.task ( id: response.isPressed ) { if !response.isPressed && response.isContained { action ( ) } }
 			
 		}
 		
 	}
 	
-	/// Creates a ``SDButton`` from some text and an action.
+	/// Creates a ``SDTappable`` from some text and an action.
 	///
 	/// - Parameters:
 	///   - content: The content to display.

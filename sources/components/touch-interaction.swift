@@ -13,30 +13,18 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// A container for working with tap gestures.
+/// A container for working with simple gestures.
 ///
 @available ( iOS 16.0, * )
-public struct SDPressInteraction < Content: View > : View {
-	
-	/// Access to the `SDDefaults` configuration.
-	///
-	@Environment ( \ .defaults ) private var defaults
+public struct SDTouchInteraction < Content: View > : View {
 	
 	/// Access to the device's scene phase.
 	///
 	@Environment ( \ .scenePhase ) private var scenePhase
 	
-	/// The animation curve to use for response values.
-	///
-	private let animation: Animation?
-	
 	/// The tappable content.
 	///
 	private let content: ( ( isPressed: Bool, isContained: Bool, data: DragGesture.Value? ) ) -> Content
-	
-	/// The gesture state required for acquiring gesture data on update. Unused.
-	///
-	@GestureState private var gestureState: Bool = .init ( )
 	
 	/// Whether or not the screen is being pressed.
 	///
@@ -80,25 +68,17 @@ public struct SDPressInteraction < Content: View > : View {
 					}
 				
 			)
-			.animation ( self.animation ?? self.defaults.animations.primary, value: self.isPressed )
-			.animation ( self.animation ?? self.defaults.animations.primary, value: self.isContained )
 			.task ( id: self.scenePhase ) { if self.isPressed { self.isPressed.toggle ( ) } }
 			.exportBounds ( to: self.$bounds )
 		
 	}
 	
-	/// Creates a ``SDTapInteraction`` from an animation and some content.
+	/// Creates a ``SDTouchInteraction`` from an animation and some content.
 	///
 	/// - Parameters:
-	///   - animation: The animation curve to use for response values.
 	///   - content: The tappable content.
 	///
-	public init ( animation: Animation? = nil, @ViewBuilder _ content: @escaping ( ( isPressed: Bool, isContained: Bool, data: DragGesture.Value? ) ) -> Content ) {
-		
-		self.animation = animation
-		self.content = content
-		
-	}
+	public init ( @ViewBuilder _ content: @escaping ( ( isPressed: Bool, isContained: Bool, data: DragGesture.Value? ) ) -> Content ) { self.content = content }
 	
 }
 

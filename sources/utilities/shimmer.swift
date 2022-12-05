@@ -54,9 +54,9 @@ public struct SDShimmer: ViewModifier {
 	///
 	public func body ( content: Content ) -> some View {
 		
-		SDInterpolatedAnimation(from: 0.0, to: 1.0, with: self.timingCurve ?? self.defaults.animations.expoInOut ( duration: 4.0 ) .repeatForever ( autoreverses: false ) ) { animation in
+		SDInterpolatedAnimation ( from: 0.0, to: 1.0, with: self.timingCurve ?? self.defaults.animations.expoInOut ( duration: 4.0 ) .repeatForever ( autoreverses: false ) ) { animation in
 			
-			if !mask { content.overlay { self.shine ( content, phase: ( self.phase ?? animation.literal ) * 2.0 ) } } else { content.mask { self.shine ( content, phase: ( self.phase ?? animation.literal ) * 2.0 ) } }
+			if !mask { content.overlay { self.shine ( content, phase: ( self.phase?.truncatingRemainder ( dividingBy: 1.0 ) ?? animation.literal ) * 2.0 ) } } else { content.mask { self.shine ( content, phase: ( self.phase ?? animation.literal ) * 2.0 ) } }
 			
 		}
 		

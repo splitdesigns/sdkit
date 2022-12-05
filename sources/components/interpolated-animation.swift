@@ -15,6 +15,8 @@ import SwiftUI
 
 /// Interpolates an animation, passing the animation object as a parameter.
 ///
+/// - Warning: Reading animation literals is expensive.
+///
 @available ( iOS 16.0, * )
 public struct SDInterpolatedAnimation < Content: View > : View {
 	
@@ -30,9 +32,9 @@ public struct SDInterpolatedAnimation < Content: View > : View {
 	///
 	private let end: CGFloat?
 	
-	/// The bezier curve of the animation.
+	/// The timing curve for the animation.
 	///
-	private let bezier: Animation?
+	private let timingCurve: Animation?
 	
 	/// The view content.
 	///
@@ -46,11 +48,11 @@ public struct SDInterpolatedAnimation < Content: View > : View {
 	///
 	public var body: some View {
 		
-		self.content ( animation )
+		self.content ( self.animation )
 			.onAppear {
 				
 				if let start = self.start { self.animation.cache = start }
-				withAnimation ( bezier ?? defaults.animations.primary.repeatForever ( autoreverses: false ) ) { self.animation.target = end ?? 1.0 }
+				withAnimation ( self.timingCurve ?? self.defaults.animations.primary.repeatForever ( autoreverses: false ) ) { self.animation.target = self.end ?? 1.0 }
 				
 			}
 			.interpolateAnimation ( for: self.animation.target ) { self.animation.literal = $0 }
@@ -62,14 +64,14 @@ public struct SDInterpolatedAnimation < Content: View > : View {
 	/// - Parameters:
 	///   - from: The start value for the animation.
 	///   - to: The end value for the animation.
-	///   - with: The bezier curve for the animation.
+	///   - with: The timing curve for the animation.
 	///   - content: The content to display.
 	///
-	public init ( from start: CGFloat? = nil, to end: CGFloat? = nil, with bezier: Animation? = nil, @ViewBuilder content: @escaping ( SDTranspose ) -> Content ) {
+	public init ( from start: CGFloat? = nil, to end: CGFloat? = nil, with timingCurve: Animation? = nil, @ViewBuilder content: @escaping ( SDTranspose ) -> Content ) {
 		
 		self.start = start
 		self.end = end
-		self.bezier = bezier
+		self.timingCurve = timingCurve
 		self.content = content
 		
 	}

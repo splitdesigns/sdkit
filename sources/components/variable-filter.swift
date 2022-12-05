@@ -16,6 +16,7 @@ import SwiftUI
 /// A filter with progressively-increasing intensity.
 ///
 /// - Warning: Uses a private API.
+/// - Warning: ``SDVariableFilter`` is an experimental API, and is not intended for use in production.
 ///
 @available ( iOS 16.0, * )
 public struct SDVariableFilter: View {
@@ -81,6 +82,7 @@ public struct SDVariableFilter: View {
 					//  TODO: Fix layer intensity compounding calculations ( most are guesswork )
 					
 					brightness: 1.0 / CGFloat ( self.layers ) * ( self.filter.brightness ?? self.defaults.filters.brightness ),
+					clip: self.filter.clip ?? self.defaults.filters.clip,
 					contrast: 1.0 - intensity ( at: layer, for: 1.0 - ( self.filter.contrast ?? self.defaults.filters.contrast ), multiplier: 3.0 ),
 					grayscale: intensity ( at: layer, for: self.filter.grayscale ?? self.defaults.filters.grayscale, multiplier: 3.0 ),
 					invert: false,

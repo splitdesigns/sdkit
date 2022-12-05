@@ -16,8 +16,10 @@ import SwiftUI
 
 /// A gradient mesh with animatable distortion for creating visual effects.
 ///
+/// - Warning: ``SDMeshGradient`` is an experimental API, and performance heavy. Usage in production is not recommended.
+///
 @available ( iOS 16.0, * )
-public struct SDMeshGradient: View {
+public struct SDMeshGradient: View, Equatable {
 	
 	/// A collection of elements represented as a two-dimensional grid.
 	///
@@ -143,22 +145,18 @@ public struct SDMeshGradient: View {
 	public var body: some View {
 		
 		SceneView ( scene: self.scene )
-			.onAppear { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
-			.onChange ( of: self.phase ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: $0, fps: self.fps ) }
-			.onChange ( of: self.colors ) {
-				
-				self.materialize ( from: $0, width: self.width, height: self.height )
-				self.generate ( colors: $0, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps )
-				
-			}
-			.onChange ( of: self.amplitude ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: $0, phase: self.phase, fps: self.fps ) }
-			.onChange ( of: self.width ) { self.generate ( colors: self.colors, width: $0, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
-			.onChange ( of: self.height ) { self.generate ( colors: self.colors, width: self.width, height: $0, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
-			.onChange ( of: self.subdivisions ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: $0, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
-			.onChange ( of: self.distortion ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: $0, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
-			.onChange ( of: self.fps ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: $0 ) }
+			.task ( id: self ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
+			.onChange ( of: self.colors ) { self.materialize ( from: $0, width: self.width, height: self.height ) }
 		
 	}
+	
+	/// A comparator for equatable conformance.
+	///
+	/// - Parameters:
+	///   - lhs: The first value to compare.
+	///   - rhs: The second value to compare.
+	///
+	public static func == ( lhs: SDMeshGradient, rhs: SDMeshGradient ) -> Bool { return rhs.colors == lhs.colors && rhs.width == lhs.width && rhs.height == lhs.height && rhs.subdivisions == lhs.subdivisions && rhs.distortion == lhs.distortion && rhs.amplitude == lhs.amplitude && rhs.phase == lhs.phase && rhs.fps == lhs.fps }
 	
 	/// Creates and configures a matrix of control points.
 	///
