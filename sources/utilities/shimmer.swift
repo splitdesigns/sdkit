@@ -143,7 +143,7 @@ public extension View {
 		phase: CGFloat? = nil,
 		animation timingCurve: Animation? = nil
 		
-	) -> some View { self.modifier ( SDShimmer (
+	) -> some View { return self.modifier ( SDShimmer (
 		
 		color: color,
 		start: start,

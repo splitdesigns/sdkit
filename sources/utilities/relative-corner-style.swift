@@ -219,7 +219,7 @@ public extension View {
 		
 	) -> some View {
 		
-		self.modifier ( SDRelativeCornerStyle (
+		return self.modifier ( SDRelativeCornerStyle (
 			
 			subject: subject,
 			relative: relative,

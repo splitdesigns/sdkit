@@ -46,7 +46,7 @@ public extension View {
 	///
 	/// - Parameter content: The content to set as the foreground.
 	///
-	func foreground < OverlayContent: View > ( _ content: @escaping @autoclosure ( ) -> OverlayContent ) -> some View { self.modifier ( SDForeground < OverlayContent > ( content: content ( ) ) ) }
+	func foreground < OverlayContent: View > ( _ content: @escaping @autoclosure ( ) -> OverlayContent ) -> some View { return self.modifier ( SDForeground < OverlayContent > ( content: content ( ) ) ) }
 	
 }
 

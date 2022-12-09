@@ -68,7 +68,7 @@ public struct SDTouchInteraction < Content: View > : View {
 					}
 				
 			)
-			.onUpdate ( of: self.scenePhase ) { if self.isPressed { self.isPressed.toggle ( ) } }
+			.onMutation ( of: self.scenePhase ) { if self.isPressed { self.isPressed.toggle ( ) } }
 			.exportBounds ( to: self.$bounds )
 		
 	}

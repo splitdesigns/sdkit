@@ -145,7 +145,7 @@ public struct SDMeshGradient: View, Equatable {
 	public var body: some View {
 		
 		SceneView ( scene: self.scene )
-			.onUpdate ( of: self.colors, self.width, self.height, self.subdivisions, self.distortion, self.amplitude, self.phase, self.fps ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
+			.onMutation ( of: self.colors, self.width, self.height, self.subdivisions, self.distortion, self.amplitude, self.phase, self.fps ) { self.generate ( colors: self.colors, width: self.width, height: self.height, subdivisions: self.subdivisions, distortion: self.distortion, amplitude: self.amplitude, phase: self.phase, fps: self.fps ) }
 			.onChange ( of: self.colors ) { self.materialize ( from: $0, width: self.width, height: self.height ) }
 		
 	}

@@ -145,7 +145,7 @@ public extension View {
 		//	Set static defaults and environment value to updated object
 		
 		SDSystem.defaults = configuration
-		return environment ( \ .defaults, configuration )
+		return self.environment ( \ .defaults, configuration )
 		
 	}
 	

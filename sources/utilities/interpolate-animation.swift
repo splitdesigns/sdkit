@@ -38,7 +38,7 @@ private struct SDInterpolateAnimation < Value: VectorArithmetic > : ViewModifier
 	///
 	/// - Parameter content: The content to modify.
 	///
-	public func body ( content: Content ) -> some View { content.onUpdate ( of: self.animatableData ) {
+	public func body ( content: Content ) -> some View { content.onMutation ( of: self.animatableData ) {
 		
 		if let onUpdate = self.onUpdate { onUpdate ( self.animatableData ) }
 		if self.animatableData == self.value, let onCompletion = self.onCompletion { onCompletion ( ) }
@@ -79,7 +79,7 @@ public extension View {
 	///   - onUpdate: The closure to run when the animation updates.
 	///   - onCompletion: The closure to run when the animation is complete.
 	///
-	func interpolateAnimation < Value: VectorArithmetic > ( for value: Value, onUpdate: ( ( Value ) -> Void )? = nil, onCompletion: ( ( ) -> Void )? = nil ) -> some View { self.modifier ( SDInterpolateAnimation ( for: value, onUpdate: onUpdate, onCompletion: onCompletion ) ) }
+	func interpolateAnimation < Value: VectorArithmetic > ( for value: Value, onUpdate: ( ( Value ) -> Void )? = nil, onCompletion: ( ( ) -> Void )? = nil ) -> some View { return self.modifier ( SDInterpolateAnimation ( for: value, onUpdate: onUpdate, onCompletion: onCompletion ) ) }
 	
 }
 
