@@ -56,7 +56,7 @@ public struct SDAnimation < Content: View, Value: Equatable > : View, Identifiab
 	///   - lhs: The first value to compare.
 	///   - rhs: The second value to compare.
 	///
-	public static func == ( lhs: SDAnimation < Content, Value >, rhs: SDAnimation < Content, Value > ) -> Bool { return rhs.id == lhs.id }
+	public static func == ( lhs: SDAnimation < Content, Value >, rhs: SDAnimation < Content, Value > ) -> Bool { return lhs.id == rhs.id }
 	
 	/// A hasher for hashable conformance.
 	///

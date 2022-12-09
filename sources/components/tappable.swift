@@ -45,7 +45,7 @@ public struct SDTappable < Content: View > : View {
 				.shadow ( color: defaults.shadows.color, radius: defaults.shadows.radius )
 				.animation ( defaults.animations.expoOut ( duration: 0.5 ), value: response.isPressed )
 				.animation ( defaults.animations.expoOut ( duration: 0.5 ), value: response.isContained )
-				.task ( id: response.isPressed ) { if !response.isPressed && response.isContained { action ( ) } }
+				.onUpdate ( of: response.isPressed ) { if !response.isPressed && response.isContained { action ( ) } }
 			
 		}
 		

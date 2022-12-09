@@ -54,7 +54,7 @@ public struct SDAlternateAppIcon: ViewModifier {
     
     /// Triggers an icon update when the app enters the foreground.
     ///
-	public func body ( content: Content ) -> some View { content.task ( id: self.scenePhase ) { if self.scenePhase == .active {
+	public func body ( content: Content ) -> some View { content.onUpdate ( of: self.scenePhase ) { if self.scenePhase == .active {
                             
         //  Determine whether an alternate icon should be present
         
