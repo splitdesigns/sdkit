@@ -20,7 +20,7 @@ public struct SDStateObserver: ViewModifier {
 	
 	///	The state describing a value.
 	///
-	public enum ValueState: String, CaseIterable { case old, new }
+	public enum ValueState: String, CaseIterable { case unchanged, changed }
 	
 	/// The values to observe.
 	///
@@ -43,15 +43,16 @@ public struct SDStateObserver: ViewModifier {
 	public func body ( content: Content ) -> some View {
 		
 		content
-			.onChange ( of: self.values ) { _ in if self.useState == .old { self.action ( ) } else { self.isChanged = true } }
-			.onChange ( of: self.isChanged ) { if $0 {
+			.onChange ( of: self.values ) { _ in if self.useState == .unchanged { self.action ( ) } else { self.isChanged.toggle ( ) } }
+			.onChange ( of: self.isChanged ) { if $0 && useState == .changed {
 				
 				// Run the action on the next body invocation, and set the state to false
 				
 				self.action ( )
-				self.isChanged = false
+				self.isChanged.toggle ( )
 				
 			} }
+			.onAppear ( perform: self.action )
 		
 	}
 	
@@ -63,7 +64,7 @@ public struct SDStateObserver: ViewModifier {
 	///   - compare: Whether or not to compare the values for equality before performing the action.
 	///   - onChange: The action to perform when a value has changed.
 	///
-	public init ( for values: Any?..., usingState useState: Self.ValueState = .new, compare: Bool, onChange action: @escaping ( ) -> Void ) {
+	public init ( for values: Any?..., usingState useState: Self.ValueState = .changed, compare: Bool, onChange action: @escaping ( ) -> Void ) {
 		
 		self.values = .init ( repeating: .init ( nil, unique: !compare ), count: values.count ) .enumerated ( ) .map { .init ( values [ $0.offset ] ) }
 		self.useState = useState
@@ -85,7 +86,7 @@ public extension View {
 	///   - usingState: The state of the values to use in the action closure.
 	///   - perform: The action to run when an update is observed.
 	///
-	func onUpdate ( of values: Any?..., usingState useState: SDStateObserver.ValueState = .new, perform action: @escaping ( ) -> Void ) -> some View { return self.modifier ( SDStateObserver ( for: values, usingState: useState, compare: false, onChange: action ) ) }
+	func onUpdate ( of values: Any?..., usingState useState: SDStateObserver.ValueState = .changed, perform action: @escaping ( ) -> Void ) -> some View { return self.modifier ( SDStateObserver ( for: values, usingState: useState, compare: false, onChange: action ) ) }
 	
 	/// Performs an action when some values are created or mutated to a different value.
 	///
@@ -94,7 +95,7 @@ public extension View {
 	///   - usingState: The state of the values to use in the action closure.
 	///   - perform: The action to run when a mutation is observed.
 	///
-	func onMutation ( of values: Any?..., usingState useState: SDStateObserver.ValueState = .new, perform action: @escaping ( ) -> Void ) -> some View { return self.modifier ( SDStateObserver ( for: values, usingState: useState, compare: true, onChange: action ) ) }
+	func onMutation ( of values: Any?..., usingState useState: SDStateObserver.ValueState = .changed, perform action: @escaping ( ) -> Void ) -> some View { return self.modifier ( SDStateObserver ( for: values, usingState: useState, compare: true, onChange: action ) ) }
 	
 }
 
