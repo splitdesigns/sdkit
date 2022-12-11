@@ -1,6 +1,6 @@
 
 //
-//  SDKit: Press Interaction
+//  SDKit: Touch Interaction
 //  Developed by SPLIT Designs
 //
 
@@ -13,7 +13,7 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// A container for working with simple gestures.
+/// A container for implementing simple drag interactions.
 ///
 @available ( iOS 16.0, * )
 public struct SDTouchInteraction < Content: View > : View {
@@ -22,53 +22,46 @@ public struct SDTouchInteraction < Content: View > : View {
 	///
 	@Environment ( \ .scenePhase ) private var scenePhase
 	
-	/// The tappable content.
+	/// The interactive content.
 	///
-	private let content: ( ( isPressed: Bool, isContained: Bool, data: DragGesture.Value? ) ) -> Content
+	private let content: ( _ response: SDTouchInteractionResponse ) -> Content
 	
-	/// Whether or not the screen is being pressed.
-	///
-	@State private var isPressed: Bool = .init ( )
-	
-	/// The resulting drag gesture data from screen contact.
-	///
-	@State private var gestureData: DragGesture.Value? = nil
-	
-	/// The bounds of the tappable content.
+	/// The bounds of the interactive content.
 	///
 	@State private var bounds: CGRect = .init ( )
 	
-	/// Whether or not the drag is within the bounds of the tappable content.
+	/// The interaction response to pass to the content.
 	///
-	private var isContained: Bool { return self.gestureData?.location.x ?? .infinity >= 0.0 && self.gestureData?.location.x ?? .infinity <= self.bounds.width && self.gestureData?.location.y ?? .infinity >= 0.0 && self.gestureData?.location.y ?? .infinity <= self.bounds.height && scenePhase == .active }
+	@State private var response: SDTouchInteractionResponse = .init ( )
 	
-	/// Gets the bounds and gesture data of the content and interpolates animation values.
+	/// Calculates the bounds and gesture data for the interaction and passes it to the content.
 	///
 	public var body: some View {
 		
-		self.content ( ( self.isPressed, self.isContained, self.gestureData ) )
+		self.content ( self.response )
 			.gesture (
 				
-				DragGesture ( minimumDistance: 0.0 )
+				DragGesture ( minimumDistance: .zero )
 					.onChanged { gestureData in
 						
 						if self.scenePhase == .active {
 							
-							self.gestureData = gestureData
-							self.isPressed = true
+							self.response.data = gestureData
+							self.response.isPressed = true
 							
 						}
 						
 					}
 					.onEnded { gestureData in
 						
-						self.gestureData = gestureData
-						self.isPressed = false
+						self.response.data = gestureData
+						self.response.isPressed = false
 						
 					}
 				
 			)
-			.onUpdate ( of: self.scenePhase ) { _ in self.isPressed = false }
+			.onUpdate ( of: self.response.data?.location.x ?? .infinity >= .zero && self.response.data?.location.x ?? .infinity <= self.bounds.width && self.response.data?.location.y ?? .infinity >= .zero && self.response.data?.location.y ?? .infinity <= self.bounds.height && self.scenePhase == .active ) { self.response.isContained = $0 }
+			.onUpdate ( of: self.scenePhase ) { _ in self.response.isPressed = false }
 			.exportBounds ( to: self.$bounds )
 		
 	}
@@ -78,11 +71,33 @@ public struct SDTouchInteraction < Content: View > : View {
 	/// - Parameters:
 	///   - content: The tappable content.
 	///
-	public init ( @ViewBuilder _ content: @escaping ( ( isPressed: Bool, isContained: Bool, data: DragGesture.Value? ) ) -> Content ) { self.content = content }
+	public init ( @ViewBuilder _ content: @escaping ( _ response: SDTouchInteractionResponse ) -> Content ) { self.content = content }
+	
+}
+
+/// A gesture response for ``SDTouchInteraction``.
+///
+@available ( iOS 16.0, * )
+public struct SDTouchInteractionResponse: Equatable {
+	
+	/// Whether or not the screen is being pressed.
+	///
+	public var isPressed: Bool = false
+	
+	/// Whether or not the drag is within the bounds of the tappable content.
+	///
+	public var isContained: Bool = false
+	
+	/// The resulting drag gesture data from screen contact.
+	///
+	public var data: DragGesture.Value?
+	
+	/// Creates an ``SDTouchInteractionResponse``.
+	///
+	public init ( ) { }
 	
 }
 
 //
 //
-
 
