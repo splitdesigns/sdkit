@@ -13,7 +13,7 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// A multipurpose box for any value. Uses a description of the value's reflected hierarchy for equatability, or the UUID if initialized as unique.
+/// A type-erased container that uses a description of the value's reflected hierarchy for equatability, or the identifier if the container is initialized as unique.
 ///
 @available ( iOS 16.0, * )
 public struct SDBox: Equatable, Hashable, Identifiable {
@@ -22,13 +22,13 @@ public struct SDBox: Equatable, Hashable, Identifiable {
 	///
 	public let value: Any?
 	
-	///   - unique: Whether or not to use the UUID for equatability.
-	///
-	private let unique: Bool
-	
 	/// An identifier for the view.
 	///
-	public var id: String { return self.unique ? UUID ( ) .uuidString : ( [ "destructuredValue": destructure ( value ) ] as! [ String: Any ] ) .description }
+	public let id: UUID = .init ( )
+	
+	/// A description of the value's reflected hierarchy, or the identifier of the box.
+	///
+	public let valueSignature: String
 	
 	/// A comparator for equatable conformance.
 	///
@@ -36,7 +36,7 @@ public struct SDBox: Equatable, Hashable, Identifiable {
 	///   - lhs: The first value to compare.
 	///   - rhs: The second value to compare.
 	///
-	public static func == ( lhs: SDBox, rhs: SDBox ) -> Bool { return lhs.id == rhs.id }
+	public static func == ( lhs: SDBox, rhs: SDBox ) -> Bool { return lhs.valueSignature == rhs.valueSignature }
 	
 	/// A hasher for hashable conformance.
 	///
@@ -48,12 +48,12 @@ public struct SDBox: Equatable, Hashable, Identifiable {
 	///
 	/// - Parameters:
 	///   - value: The value to containerize.
-	///   - unique: Whether or not to use the UUID for equatability.
+	///   - unique: Whether or not to use the view's identifier for equatability.
 	///
 	public init ( _ value: Any?, unique: Bool = false ) {
 		
 		self.value = value
-		self.unique = unique
+		self.valueSignature = unique ? self.id.uuidString : ( [ "signature": destructure ( value ) ] as! [ String: Any ] ) .description
 		
 	}
 	

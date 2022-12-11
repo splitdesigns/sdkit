@@ -35,7 +35,7 @@ public struct SDExportBounds: ViewModifier {
 				
 				SDNothing ( )
 					.frame ( maxWidth: .infinity, maxHeight: .infinity )
-					.onMutation ( of: proxy.frame ( in: self.coordinateSpace ) ) { self.bounds = proxy.frame ( in: self.coordinateSpace ) }
+					.onUpdate ( of: proxy.frame ( in: self.coordinateSpace ) ) { self.bounds = $0 }
 
 			} )
 		

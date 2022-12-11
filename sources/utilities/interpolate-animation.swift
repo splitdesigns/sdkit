@@ -38,10 +38,10 @@ private struct SDInterpolateAnimation < Value: VectorArithmetic > : ViewModifier
 	///
 	/// - Parameter content: The content to modify.
 	///
-	public func body ( content: Content ) -> some View { content.onMutation ( of: self.animatableData ) {
+	public func body ( content: Content ) -> some View { content.onUpdate ( of: self.animatableData ) {
 		
-		if let onUpdate = self.onUpdate { onUpdate ( self.animatableData ) }
-		if self.animatableData == self.value, let onCompletion = self.onCompletion { onCompletion ( ) }
+		if let onUpdate = self.onUpdate { onUpdate ( $0 ) }
+		if $0 == self.value, let onCompletion = self.onCompletion { onCompletion ( ) }
 		
 	} }
 	
