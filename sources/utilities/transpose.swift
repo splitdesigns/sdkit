@@ -6,7 +6,7 @@
 
 //  MARK: - Imports
 
-import Foundation
+import SwiftUI
 
 //
 //
@@ -24,7 +24,16 @@ public struct SDTranspose: Hashable, Equatable {
 	
 	/// The value to animate to. Set this property with an animation.
 	///
-	public var target: CGFloat = 0.0 { didSet { self.cache = oldValue } }
+	public var target: CGFloat = .zero { didSet { self.cache = oldValue } willSet {
+		
+		self.static = newValue
+//		self.literal = newValue
+		
+	} }
+	
+	/// A static representation of the target value.
+	///
+	public var `static`: CGFloat = .init ( )
 	
 	/// A literal interpolation of the current value. Set this property in the setter of an `animatableData` instance.
 	///
@@ -32,7 +41,7 @@ public struct SDTranspose: Hashable, Equatable {
 	
 	/// The previous animation target. Set this as the starting value of the animation. Consecutive target changes will set this automatically.
 	///
-	public var cache: CGFloat = 0.0
+	public var cache: CGFloat = .init ( )
 	
 	/// Indicates the state of the animation.
 	///

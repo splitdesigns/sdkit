@@ -89,44 +89,6 @@ public struct SDYStack < Content: View > : View {
     
 }
 
-/// A scrollable view that wraps an ``SDXStack`` or ``SDYStack``, depending on the orientation.
-///
-@available ( iOS 16.0, * )
-public struct SDSStack < Content: View > : View {
-
-    /// The scroll view’s scrollable axis. The default axis is the vertical axis.
-    ///
-	private let axis: Axis.Set
-    
-    /// A Boolean value that indicates whether the scroll view displays the scrollable component of the content offset, in a way suitable for the platform. The default value for this parameter is false.
-    ///
-    private let showsIndicators: Bool
-    
-    /// The view builder that creates the scrollable view.
-    ///
-    private let content: ( ) -> Content
-    
-    /// Creates a `ScrollView` with an embedded ``SDXStack`` and ``SDYStack``.
-    ///
-	public var body: some View { return ScrollView ( self.axis, showsIndicators: self.showsIndicators ) { if self.axis == .horizontal { SDXStack { self.content ( ) } } else { SDYStack { self.content ( ) } } } }
-    
-    /// Creates a ``SDSStack`` from some sensible defaults.
-	///
-	/// - Parameters:
-	///   - axis: Sets the orientation of the stack.
-	///   - showsIndicators: Sets the indicator visibility for the stack.
-	///   - content: Contains the content of the stack.
-    ///
-	public init ( axis: Axis.Set = .vertical, showsIndicators: Bool = false, @ViewBuilder content: @escaping ( ) -> Content ) {
-        
-        self.axis = axis
-        self.showsIndicators = showsIndicators
-        self.content = content
-        
-    }
-
-}
-
 /// A flexible space that expands along the major axis of its containing stack layout, or on both axes if not contained in a stack. Minimum spacing defaults to zero.
 ///
 @available ( iOS 16.0, * )

@@ -97,25 +97,25 @@ public extension FloatingPoint {
 	///
 	/// - Parameter in: The range to wrap the value in.
 	///
-	func wrapped ( in range: Range < Self > ) -> Self { return self.wrapped (lowerBound: range.lowerBound, upperBound: range.upperBound ) }
+	func wrapped ( in range: Range < Self > ) -> Self { return self.wrapped ( lowerBound: range.lowerBound, upperBound: range.upperBound ) }
 	
 	/// Wraps the value within the specified range.
 	///
 	/// - Parameter in: The range to wrap the value in.
 	///
-	mutating func wrap ( in range: Range < Self > ) -> Void { return self = self.wrapped (lowerBound: range.lowerBound, upperBound: range.upperBound ) }
+	mutating func wrap ( in range: Range < Self > ) -> Void { return self = self.wrapped ( lowerBound: range.lowerBound, upperBound: range.upperBound ) }
 	
 	/// Wraps the value within the specified range.
 	///
 	/// - Parameter in: The range to wrap the value in.
 	///
-	func wrapped ( in range: ClosedRange < Self > ) -> Self { return self.wrapped (lowerBound: range.lowerBound, upperBound: range.upperBound ) }
+	func wrapped ( in range: ClosedRange < Self > ) -> Self { return self.wrapped ( lowerBound: range.lowerBound, upperBound: range.upperBound ) }
 	
 	/// Wraps the value within the specified range.
 	///
 	/// - Parameter in: The range to wrap the value in.
 	///
-	mutating func wrap ( in range: ClosedRange < Self > ) -> Void { return self = self.wrapped (lowerBound: range.lowerBound, upperBound: range.upperBound ) }
+	mutating func wrap ( in range: ClosedRange < Self > ) -> Void { return self = self.wrapped ( lowerBound: range.lowerBound, upperBound: range.upperBound ) }
 	
 	/// Interpolates a value between a lower bound and an upper bound.
 	///
@@ -145,7 +145,19 @@ public extension Comparable {
 	///
 	/// - Parameter in: The range to clamp within.
 	///
-	func clamped ( in range: ClosedRange < Self > ) -> Self { return min ( max ( self, range.lowerBound ), range.upperBound ) }
+	private func _clamped ( in range: ClosedRange < Self > ) -> Self { return min ( max ( self, range.lowerBound ), range.upperBound ) }
+	
+	/// Adjusts a value to fall within a specified range.
+	///
+	/// - Parameter in: The range to clamp within.
+	///
+	func clamped ( in range: ClosedRange < Self > ) -> Self { return self._clamped ( in: range ) }
+	
+	/// Adjusts a value to fall within a specified range.
+	///
+	/// - Parameter in: The range to clamp within.
+	///
+	mutating func clamp ( in range: ClosedRange < Self > ) -> Void { return self = self._clamped ( in: range ) }
 	
 }
 
@@ -156,7 +168,19 @@ public extension Strideable where Stride: SignedInteger {
 	///
 	/// - Parameter in: The range to clamp within.
 	///
-	func clamped ( in range: CountableClosedRange < Self > ) -> Self { return min ( max ( self, range.lowerBound ), range.upperBound ) }
+	private func _clamped ( in range: CountableClosedRange < Self > ) -> Self { return min ( max ( self, range.lowerBound ), range.upperBound ) }
+	
+	/// Adjusts a value to fall within a specified range.
+	///
+	/// - Parameter in: The range to clamp within.
+	///
+	func clamped ( in range: CountableClosedRange < Self > ) -> Self { return self._clamped ( in: range ) }
+	
+	/// Adjusts a value to fall within a specified range.
+	///
+	/// - Parameter in: The range to clamp within.
+	///
+	mutating func clamp ( in range: CountableClosedRange < Self > ) -> Void { return self = self._clamped ( in: range ) }
 	
 }
 
