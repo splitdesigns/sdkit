@@ -45,7 +45,7 @@ import SwiftUI
 @available ( iOS 16.0, * )
 public struct SDDefaults {
 	
-	/// Prevents the struct from being initialized.
+	/// Prevents the structure from being initialized.
 	///
 	private init ( ) { }
 
@@ -79,7 +79,7 @@ public extension SDDefaults {
 		///
 		public static var background: SDSchemeColor = .init ( light: .white, dark: .black )
 		
-		/// Prevents the struct from being initialized.
+		/// Prevents the structure from being initialized.
 		///
 		private init ( ) { }
 		
@@ -88,7 +88,40 @@ public extension SDDefaults {
 }
 
 @available ( iOS 16.0, * )
-public extension SDDefaults { }
+public extension SDDefaults {
+	
+	/// A collection of fonts.
+	///
+	struct Fonts {
+		
+		/// Accepts a font style, and returns a font to use for primary text. See ``SDFontStyle`` for more info.
+		///
+		public static var primary: ( _ style: SDFontStyle ) -> Font = { return .custom ( .init ( ), size: $0.size ) }
+
+		/// Accepts a font style, and returns a font to use for secondary text. See ``SDFontStyle`` for more info.
+		///
+		public static var secondary: ( _ style: SDFontStyle ) -> Font = { return .custom ( .init ( ), size: $0.size ) .monospaced ( ) }
+		
+		/// Prevents the structure from being initialized.
+		///
+		private init ( ) { }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	struct NewEntry {
+		
+		/// Prevents the structure from being initialized.
+		///
+		private init ( ) { }
+		
+	}
+	
+}
 
 //
 //
