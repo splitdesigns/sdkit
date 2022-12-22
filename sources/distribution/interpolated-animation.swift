@@ -17,6 +17,10 @@ import SwiftUI
 ///
 @available ( iOS 16.0, * )
 public struct SDInterpolatedAnimation < Content: View > : View {
+	
+	/// Access to the defaults object.
+	///
+	@EnvironmentObject private var defaults: SDDefaults
 
 	/// The start value for the animation.
 	///
@@ -51,7 +55,7 @@ public struct SDInterpolatedAnimation < Content: View > : View {
 				
 				//	Start the animation
 				
-				withAnimation ( self.timingCurve ?? SDDefaults.Animations.primary ( 1.0 ) .repeatForever ( autoreverses: false ) ) { self.animation.target = self.end ?? 1.0 }
+				withAnimation ( self.timingCurve ?? self.defaults.animations.primary ( 1.0 ) .repeatForever ( autoreverses: false ) ) { self.animation.target = self.end ?? 1.0 }
 
 			}
 			.interpolateAnimation ( for: self.animation.target ) { self.animation.literal = $0 }

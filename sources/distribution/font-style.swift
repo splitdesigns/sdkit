@@ -19,17 +19,17 @@ import SwiftUI
 ///
 /// To override a default font, provide a closure that initializes and returns a font using the provided style:
 ///
-/// 	SDDefaults.Fonts.primary = { return .custom ( "Karla", size: $0.size ) }
+/// 	self.defaults.fonts.primary = { return .custom ( "Karla", size: $0.size ) }
 ///
 /// To use a default font, simply call the closure with the style that you would like to use:
 ///
 /// 	Text ( "Hello, world!" )
-/// 		.font ( SDDefaults.Fonts.primary ( .body ) )
+/// 		.font ( self.defaults.fonts.primary ( .body ) )
 ///
 /// You can also initialize a custom style:
 ///
 /// 	Text ( "Hello, world!" )
-/// 		.font ( SDDefaults.Fonts.primary ( .init ( size: 32.0 ) )
+/// 		.font ( self.defaults.fonts.primary ( .init ( size: 32.0 ) )
 ///
 /// Or, extend ``SDFontStyle`` to include your own predefined style:
 ///

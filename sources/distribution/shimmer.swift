@@ -18,6 +18,10 @@ import SwiftUI
 @available ( iOS 16.0, * )
 public struct SDShimmer: ViewModifier {
 	
+	/// Access to the defaults object.
+	///
+	@EnvironmentObject private var defaults: SDDefaults
+	
 	/// The color of the shine.
 	///
 	private let color: Color?
@@ -44,7 +48,7 @@ public struct SDShimmer: ViewModifier {
 	
 	/// Apply the shine as a mask.
 	///
-	private var mask: Bool { return ( self.color ?? SDDefaults.Colors.background.auto ) == .clear }
+	private var mask: Bool { return ( self.color ?? self.defaults.colors.background.auto ) == .clear }
 	
 	/// Overlays or masks a simulated shine on some content.
 	///
@@ -69,7 +73,7 @@ public struct SDShimmer: ViewModifier {
 		LinearGradient ( gradient: .init ( stops: [
 			
 			.init ( color: !self.mask ? .clear : .black, location: phase - 1.0 ),
-			.init ( color: !self.mask ? ( self.color ?? SDDefaults.Colors.background.auto ) : .clear, location: phase - 0.5 ),
+			.init ( color: !self.mask ? ( self.color ?? self.defaults.colors.background.auto ) : .clear, location: phase - 0.5 ),
 			.init ( color: !self.mask ? .clear : .black, location: phase )
 			
 		] ), startPoint: self.startPoint, endPoint: self.endPoint )

@@ -39,7 +39,7 @@ import SwiftUI
 ///					.append { self.offset = 0.0 }
 ///					.repeat ( times: 2 )
 ///					.wait ( for: 2.0 )
-///					.set ( configuration: .init ( duration: 2.0, delay: 1.0, timingCurve: { return SDDefaults.Animations.primary ( $0 ) } ) )
+///					.set ( configuration: .init ( duration: 2.0, delay: 1.0, timingCurve: { return self.defaults.animations.primary ( $0 ) } ) )
 ///					.append { self.offset = 64.0 }
 ///					.append ( with: .init ( duration: 4.0, delay: 1.0 ) ) { self.offset = -64.0 }
 ///					.append { self.offset = 0.0 }
