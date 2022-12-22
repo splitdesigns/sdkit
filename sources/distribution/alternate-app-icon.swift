@@ -96,12 +96,11 @@ public struct SDAlternateAppIcon: ViewModifier {
 		//  Retrieve and call the method
 		
 		unsafeBitCast ( UIApplication.shared.method ( for: NSSelectorFromString ( setAlternateIconNameKey ) ), to: ( @convention ( c ) ( NSObject, Selector, NSString?, @escaping ( NSError ) -> Void ) -> Void ) .self ) ( UIApplication.shared, NSSelectorFromString ( setAlternateIconNameKey ), icon as NSString?, { _ in } )
-		
 		return
 				
 	}
     
-    /// Creates an ``SDAlternateAppIcon``.
+    /// Creates an ``SDAlternateAppIcon`` instance from an icon identifier and a toggle for color scheme switching.
     ///
 	/// - Parameters:
 	///   - named: The identifier for the alternate icon specified in the `info.plist` file.

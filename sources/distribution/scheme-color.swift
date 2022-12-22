@@ -44,7 +44,7 @@ public struct SDSchemeColor {
     ///
 	public var auto: Color { .init ( uiColor: UIColor { $0.userInterfaceStyle == .light ? UIColor ( self.light ) : UIColor ( self.dark ) } ) }
     
-    /// Creates a ``SDSchemeColor`` from a color representing each interface style.
+    /// Creates a ``SDSchemeColor`` instance from a color representing each interface style.
 	///
 	/// - Parameters:
 	///   - light: A light interpretation of the scheme color.

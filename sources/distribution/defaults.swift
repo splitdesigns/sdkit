@@ -13,7 +13,7 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// A collection of preferences powering ``SDKit``.
+/// A collection of preferences powering ``SDKit``. Defaults are meant to be configured during development, and not to be used as state.
 ///
 /// To override a value, modify it within the initializer of your app structure.
 ///
@@ -59,7 +59,7 @@ public struct SDDefaults {
 @available ( iOS 16.0, * )
 public extension SDDefaults {
 	
-	/// A collection of colors.
+	/// A collection of color preferences.
 	/// 
 	struct Colors {
 		
@@ -90,15 +90,19 @@ public extension SDDefaults {
 @available ( iOS 16.0, * )
 public extension SDDefaults {
 	
-	/// A collection of fonts.
+	/// A collection of font preferences.
 	///
 	struct Fonts {
 		
 		/// Accepts a font style, and returns a font to use for primary text. See ``SDFontStyle`` for more info.
 		///
+		/// - Parameter style: The font style to use.
+		///
 		public static var primary: ( _ style: SDFontStyle ) -> Font = { return .custom ( .init ( ), size: $0.size ) }
 
 		/// Accepts a font style, and returns a font to use for secondary text. See ``SDFontStyle`` for more info.
+		///
+		/// - Parameter style: The font style to use.
 		///
 		public static var secondary: ( _ style: SDFontStyle ) -> Font = { return .custom ( .init ( ), size: $0.size ) .monospaced ( ) }
 		
@@ -113,6 +117,35 @@ public extension SDDefaults {
 @available ( iOS 16.0, * )
 public extension SDDefaults {
 	
+	/// A collection of animation preferences.
+	///
+	struct Animations {
+		
+		/// The timing curve to use for primary animations.
+		///
+		/// - Parameter duration: The duration of the animation.
+		///
+		public static var primary: ( _ duration: CGFloat ) -> Animation = { return .easeOut ( duration: $0 ) }
+		
+		/// The timing curve to use for secondary animations.
+		///
+		/// - Parameter duration: The duration of the animation.
+		///
+		public static var secondary: ( _ duration: CGFloat ) -> Animation = { return .easeInOut ( duration: $0 ) }
+		
+		/// Prevents the structure from being initialized.
+		///
+		private init ( ) { }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// Desc.
+	///
 	struct NewEntry {
 		
 		/// Prevents the structure from being initialized.

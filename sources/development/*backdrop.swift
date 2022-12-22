@@ -19,15 +19,15 @@
 /////
 //@available ( iOS 16.0, * )
 //final public class SDUIBackdrop: UIView {
-//	
+//
 //	/// The selector to call from Objective-C.
 //	///
-//	private static let caBackdropLayerKey: String = { [ "Layer", "Backdrop", "CA" ] .reversed ( ) .joined ( ) } ( )
-//	
+//	private static let selector: String = { [ "Layer", "Backdrop", "CA" ] .reversed ( ) .joined ( ) } ( )
+//
 //	/// Gets the `CABackdropLayer` class.
 //	///
-//	override public class var layerClass: AnyClass { NSClassFromString ( self.caBackdropLayerKey ) ?? CALayer.self }
-//	
+//	override public class var layerClass: AnyClass { NSClassFromString ( self.selector ) ?? CALayer.self }
+//
 //}
 //
 ////
@@ -41,15 +41,15 @@
 /////
 //@available ( iOS 16.0, * )
 //public struct SDBackdrop: UIViewRepresentable {
-//	
-//	/// Creates the view object and configures its initial state
+//
+//	/// Creates the UI view.
 //	///
 //	public func makeUIView ( context: Context ) -> SDUIBackdrop { SDUIBackdrop ( ) }
-//	
-//	/// Updates a UI view.
+//
+//	/// Updates the UI view.
 //	///
 //	public func updateUIView ( _ uiView: SDUIBackdrop, context: Context ) { }
-//	
+//
 //}
 //
 ////

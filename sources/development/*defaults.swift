@@ -192,41 +192,7 @@
 //	}
 //	
 //}
-//
-//@available ( iOS 16.0, * )
-//public extension SDDefaultsOld {
-//	
-//	/// A collection of animation curves.
-//	///
-//	struct Animations {
-//		
-//		/// The animation to use for primary transitions.
-//		///
-//		public var primary: Animation = .easeOut
-//		
-//		/// The animation to use for secondary transitions.
-//		///
-//		public var secondary: Animation = .easeInOut
-//		
-//		/// An expo-out animation curve with a custom duration.
-//		///
-//		/// - Parameter duration: The length of the animation.
-//		///
-//		public func expoOut ( duration: CGFloat = 1.0 ) -> Animation { return .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: duration ) }
-//		
-//		/// An expo-in-out animation curve with a custom duration.
-//		///
-//		/// - Parameter duration: The length of the animation.
-//		///
-//		public func expoInOut ( duration: CGFloat = 1.0 ) -> Animation { return .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: duration ) }
-//		
-//		/// Creates a ``Animations`` instance.
-//		///
-//		fileprivate init ( ) { }
-//		
-//	}
-//	
-//}
+
 //
 //
 //@available ( iOS 16.0, * )

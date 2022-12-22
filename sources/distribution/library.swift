@@ -96,6 +96,35 @@ public extension SDLibrary {
 @available ( iOS 16.0, * )
 public extension SDLibrary {
 	
+	/// A collection of animations.
+	///
+	struct Animations {
+		
+		/// An expo-out timing curve with a custom duration.
+		///
+		/// - Parameter duration: The length of the animation.
+		///
+		public static func expoOut ( duration: CGFloat = 1.0 ) -> Animation { return .timingCurve ( 0.125, 1.0, 0.25, 1.0, duration: duration ) }
+		
+		/// An expo-in-out timing curve with a custom duration.
+		///
+		/// - Parameter duration: The length of the animation.
+		///
+		public static func expoInOut ( duration: CGFloat = 1.0 ) -> Animation { return .timingCurve ( 0.875, 0.0, 0.125, 1.0, duration: duration ) }
+		
+		/// Prevents the structure from being initialized.
+		///
+		private init ( ) { }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDLibrary {
+	
+	/// Desc.
+	///
 	struct NewEntry {
 		
 		/// Prevents the structure from being initialized.
