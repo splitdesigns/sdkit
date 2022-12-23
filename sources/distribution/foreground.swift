@@ -24,7 +24,7 @@ public struct SDForeground < OverlayContent: View > : ViewModifier {
 	
 	/// Applies a masked overlay to the modified view.
 	///
-	public func body ( content: Content ) -> some View { content.foregroundColor ( .clear ) .overlay { self.content ( ) .mask ( content ) .allowsHitTesting ( false ) } }
+	public func body ( content: Content ) -> some View { content.foregroundStyle ( .clear ) .overlay { self.content ( ) .mask ( content ) .allowsHitTesting ( false ) } }
 	
 	/// Creates an ``SDForeground`` instance from some content.
 	///

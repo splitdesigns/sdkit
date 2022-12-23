@@ -173,52 +173,6 @@
 
 //
 //@available ( iOS 16.0, * )
-//public extension SDDefaultsOld {
-//	
-//	/// A collection of border properties.
-//	///
-//	struct Borders {
-//		
-//		/// A color to use for borders.
-//		///
-//		public var color: Color = SDDefaultsOld.Colors ( ) .accent.auto.opacity ( 0.25 )
-//		
-//		/// A stroke style to use for borders.
-//		///
-//		public var style: StrokeStyle = .init ( lineWidth: 0.0 )
-//		
-//		/// Creates a ``Borders`` instance.
-//		///
-//		fileprivate init ( ) { }
-//		
-//	}
-//	
-//}
-//
-//@available ( iOS 16.0, * )
-//public extension SDDefaultsOld {
-//	
-//	/// A collection of shadow properties.
-//	///
-//	struct Shadows {
-//		
-//		/// A color to use for shadows.
-//		///
-//		public var color: Color = SDDefaultsOld.Colors ( ) .accent.auto
-//		
-//		/// A radius to use for borders.
-//		///
-//		public var radius: CGFloat = 64.0
-//		
-//		/// Creates a ``Shadows`` instance.
-//		///
-//		fileprivate init ( ) { }
-//		
-//	}
-//	
-//}
-//
-//@available ( iOS 16.0, * )
 //public extension SDDefaultsOld { }
 //
 ////

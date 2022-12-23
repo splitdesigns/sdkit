@@ -77,6 +77,10 @@ public final class SDDefaults: ObservableObject {
 	///
 	@Published public var metadata: SDDefaults.Metadata = .init ( )
 	
+	/// A collection of optimization preferences.
+	///
+	@Published public var optimizations: SDDefaults.Optimizations = .init ( )
+	
 	/// A collection of color preferences.
 	///
 	@Published public var colors: SDDefaults.Colors = .init ( )
@@ -92,6 +96,18 @@ public final class SDDefaults: ObservableObject {
 	/// A collection of filter preferences.
 	///
 	@Published public var filters: SDDefaults.Filters = .init ( )
+	
+	/// A collection of corner preferences.
+	///
+	@Published public var corners: SDDefaults.Corners = .init ( )
+	
+	/// A collection of border preferences.
+	///
+	@Published public var borders: SDDefaults.Borders = .init ( )
+	
+	/// A collection of shadow preferences.
+	///
+	@Published public var shadows: SDDefaults.Shadows = .init ( )
 	
 	/// Creates an ``SDDefaults`` instance.
 	///
@@ -136,6 +152,25 @@ public extension SDDefaults {
 
 	}
 
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// A collection of optimization preferences.
+	///
+	struct Optimizations {
+		
+		/// Antialias all view modifications.
+		///
+		public var antialiasing: Bool = true
+		
+		/// Creates an ``SDDefaults/Optimizations`` instance.
+		///
+		fileprivate init ( ) { }
+		
+	}
+	
 }
 
 @available ( iOS 16.0, * )
@@ -271,6 +306,83 @@ public extension SDDefaults {
 		public var clip: Bool = true
 
 		/// Creates an ``SDDefaults/Filters`` instance.
+		///
+		fileprivate init ( ) { }
+
+	}
+
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// A collection of corner preferences.
+	///
+	struct Corners {
+		
+		/// The radius range to use for corners.
+		///
+		public var radiusRange: ClosedRange < CGFloat > = .zero ... .infinity
+		
+		/// The style to use for corners.
+		///
+		public var style: RoundedCornerStyle = .continuous
+		
+		/// Creates an ``SDDefaults/Corners`` instance.
+		///
+		fileprivate init ( ) { }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// A collection of border preferences.
+	///
+	struct Borders {
+		
+		/// The color to use for borders.
+		///
+		public var color: SDSchemeColor = .init ( light: .accentColor.opacity ( 0.25 ), dark: .accentColor.opacity ( 0.25 ) )
+		
+		/// The stroke style to use for borders.
+		///
+		public var style: StrokeStyle = .init ( lineWidth: .zero )
+		
+		/// Creates an ``SDDefaults/Borders`` instance.
+		///
+		fileprivate init ( ) { }
+		
+	}
+	
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+
+	/// A collection of shadow preferences.
+	///
+	struct Shadows {
+		
+		/// The alignment to use for shadows.
+		///
+		public var alignment: SDRelativeCornerStyle.ShadowAlignment = .drop
+
+		/// The color to use for shadows.
+		///
+		public var color: SDSchemeColor = .init ( light: SDLibrary.Colors.main.light.opacity ( 0.25 ), dark: SDLibrary.Colors.main.dark.opacity ( 0.25 ) )
+
+		/// The radius to use for shadows.
+		///
+		public var radius: CGFloat = 32.0
+		
+		/// The offset to use for shadows.
+		///
+		public var offset: CGSize = .zero
+
+		/// Creates an ``SDDefaults/Shadows`` instance.
 		///
 		fileprivate init ( ) { }
 

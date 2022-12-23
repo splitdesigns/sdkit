@@ -27,7 +27,7 @@ final public class SDUIBackdrop: UIView {
 	/// Gets the `CABackdropLayer` class.
 	///
 	override public class var layerClass: AnyClass { NSClassFromString ( self.selector ) ?? CALayer.self }
-
+	
 }
 
 //
@@ -49,6 +49,10 @@ public struct SDBackdrop: UIViewRepresentable {
 	/// Updates the UI view.
 	///
 	public func updateUIView ( _ uiView: SDUIBackdrop, context: Context ) { }
+	
+	/// Creates an ``SDBackdrop`` instance.
+	///
+	public init ( ) { }
 
 }
 

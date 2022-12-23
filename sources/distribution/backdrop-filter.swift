@@ -77,7 +77,7 @@ public struct SDBackdropFilter: View {
 			.opacity ( self.opacity ?? self.defaults.filters.opacity )
 			.overlay ( self.tint ?? self.defaults.filters.tint.auto )
 			.if ( self.invert ?? self.defaults.filters.invert ) { $0.colorInvert ( ) }
-			.if ( self.clip ?? self.defaults.filters.clip ) { $0.clipped ( antialiased: true ) }
+			.if ( self.clip ?? self.defaults.filters.clip ) { $0.clipped ( antialiased: self.defaults.optimizations.antialiasing ) }
 		
 	}
 	

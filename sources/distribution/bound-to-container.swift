@@ -32,7 +32,7 @@ public struct SDBoundToContainer: ViewModifier {
 	
 	///	The bounds of the container.
 	///
-	@State private var bounds: CGRect?
+	@State private var bounds: CGRect = .init ( )
 	
 	/// Uses a geometry reader to calculate the bounds of the container, and explicitly frames the content to those bounds.
 	///
@@ -40,7 +40,7 @@ public struct SDBoundToContainer: ViewModifier {
 		
 		SDNothing ( expand: true )
 			.exportBounds ( to: self.$bounds )
-			.overlay { content.frame ( width: self.bounds?.size.width ?? .none, height: self.bounds?.size.height ?? .none ) }
+			.overlay { content.frame ( width: self.bounds.size.width, height: self.bounds.size.height ) }
 		
 	}
 	

@@ -17,13 +17,13 @@ import SwiftUI
 ///
 ///	To use, export the bounds to a `CGRect`.
 ///
-/// 	@State private var bounds: CGRect?
+/// 	@State private var bounds: CGRect = .init ( )
 ///
 /// 	...
 ///
 /// 	Text ( "Hello, world!" )
 /// 		.exportBounds ( to: self.$bounds )
-/// 		.onUpdate ( of: self.bounds ) { print ( $0?.size ?? .zero ) }
+/// 		.onUpdate ( of: self.bounds ) { print ( $0.size ) }
 ///
 @available ( iOS 16.0, * )
 public struct SDExportBounds: ViewModifier {
@@ -34,7 +34,7 @@ public struct SDExportBounds: ViewModifier {
 	
 	/// The bounds to export.
 	///
-	@Binding public private ( set ) var bounds: CGRect?
+	@Binding public private ( set ) var bounds: CGRect
 	
 	/// Applies an overlay with a geometry reader that calculates the dimensions of the view.
 	///
@@ -57,7 +57,7 @@ public struct SDExportBounds: ViewModifier {
 	///   - from: The coordinate space to calculate the bounds in.
 	///   - to: The bounds to export.
 	///
-	public init ( from coordinateSpace: CoordinateSpace = .local, to bounds: Binding < CGRect? > ) {
+	public init ( from coordinateSpace: CoordinateSpace = .local, to bounds: Binding < CGRect > ) {
 		
 		self.coordinateSpace = coordinateSpace
 		self._bounds = bounds
@@ -80,7 +80,7 @@ public extension View {
 	///   - from: The coordinate space to calculate the bounds in.
 	///   - to: The bounds to export.
 	///
-	func exportBounds ( from coordinateSpace: CoordinateSpace = .global, to bounds: Binding < CGRect? > ) -> some View { self.modifier ( SDExportBounds ( from: coordinateSpace, to: bounds ) ) }
+	func exportBounds ( from coordinateSpace: CoordinateSpace = .global, to bounds: Binding < CGRect > ) -> some View { self.modifier ( SDExportBounds ( from: coordinateSpace, to: bounds ) ) }
 	
 }
 
