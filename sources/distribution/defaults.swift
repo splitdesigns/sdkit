@@ -209,6 +209,10 @@ public extension SDDefaults {
 	
 	/// A collection of font preferences.
 	///
+	/// SwiftUI offers support for variable fonts, so it is no longer necessary to add an entire family of static font files to your bundle.
+	///
+	///	If you choose to use a static font, add the files to your bundle and register them in your `info.plist` file. To use, set the regular weight as the primary font, and use SwiftUI's `fontWeight(_:)` modifier to use a different style from the same family inside your view.
+	///
 	struct Fonts {
 		
 		/// Accepts a font style, and returns a font to use for primary text. See ``SDFontStyle`` for more info.
@@ -320,9 +324,9 @@ public extension SDDefaults {
 	///
 	struct Corners {
 		
-		/// The radius range to use for corners.
+		/// The radius transform to use when calculating a relative corner radius.
 		///
-		public var radiusRange: ClosedRange < CGFloat > = .zero ... .infinity
+		public var radiusTransform: ( _ cornerRadius: CGFloat, _ relativeContentSize: CGSize ) -> CGFloat = { cornerRadius, relativeContentSize in return cornerRadius.clamped ( in: .zero ... .infinity ) }
 		
 		/// The style to use for corners.
 		///

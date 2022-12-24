@@ -51,23 +51,23 @@ public struct SDFontStyle {
 	///
 	public let size: CGFloat
 	
-	/// A style suitable for primary headings.
+	/// A style suitable for primary headings ( 48.0 px ).
 	///
 	public static let headingOne: Self = .init ( size: 48.0 )
 	
-	/// A style suitable for secondary headings.
+	/// A style suitable for secondary headings ( 40.0 px ).
 	///
 	public static let headingTwo: Self = .init ( size: 40.0 )
 	
-	/// A style suitable for tertiary headings.
+	/// A style suitable for tertiary headings ( 32.0 px ).
 	///
 	public static let headingThree: Self = .init ( size: 32.0 )
 	
-	/// A style suitable for quaternary headings.
+	/// A style suitable for quaternary headings ( 24.0 px ).
 	///
 	public static let headingFour: Self = .init ( size: 24.0 )
 	
-	/// A style suitable for body text.
+	/// A style suitable for body text ( 16.0 px ).
 	///
 	public static let body: Self = .init ( size: 16.0 )
 	

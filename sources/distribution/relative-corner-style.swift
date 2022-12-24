@@ -15,56 +15,119 @@ import SwiftUI
 
 /// Styles the corners of some content relative to some other content.
 ///
-///	If the `relative` or `source` sizes are omitted, the relative values will be calculated using the bounds of the content and the bounds of the display, respectively. The `axis` parameter determines which values to fetch and compare, producing different results based on the proportions of the content's bounds.
-///
-///	The `.divide` operation linearly interpolates a corner radius value between the source corner radius and zero, based on the scale of the relative content in proportion to the source content.
-///
-///	The `.subtract` operation will produce a more pleasing visual effect with less scalability, calculating the corner radius by subtracting the difference between the size of the relative content and the source content from the source corner radius. Content inset a distance greater than the source corner radius value will be given square corners.
-///
 /// - Warning: Uses a private API.
 ///
 @available ( iOS 16.0, * )
 public struct SDRelativeCornerStyle: ViewModifier {
 	
+	/// A method to use for comparing the bounds of the content when calculating relative values.
+	///
+	public enum ComparisonMethod {
+		
+		/// Calculates the corner radius based on the inset amount of the relative content's bound's edges from the source content's bound's edges.
+		///
+		/// - Parameters:
+		///   - relative: The bounds of the relative content. Uses the bounds of the content if nil.
+		///   - source: The bounds of the source content. Uses the bounds of the screen if nil.
+		///   - Edges: The edges of the bounds to compare. If multiple edges are specified, the smallest inset amount will be used.
+		///   - operation: The operation to calculate relative values with.
+		///   - sourceCornerRadius: The corner radius of the source content. Defaults to the corner radius of the display.
+		///   - cornerRadiusTransform: Accepts the relative corner radius and the relative content size, and returning a transformed corner radius. Clamps the corner radius in a range of zero to infinity by default.
+		///
+		case position ( relative: CGRect? = nil, source: CGRect? = nil, edges: [ Edge ] = Edge.allCases, operation: SDRelativeCornerStyle.Operation = .subtract, sourceCornerRadius: CGFloat? = nil, cornerRadiusTransform: ( ( _ cornerRadius: CGFloat, _ relativeContentSize: CGSize ) -> CGFloat )? = nil )
+		
+		/// Calculates the corner radius by comparing the relative content's bound's size to the size of the source content's bounds.
+		///
+		/// - Parameters:
+		///   - relative: The bounds of the relative content. Uses the bounds of the content if nil.
+		///   - source: The bounds of the source content. Uses the bounds of the screen if nil.
+		///   - dimensions: The dimensions of the bounds to compare. If both axes are specified, the smallest size difference will be used.
+		///   - operation: The operation to calculate relative values with.
+		///   - sourceCornerRadius: The corner radius of the source content. Defaults to the corner radius of the display.
+		///   - cornerRadiusTransform: Accepts the relative corner radius and the relative content size, and returning a transformed corner radius. Clamps the corner radius in a range of zero to infinity by default.
+		///
+		case size ( relative: CGRect? = nil, source: CGRect? = nil, dimensions: [ Axis.Set ] = [ .horizontal ], operation: SDRelativeCornerStyle.Operation = .subtract, sourceCornerRadius: CGFloat? = nil, cornerRadiusTransform: ( ( _ cornerRadius: CGFloat, _ relativeContentSize: CGSize ) -> CGFloat )? = nil )
+		
+		/// Insets the corner radius by the provided value, subtracting the inset amount from the source corner radius.
+		///
+		/// - Parameters:
+		///   - amount: The amount to inset the corner radius.
+		///   - sourceCornerRadius: The corner radius of the source content. Defaults to the corner radius of the display.
+		///   - cornerRadiusTransform: Accepts the relative corner radius and the relative content size, and returning a transformed corner radius. Clamps the corner radius in a range of zero to infinity by default.
+		///
+		case inset ( amount: CGFloat, sourceCornerRadius: CGFloat? = nil, cornerRadiusTransform: ( ( _ cornerRadius: CGFloat, _ relativeContentSize: CGSize ) -> CGFloat )? = nil )
+		
+		///	Sets the corner radius to a fixed value.
+		///
+		///	- Parameter radius: The corner radius to set.
+		///
+		case fixed ( radius: CGFloat )
+		
+		///	Provides case matching capabilities for types with associated values.
+		///
+		///	- Parameter type: The case type.
+		///
+		fileprivate func matchesCaseOf ( _ type: Self ) -> Bool {
+			
+			//	Switch over the enum case
+			
+			switch self {
+					
+				//	Return true if the type matches the case
+					
+				case .position: if case .position = type { return true }
+				case .size: if case .size = type { return true }
+				case .inset: if case .inset = type { return true }
+				case .fixed: if case .fixed = type { return true }
+			}
+			
+			//	Return false if there is no match
+			
+			return false
+			
+		}
+
+	}
+	
 	/// An operation to calculate relative values with.
 	///
-	public enum Operation: String, CaseIterable { case subtract, divide }
+	public enum Operation {
+		
+		///	The subtract operation produces a visually-pleasing effect with less scalability, calculating the corner radius by subtracting the inset amount or size difference from the source corner radius. Content with a inset amount or size difference greater than the source corner radius value will be given square corners.
+		///
+		case subtract
+		
+		/// The divide operation calculates the corner radius based on the scale of the relative content in proportion to the source content.
+		///
+		case divide
+		
+	}
 	
-	/// The alignment of a shadow.
+	/// An alignment for a shadow.
 	///
-	public enum ShadowAlignment: String, CaseIterable { case inner, drop }
+	public enum ShadowAlignment {
+		
+		/// Overlays a shadow inside the content, creating the illusion of negative depth.
+		///
+		case inner
+		
+		/// Casts a shadow outside the content, creating the illusion of positive depth.
+		///
+		case drop
+		
+	}
 	
 	/// Access to the defaults object.
 	///
 	@EnvironmentObject private var defaults: SDDefaults
 	
-	/// The size of the relative content.
+	/// The method to use for comparing the bounds of the content when calculating relative values.
 	///
-	private let relative: CGFloat?
+	private let method: Self.ComparisonMethod
 	
-	/// The size of the source content.
-	///
-	private let source: CGFloat?
-	
-	/// The axis to calculate relative values from.
-	///
-	private let axis: Axis.Set
-	
-	/// The operation to calculate relative values with.
-	///
-	private let operation: Operation
-	
-	/// The corner style of the relative corners.
+	/// The style of the corners.
 	///
 	private let cornerStyle: RoundedCornerStyle?
-	
-	/// The range to clamp the relative corner radius in.
-	///
-	private let cornerRadiusRange: ClosedRange < CGFloat >?
-	
-	/// The corner radius of the source content.
-	///
-	private let sourceCornerRadius: CGFloat?
 	
 	/// The color of the border.
 	///
@@ -98,9 +161,9 @@ public struct SDRelativeCornerStyle: ViewModifier {
 	///
 	private var screen: UIScreen { return UIWindow ( windowScene: UIApplication.shared.connectedScenes.first as! UIWindowScene ) .screen }
 	
-	/// The bounds of the display.
+	/// The bounds of the screen.
 	///
-	private var displayBounds: CGRect { return self.screen.bounds }
+	private var screenBounds: CGRect { return self.screen.bounds }
 	
 	/// The corner radius of the display.
 	///
@@ -110,37 +173,138 @@ public struct SDRelativeCornerStyle: ViewModifier {
 	///
 	private var relativeCornerRadius: CGFloat {
 		
-		//	Get the relative size and the source size, using the bounds of the content and the bounds of the display respectively if either are nil
-		
-		let relative: CGFloat = self.relative ?? ( self.axis == .horizontal ? self.relativeBounds.size.width : self.relativeBounds.size.height )
-		let source: CGFloat = self.source ?? ( self.axis == .horizontal ? self.displayBounds.size.width : self.displayBounds.size.height )
-		
-		//	Switch over operation types
-		
-		switch operation {
+		switch self.method {
 				
-				//	Calculate the relative corner radius by subtracting the difference between the relative size and the source size from the source corner radius
+			case let .position ( relative: relative, source: source, edges: edges, operation: operation, sourceCornerRadius: sourceCornerRadius, cornerRadiusTransform: cornerRadiusTransform ):
 				
-			case .subtract: return ( self.sourceCornerRadius ?? self.displayCornerRadius - ( source - relative ) / 2.0 ) .clamped ( in: self.cornerRadiusRange ?? self.defaults.corners.radiusRange )
+				//	If either the relative bounds or the source bounds are nil, use the bounds of the content and the bounds of the display respectively
 				
-				//	Calculate the relative corner radius by dividing the relative size by the source source size, then multiplying by the source corner radius
+				let relative: CGRect = relative ?? self.relativeBounds
+				let source: CGRect = source ?? self.screenBounds
 				
-			case .divide: return ( relative / source * ( self.sourceCornerRadius ?? self.displayCornerRadius ) ) .clamped ( in: self.cornerRadiusRange ?? self.defaults.corners.radiusRange )
+				//	Switch over the operation types
+				
+				switch operation {
+						
+						//	Subtract the minimum inset amount from the source corner radius
+						
+					case .subtract:
+						
+						//	Create an array of the inset amounts of the relative content's bound's edges from the source content's bound's edges, then get the minimum value
+						
+						let insetAmount: CGFloat = [
+							
+							edges.contains ( .top ) ? relative.minY - source.minY : .infinity,
+							edges.contains ( .trailing ) ? source.maxX - relative.maxX : .infinity,
+							edges.contains ( .bottom ) ? source.maxY - relative.maxY : .infinity,
+							edges.contains ( .leading ) ? relative.minX - source.minX : .infinity,
+							
+						] .min ( )!
+						
+						//	Return the source corner radius minus the inset amount, transformed
+						
+						return ( cornerRadiusTransform ?? self.defaults.corners.radiusTransform ) ( ( sourceCornerRadius ?? self.displayCornerRadius ) - insetAmount, self.relativeBounds.size )
+												
+					case .divide:
+						
+						//	Create an array of the scales of the relative content in proportion to the source content for each dimension, then get the maximum value
+						
+						let scale: CGFloat = [
+
+							edges.contains ( .top ) ? ( relative.minY - source.midY ) / ( source.minY - source.midY ) : .zero,
+							edges.contains ( .trailing ) ? ( relative.maxX - source.midX ) / ( source.maxX - source.midX ) : .zero,
+							edges.contains ( .bottom ) ? ( relative.maxY - source.midY ) / ( source.maxY - source.midY ) : .zero,
+							edges.contains ( .leading ) ? ( relative.minX - source.midX ) / ( source.minX - source.midX ) : .zero
+
+						] .max ( )!
+						
+						//	Return the source corner radius multiplied by the scale, transformed
+						
+						return ( cornerRadiusTransform ?? self.defaults.corners.radiusTransform ) ( ( sourceCornerRadius ?? self.displayCornerRadius ) * scale, self.relativeBounds.size )
+						
+				}
+				
+			case let .size ( relative: relative, source: source, dimensions: dimensions, operation: operation, sourceCornerRadius: sourceCornerRadius, cornerRadiusTransform: cornerRadiusTransform ):
+								
+				//	Retrieve the relative size and the source size, using the bounds of the content and the bounds of the display respectively if either are nil
+				
+				let relative: CGSize = relative?.size ?? self.relativeBounds.size
+				let source: CGSize = source?.size ?? self.screenBounds.size
+				
+				//	Switch over the operation types
+				
+				switch operation {
+						
+						//	Subtract the difference between the relative size and the source size from the source corner radius
+						
+					case .subtract:
+						
+						//	Create an array of the differences for each dimension, then get the minimum value
+						
+						let difference: CGFloat = [
+							
+							dimensions.contains ( .horizontal ) ? source.width - relative.width : .infinity,
+							dimensions.contains ( .vertical ) ? source.height - relative.height : .infinity
+							
+						] .min ( )!
+
+						//	Return the source corner radius minus half of the difference, transformed
+						
+						return ( cornerRadiusTransform ?? self.defaults.corners.radiusTransform ) ( ( sourceCornerRadius ?? self.displayCornerRadius ) - ( difference != .zero ? difference / 2.0 : difference ), self.relativeBounds.size )
+						
+						//	Divide the relative size by the source size, then multiply by the source corner radius
+												
+					case .divide:
+						
+						//	Create an array of the scales of the relative content in proportion to the source content for each dimension, then get the maximum value
+						
+						let scale: CGFloat = [
+							
+							dimensions.contains ( .horizontal ) ? relative.width / source.width : .zero,
+							dimensions.contains ( .vertical ) ? relative.height / source.height : .zero
+							
+						] .max ( )!
+						
+						//	Return the source corner radius multiplied by the scale, transformed
+						
+						return ( cornerRadiusTransform ?? self.defaults.corners.radiusTransform ) ( ( sourceCornerRadius ?? self.displayCornerRadius ) * scale, self.relativeBounds.size )
+						
+				}
+				
+				//	Subtract the inset amount from the source corner radius, then return the transformed radius
+				
+			case let .inset ( amount: amount, sourceCornerRadius: sourceCornerRadius, cornerRadiusTransform: cornerRadiusTransform ): return ( cornerRadiusTransform ?? self.defaults.corners.radiusTransform ) ( ( sourceCornerRadius ?? self.displayCornerRadius ) - amount, self.relativeBounds.size )
+				
+				//	Return the fixed corner radius
+				
+			case let .fixed ( radius: radius ): return radius
 				
 		}
 		
 	}
 	
-	/// Retrieve the bounds, then applies a corner radius, border, and shadow to the content.
+	/// Retrieve the content's bounds, then apply a corner radius, border, and shadow.
 	///
 	public func body ( content: Content ) -> some View {
 		
 		content
 			.background ( SDBackdrop ( ) )
 			.compositingGroup ( )
-			.if ( self.relative == nil || ( self.shadowAlignment == .inner && self.shadowRadius ?? self.defaults.shadows.radius != .zero ) ) { $0.exportBounds ( to: self.$relativeBounds ) }
+			.if ( self.method.matchesCaseOf ( .position ( ) ) || self.method.matchesCaseOf ( .size ( ) ) || self.method.matchesCaseOf ( .inset ( amount: .zero ) ) || ( self.shadowAlignment == .inner && self.shadowRadius ?? self.defaults.shadows.radius != .zero ) ) {
+				
+				//	Export the bounds if needed for the inner shadow or relative corner radius calculations
+				
+				$0.exportBounds ( from: .global, to: self.$relativeBounds )
+				
+			}
 			.clipShape ( RoundedRectangle ( cornerRadius: self.relativeCornerRadius, style: self.cornerStyle ?? self.defaults.corners.style ), style: FillStyle ( eoFill: false, antialiased: self.defaults.optimizations.antialiasing ) )
-			.if ( self.shadowAlignment == .drop && self.shadowRadius ?? self.defaults.shadows.radius != .zero ) { $0.shadow ( color: self.shadowColor ?? self.defaults.shadows.color.auto, radius: self.shadowRadius ?? self.defaults.shadows.radius, x: self.shadowOffset?.width ?? self.defaults.shadows.offset.width, y: self.shadowOffset?.height ?? self.defaults.shadows.offset.height ) }
+			.if ( self.shadowAlignment == .drop && self.shadowRadius ?? self.defaults.shadows.radius != .zero ) {
+				
+				//	Apply a drop shadow if the shadow alignment specifies, and the shadow radius is not zero
+				
+				$0.shadow ( color: self.shadowColor ?? self.defaults.shadows.color.auto, radius: self.shadowRadius ?? self.defaults.shadows.radius, x: self.shadowOffset?.width ?? self.defaults.shadows.offset.width, y: self.shadowOffset?.height ?? self.defaults.shadows.offset.height )
+				
+			}
 			.overlay {
 				
 				//	Stack the border on top of the inner shadow
@@ -151,7 +315,7 @@ public struct SDRelativeCornerStyle: ViewModifier {
 					
 					if self.shadowAlignment == .inner && self.shadowRadius ?? self.defaults.shadows.radius != .zero {
 						
-						//	Draw an expanded rectangle filled with the shadow color
+						//	Draw a negatively-inset rectangle filled with the shadow color
 												
 						RoundedRectangle ( cornerRadius: self.relativeCornerRadius + ( self.shadowRadius ?? self.defaults.shadows.radius ) / 2.0, style: self.cornerStyle ?? self.defaults.corners.style )
 							.frame ( width: self.relativeBounds.size.width + pow ( self.shadowRadius ?? self.defaults.shadows.radius, 2.0 ), height: self.relativeBounds.size.height + pow ( self.shadowRadius ?? self.defaults.shadows.radius, 2.0 ) )
@@ -184,6 +348,8 @@ public struct SDRelativeCornerStyle: ViewModifier {
 					
 					if self.borderStyle?.lineWidth ?? self.defaults.borders.style.lineWidth != .zero {
 						
+						//	Draw a border
+						
 						RoundedRectangle ( cornerRadius: self.relativeCornerRadius, style: self.cornerStyle ?? self.defaults.corners.style )
 							.strokeBorder ( self.borderColor ?? self.defaults.borders.color.auto, style: self.borderStyle ?? self.defaults.borders.style, antialiased: self.defaults.optimizations.antialiasing )
 							.foregroundStyle ( .clear )
@@ -199,13 +365,8 @@ public struct SDRelativeCornerStyle: ViewModifier {
 	/// Creates an ``SDRelativeCornerStyle`` instance from a corner configuration.
 	///
 	/// - Parameters:
-	///   - relative: The size of the relative content.
-	///   - source: The size of the source content.
-	///   - axis: The axis to calculate relative values from.
-	///   - operation: The operation to calculate relative values with.
-	///   - cornerStyle: The corner style of the relative corners.
-	///   - cornerRadiusRange: The range to clamp the relative corner radius in.
-	///   - sourceCornerRadius: The corner radius of the source content.
+	///   - method: The method to use for comparing the bounds of the content when calculating relative values.
+	///   - cornerStyle: The style of the corners.
 	///   - borderColor: The color of the border.
 	///   - borderStyle: The stroke style of the border.
 	///   - shadowAlignment: The alignment of the shadow.
@@ -215,13 +376,8 @@ public struct SDRelativeCornerStyle: ViewModifier {
 	///
 	public init (
 		
-		relative: CGFloat? = nil,
-		source: CGFloat? = nil,
-		axis: Axis.Set = .horizontal,
-		operation: SDRelativeCornerStyle.Operation = .subtract,
+		method: Self.ComparisonMethod = .position ( ),
 		cornerStyle: RoundedCornerStyle? = nil,
-		cornerRadiusRange: ClosedRange < CGFloat >? = nil,
-		sourceCornerRadius: CGFloat? = nil,
 		borderColor: Color? = nil,
 		borderStyle: StrokeStyle? = nil,
 		shadowAlignment: Self.ShadowAlignment = .drop,
@@ -231,13 +387,8 @@ public struct SDRelativeCornerStyle: ViewModifier {
 		
 	) {
 		
-		self.relative = relative
-		self.source = source
-		self.axis = axis
-		self.operation = operation
+		self.method = method
 		self.cornerStyle = cornerStyle
-		self.cornerRadiusRange = cornerRadiusRange
-		self.sourceCornerRadius = sourceCornerRadius
 		self.borderColor = borderColor
 		self.borderStyle = borderStyle
 		self.shadowAlignment = shadowAlignment
@@ -275,13 +426,8 @@ public extension View {
 	/// Styles the corners of some content relative to some other content. See ``SDRelativeCornerStyle`` for more info.
 	///
 	/// - Parameters:
-	///   - relative: The size of the relative content.
-	///   - source: The size of the source content.
-	///   - axis: The axis to calculate relative values from.
-	///   - operation: The operation to calculate relative values with.
-	///   - cornerStyle: The corner style of the relative corners.
-	///   - cornerRadiusRange: The range to clamp the relative corner radius in.
-	///   - sourceCornerRadius: The corner radius of the source content.
+	///   - method: The method to use for comparing the bounds of the content when calculating relative values.
+	///   - cornerStyle: The style of the corners.
 	///   - borderColor: The color of the border.
 	///   - borderStyle: The stroke style of the border.
 	///   - shadowAlignment: The alignment of the shadow.
@@ -293,13 +439,8 @@ public extension View {
 	///
 	func relativeCornerStyle (
 		
-		relative: CGFloat? = nil,
-		source: CGFloat? = nil,
-		axis: Axis.Set = .horizontal,
-		operation: SDRelativeCornerStyle.Operation = .subtract,
+		method: SDRelativeCornerStyle.ComparisonMethod = .position ( ),
 		cornerStyle: RoundedCornerStyle? = nil,
-		cornerRadiusRange: ClosedRange < CGFloat >? = nil,
-		sourceCornerRadius: CGFloat? = nil,
 		borderColor: Color? = nil,
 		borderStyle: StrokeStyle? = nil,
 		shadowAlignment: SDRelativeCornerStyle.ShadowAlignment = .drop,
@@ -311,66 +452,8 @@ public extension View {
 		
 		return self.modifier ( SDRelativeCornerStyle (
 			
-			relative: relative,
-			source: source,
-			axis: axis,
-			operation: operation,
+			method: method,
 			cornerStyle: cornerStyle,
-			cornerRadiusRange: cornerRadiusRange,
-			sourceCornerRadius: sourceCornerRadius,
-			borderColor: borderColor,
-			borderStyle: borderStyle,
-			shadowAlignment: shadowAlignment,
-			shadowColor: shadowColor,
-			shadowRadius: shadowRadius,
-			shadowOffset: shadowOffset
-			
-		) )
-		
-	}
-	
-	/// Styles the corners of some content relative to some other content using a subtract operation and an inset amount. See ``SDRelativeCornerStyle`` for more info.
-	///
-	/// - Parameters:
-	///   - insetAmount: The amount the relative content is inset from the source content.
-	///   - axis: The axis to calculate relative values from.
-	///   - cornerStyle: The corner style of the relative corners.
-	///   - cornerRadiusRange: The range to clamp the relative corner radius in.
-	///   - sourceCornerRadius: The corner radius of the source content.
-	///   - borderColor: The color of the border.
-	///   - borderStyle: The stroke style of the border.
-	///   - shadowAlignment: The alignment of the shadow.
-	///   - shadowColor: The color of the shadow.
-	///   - shadowRadius: The radius of the shadow.
-	///   - shadowOffset: The offset of the shadow.
-	///
-	/// - Warning: Uses a private API.
-	///
-	func relativeCornerStyle (
-		
-		insetAmount: CGFloat? = nil,
-		axis: Axis.Set = .horizontal,
-		cornerStyle: RoundedCornerStyle? = nil,
-		cornerRadiusRange: ClosedRange < CGFloat >? = nil,
-		sourceCornerRadius: CGFloat? = nil,
-		borderColor: Color? = nil,
-		borderStyle: StrokeStyle? = nil,
-		shadowAlignment: SDRelativeCornerStyle.ShadowAlignment = .drop,
-		shadowColor: Color? = nil,
-		shadowRadius: CGFloat? = nil,
-		shadowOffset: CGSize? = nil
-		
-	) -> some View {
-		
-		return self.modifier ( SDRelativeCornerStyle (
-			
-			relative: insetAmount != nil ? 0.0 : nil,
-			source: insetAmount != nil ? insetAmount! * 2.0 : nil,
-			axis: axis,
-			operation: .subtract,
-			cornerStyle: cornerStyle,
-			cornerRadiusRange: cornerRadiusRange,
-			sourceCornerRadius: sourceCornerRadius,
 			borderColor: borderColor,
 			borderStyle: borderStyle,
 			shadowAlignment: shadowAlignment,
