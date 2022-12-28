@@ -65,9 +65,9 @@ public struct SDTappable < Content: View > : View {
 	///
 	/// - Parameters:
 	///   - content: The interactive content.
-	///   - action: The action to perform.
+	///   - perform: The action to perform.
 	///
-	public init ( @ViewBuilder content: @escaping ( ) -> Content, perform action: @escaping ( ) -> Void ) {
+	public init ( @ViewBuilder content: @escaping ( ) -> Content = { return Text ( "SDTappable" ) .padding ( 16.0 ) }, perform action: @escaping ( ) -> Void = { return print ( "Tapped" ) } ) {
 		
 		self.content = content
 		self.action = action
