@@ -64,8 +64,6 @@
 //	
 //}
 //
-//@available ( iOS 16.0, * )
-//public extension FloatingPoint {
 //	
 //	/// Wraps the value within the specified range.
 //	///
