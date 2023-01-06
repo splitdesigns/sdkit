@@ -109,6 +109,10 @@ public final class SDDefaults: ObservableObject {
 	///
 	@Published public var shadows: SDDefaults.Shadows = .init ( )
 	
+	/// Coordination-related state for the application.
+	///
+	@Published public var coordination: SDDefaults.Coordination = .init ( )
+	
 	/// Creates an ``SDDefaults`` instance.
 	///
 	public init ( ) { }
@@ -219,13 +223,13 @@ public extension SDDefaults {
 		///
 		/// - Parameter style: The font style to use.
 		///
-		public var primary: ( _ style: SDFontStyle ) -> Font = { return .custom ( .init ( ), size: $0.size ) }
+		public var primary: ( _ style: SDFontStyle ) -> Font = { return .system ( size: $0.size ) }
 		
 		/// Accepts a font style, and returns a font to use for secondary text. See ``SDFontStyle`` for more info.
 		///
 		/// - Parameter style: The font style to use.
 		///
-		public var secondary: ( _ style: SDFontStyle ) -> Font = { return .custom ( .init ( ), size: $0.size ) .monospaced ( ) }
+		public var secondary: ( _ style: SDFontStyle ) -> Font = { return .system ( size: $0.size, design: .monospaced ) }
 		
 		/// Creates an ``SDDefaults/Fonts`` instance.
 		///
@@ -392,6 +396,25 @@ public extension SDDefaults {
 
 	}
 
+}
+
+@available ( iOS 16.0, * )
+public extension SDDefaults {
+	
+	/// Coordination-related state for the application.
+	///
+	struct Coordination {
+		
+		///	The current location within the application.
+		///
+		public var flow: SDFlow = .init ( "https://splitdesigns.com" )
+		
+		/// Creates an ``SDDefaults/Coordination`` instance.
+		///
+		fileprivate init ( ) { }
+		
+	}
+	
 }
 
 @available ( iOS 16.0, * )
