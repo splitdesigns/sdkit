@@ -217,6 +217,10 @@ public extension SDDefaults {
 	///
 	///	If you choose to use a static font, add the files to your bundle and register them in your `info.plist` file. To use, set the regular weight as the primary font, and use SwiftUI's `fontWeight(_:)` modifier to use a different style from the same family inside your view.
 	///
+	///	All fonts ( including custom fonts ) scale automatically relative to the current Dynamic Type size, with the exception of the `.system(size:)` font. To enable the dynamic scaling functionality, the size must be set using the `UIFontMetrics.default.scaledValue(for:)` method, and the `.dynamicTypeSize` or `.sizeCategory` environment value must be accessed within the same view that the font is set in order for the Dynamic Type size to update. This is not necessary for other fonts — doing so will double scale your text.
+	///
+	///	You can now use the `.dynamicFont(_:)` modifier to avoid accessing an environment variable every time you set the font.
+	///
 	struct Fonts {
 		
 		/// Accepts a font style, and returns a font to use for primary text. See ``SDFontStyle`` for more info.

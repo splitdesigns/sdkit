@@ -1,6 +1,6 @@
 
 //
-//  SDKit: Dynamic Type Size
+//  SDKit: Dynamic Type
 //  Developed by SPLIT Designs
 //
 
@@ -11,7 +11,61 @@ import SwiftUI
 //
 //
 
+//  MARK: - Structures
+
+/// Sets a font while also enabling any embedded Dynamic Type functionality.
+///
+@available ( iOS 16.0, * )
+public struct SDScaledFont: ViewModifier {
+	
+	///	Access to the Dynamic Type size.
+	///
+	@Environment ( \ .dynamicTypeSize ) private var dynamicTypeSize
+	
+	/// The font to set.
+	///
+	private let font: ( ( _ style: SDFontStyle ) -> Font )?
+	
+	/// The font style to set.
+	///
+	private let fontStyle: SDFontStyle?
+	
+	/// Sets the font for the content.
+	///
+	public func body ( content: Content ) -> some View { content.font ( self.font? ( self.fontStyle ?? .body ) ) }
+	
+	/// Creates an ``SDScaledFont`` instance from a font.
+	///
+	/// - Parameters:
+	///   - font: The font to set.
+	///   - style: The font style to set.
+	///
+	public init ( _ font: ( ( _ style: SDFontStyle ) -> Font )?, style fontStyle: SDFontStyle? = .body ) {
+		
+		self.font = font
+		self.fontStyle = fontStyle
+		
+	}
+	
+}
+
+//
+//
+
 //  MARK: - Extensions
+
+@available ( iOS 16.0, * )
+public extension View {
+	
+	/// Sets a font while also enabling any embedded Dynamic Type functionality.
+	///
+	/// - Parameters:
+	///   - font: The font to set.
+	///   - style: The font style to set.
+	///
+	func scaledFont ( _ font: ( ( _ style: SDFontStyle ) -> Font )?, style fontStyle: SDFontStyle? = .body ) -> some View { self.modifier ( SDScaledFont ( font, style: fontStyle ) ) }
+	
+}
 
 @available ( iOS 16.0, * )
 public extension DynamicTypeSize {

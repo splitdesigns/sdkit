@@ -69,10 +69,14 @@ public struct SDInterface < Content: View > : View {
 	/// The query strings from the flow.
 	///
 	private var parameters: [ String: String ] { return self.flow?.parameters ?? self.defaults.coordination.flow.parameters }
-    
-	/// The font.
+	
+	/// The font to set.
 	///
-    private let font: Font?
+	private let font: ( ( _ style: SDFontStyle ) -> Font )?
+	
+	/// The font style to set.
+	///
+	private let fontStyle: SDFontStyle?
 	
 	/// The foreground color.
 	///
@@ -104,7 +108,7 @@ public struct SDInterface < Content: View > : View {
         
 		return ZStack { self.content ( self.defaults, self.identifiers, self.parameters ) }
             .frame ( maxWidth: .infinity, maxHeight: .infinity )
-			.font ( self.font ?? defaults.fonts.primary ( .body ) )
+			.scaledFont ( self.font ?? self.defaults.fonts.primary, style: self.fontStyle ?? .body )
 			.foregroundColor ( self.foregroundColor ?? self.defaults.colors.primary.auto )
 			.tint ( self.tint ?? self.defaults.colors.accent.auto )
 			.background ( self.background ?? self.defaults.colors.background.auto )
@@ -118,7 +122,8 @@ public struct SDInterface < Content: View > : View {
 	///
 	/// - Parameters:
 	///   - parse: The flow to parse.
-	///   - font: The font.
+	///   - font: The font to set.
+	///   - fontStyle: The font style to set.
 	///   - foregroundColor: The foreground color.
 	///   - tint: The tint for application accents.
 	///   - background: The background color.
@@ -129,7 +134,8 @@ public struct SDInterface < Content: View > : View {
 	public init (
 		
 		parse flow: SDFlow? = nil,
-		font: Font? = nil,
+		font: ( ( _ style: SDFontStyle ) -> Font )? = nil,
+		fontStyle: SDFontStyle? = nil,
 		foregroundColor: Color? = nil,
 		tint: Color? = nil,
 		background: Color? = nil,
@@ -141,6 +147,7 @@ public struct SDInterface < Content: View > : View {
 			
 		self.flow = flow
 		self.font = font
+		self.fontStyle = fontStyle
 		self.foregroundColor = foregroundColor
 		self.tint = tint
 		self.background = background
