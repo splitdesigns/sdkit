@@ -223,13 +223,13 @@ public extension SDDefaults {
 		///
 		/// - Parameter style: The font style to use.
 		///
-		public var primary: ( _ style: SDFontStyle ) -> Font = { return .system ( size: $0.size ) }
+		public var primary: ( _ style: SDFontStyle ) -> Font = { return .system ( size: UIFontMetrics.default.scaledValue ( for: $0.size ) ) }
 		
 		/// Accepts a font style, and returns a font to use for secondary text. See ``SDFontStyle`` for more info.
 		///
 		/// - Parameter style: The font style to use.
 		///
-		public var secondary: ( _ style: SDFontStyle ) -> Font = { return .system ( size: $0.size, design: .monospaced ) }
+		public var secondary: ( _ style: SDFontStyle ) -> Font = { return .system ( size: UIFontMetrics.default.scaledValue ( for: $0.size ), design: .monospaced ) }
 		
 		/// Creates an ``SDDefaults/Fonts`` instance.
 		///
