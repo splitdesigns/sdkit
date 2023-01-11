@@ -24,12 +24,12 @@ import SwiftUI
 /// To use a default font, simply call the closure with the style that you would like to use:
 ///
 /// 	Text ( "Hello, world!" )
-/// 		.scaledFont ( self.defaults.fonts.primary, style: .body )
+/// 		.adaptiveFont ( self.defaults.fonts.primary, style: .body )
 ///
 /// You can also initialize a custom style:
 ///
 /// 	Text ( "Hello, world!" )
-/// 		.scaledFont ( self.defaults.fonts.primary, style: .init ( size: 32.0 ) )
+/// 		.adaptiveFont ( self.defaults.fonts.primary, style: .init ( size: 32.0 ) )
 ///
 /// Or, extend ``SDFontStyle`` to include your own predefined style:
 ///

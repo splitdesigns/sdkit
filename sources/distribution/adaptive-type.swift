@@ -1,6 +1,6 @@
 
 //
-//  SDKit: Dynamic Type
+//  SDKit: Adaptive Type
 //  Developed by SPLIT Designs
 //
 
@@ -13,14 +13,18 @@ import SwiftUI
 
 //  MARK: - Structures
 
-/// Sets a font while also enabling any embedded Dynamic Type functionality.
+/// Sets a font while also enabling any embedded Dynamic Type functionality and accessibility modifiers.
 ///
 @available ( iOS 16.0, * )
-public struct SDScaledFont: ViewModifier {
+public struct SDAdaptiveFont: ViewModifier {
 	
 	///	Access to the Dynamic Type size.
 	///
 	@Environment ( \ .dynamicTypeSize ) private var dynamicTypeSize
+	
+	///	Access to the accessibility legibility weight.
+	///
+	@Environment ( \ .legibilityWeight ) private var legibilityWeight
 	
 	/// The font to set.
 	///
@@ -32,9 +36,15 @@ public struct SDScaledFont: ViewModifier {
 	
 	/// Sets the font for the content.
 	///
-	public func body ( content: Content ) -> some View { content.font ( self.font? ( self.fontStyle ?? .body ) ) }
+	public func body ( content: Content ) -> some View {
+		
+		content
+			.font ( self.font? ( self.fontStyle ?? .body ) )
+			.bold ( self.legibilityWeight == .bold )
+		
+	}
 	
-	/// Creates an ``SDScaledFont`` instance from a font.
+	/// Creates an ``SDAdaptiveFont`` instance from a font and a font style.
 	///
 	/// - Parameters:
 	///   - font: The font to set.
@@ -57,13 +67,13 @@ public struct SDScaledFont: ViewModifier {
 @available ( iOS 16.0, * )
 public extension View {
 	
-	/// Sets a font while also enabling any embedded Dynamic Type functionality.
+	/// Sets a font while also enabling any embedded Dynamic Type functionality and accessibility modifiers.
 	///
 	/// - Parameters:
 	///   - font: The font to set.
 	///   - style: The font style to set.
 	///
-	func scaledFont ( _ font: ( ( _ style: SDFontStyle ) -> Font )?, style fontStyle: SDFontStyle? = .body ) -> some View { self.modifier ( SDScaledFont ( font, style: fontStyle ) ) }
+	func adaptiveFont ( _ font: ( ( _ style: SDFontStyle ) -> Font )?, style fontStyle: SDFontStyle? = .body ) -> some View { self.modifier ( SDAdaptiveFont ( font, style: fontStyle ) ) }
 	
 }
 
