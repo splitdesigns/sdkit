@@ -20,17 +20,17 @@ public struct SDOnDeviceOrientationChange: ViewModifier {
 	
 	/// The action to perform when the orientation changes.
 	///
-	private let action: ( UIDeviceOrientation ) -> Void
+	private let action: ( _ deviceOrientation: UIDeviceOrientation, _ interfaceOrientation: UIInterfaceOrientation ) -> Void
 	
 	/// Performs an action when the device's orientation changes.
 	///
-	public func body ( content: Content ) -> some View { content.onReceive ( NotificationCenter.default.publisher ( for: UIDevice.orientationDidChangeNotification ) ) { _ in action ( UIDevice.current.orientation ) } }
+	public func body ( content: Content ) -> some View { content.onReceive ( NotificationCenter.default.publisher ( for: UIDevice.orientationDidChangeNotification ) ) { _ in action ( UIDevice.current.orientation, UIApplication.shared.windows.first?.windowScene?.interfaceOrientation ?? .unknown ) } }
 	
 	/// Creates an ``SDOnDeviceOrientationChange`` instance from an action to perform.
 	///
 	/// - Parameter perform: The action to perform.
 	///
-	public init ( perform action: @escaping ( UIDeviceOrientation ) -> Void ) { self.action = action }
+	public init ( perform action: @escaping ( _ deviceOrientation: UIDeviceOrientation, _ interfaceOrientation: UIInterfaceOrientation ) -> Void ) { self.action = action }
 	
 }
 
@@ -46,7 +46,7 @@ public extension View {
 	///
 	/// - Parameter perform: The action to perform.
 	///
-	func onDeviceOrientationChange ( perform action: @escaping ( UIDeviceOrientation ) -> Void ) -> some View { self.modifier ( SDOnDeviceOrientationChange ( perform: action ) ) }
+	func onDeviceOrientationChange ( perform action: @escaping ( _ deviceOrientation: UIDeviceOrientation, _ interfaceOrientation: UIInterfaceOrientation ) -> Void ) -> some View { self.modifier ( SDOnDeviceOrientationChange ( perform: action ) ) }
 	
 }
 
