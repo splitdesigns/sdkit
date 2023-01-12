@@ -413,6 +413,10 @@ public extension SDDefaults {
 		///
 		public var flow: SDFlow = .init ( "https://splitdesigns.com" )
 		
+		///	The readiness state of the application.
+		///
+		public var isReady: Bool = false
+		
 		/// Creates an ``SDDefaults/Coordination`` instance.
 		///
 		fileprivate init ( ) { }
